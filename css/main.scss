@@ -191,10 +191,6 @@ body {
 
       //changes get made when burger is toggled
       &.open {
-        .bar {
-          background-color: $backgroundColor;
-        }
-
         #bar1 {
           transform: translateY(5px) rotate(-45deg);
         }
@@ -213,7 +209,7 @@ body {
     .mobile-nav-bg {
       width: 0;
       height: 0;
-      background: #00d8ff;
+      background: #00d8ffc4;
       transition: 0.3s ease;
       position: absolute;
       border-radius: 50%;
@@ -224,7 +220,7 @@ body {
       &.open {
         width: 350px;
         height: 350px;
-        transform: translate(48%, 34%);
+        transform: translate(42%, 12%);
       }
     }
 
@@ -232,13 +228,13 @@ body {
       display: none;
       flex-direction: column;
       position: absolute;
-      right: 50px;
-      top: 70px;
+      right: 85px;
+      top: 25px;
       z-index: 5;
       transition: 0.3s ease;
 
       .nav-item {
-        margin: 1em 0;
+        margin: 0.9em 0;
         color: $textPrimary;
         cursor: pointer;
       }
@@ -295,8 +291,8 @@ body {
   //abstract shapes
   .circle-bg {
     position: absolute;
-    top: -50px;
-    right: -80px;
+    top: -83px;
+    right: -96px;
     height: 230px;
   }
 
@@ -395,7 +391,7 @@ body {
 
         .name {
           font-size: 5em;
-          margin-bottom: 0.5em;
+          margin-bottom: 0.2em;
         }
 
         .title {
@@ -406,13 +402,13 @@ body {
     }
     .square-bg {
       bottom: -240px;
-      left: -30px;
+      left: -100px;
       height: 400px;
     }
 
     .circle-bg {
-      top: -150px;
-      right: -150px;
+      top: -167px;
+      right: -185px;
       height: 400px;
     }
 
