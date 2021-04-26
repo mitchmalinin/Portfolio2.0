@@ -156,6 +156,10 @@ body {
   padding: 1em 2em;
 }
 
+.hero .nav-wrapper .logo {
+  height: 40px;
+}
+
 .hero .nav-wrapper .burger {
   width: 35px;
   height: 35px;
@@ -170,7 +174,7 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  z-index: 2;
+  z-index: 5;
 }
 
 .hero .nav-wrapper .burger .bar {
@@ -220,7 +224,7 @@ body {
   position: absolute;
   border-radius: 50%;
   right: 45px;
-  z-index: 1;
+  z-index: 4;
 }
 
 .hero .nav-wrapper .mobile-nav-bg.open {
@@ -239,7 +243,7 @@ body {
   position: absolute;
   right: 50px;
   top: 70px;
-  z-index: 2;
+  z-index: 5;
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
 }
@@ -247,12 +251,107 @@ body {
 .hero .nav-wrapper .nav .nav-item {
   margin: 1em 0;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .hero .nav-wrapper .nav.open {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.hero .hero-content-wrapper {
+  height: 90%;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+.hero .hero-content-wrapper .logo-bg {
+  position: absolute;
+  z-index: -1;
+  height: 500px;
+  top: 20px;
+  left: 50px;
+  opacity: 0.03;
+}
+
+.hero .hero-content-wrapper .name-wrapper {
+  margin-top: -10em;
+  text-align: center;
+}
+
+.hero .hero-content-wrapper .name-wrapper .name {
+  font-size: 2.8em;
+  margin-bottom: 0.5em;
+  background-color: #f3ec78;
+  background-image: linear-gradient(45deg, #84fab0, #00d8ff);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.hero .hero-content-wrapper .name-wrapper .title {
+  color: #ffffff;
+  font-weight: 300;
+}
+
+.hero .hero-content-wrapper .social-wrapper {
+  display: none;
+}
+
+.hero .circle-bg {
+  position: absolute;
+  top: -50px;
+  right: -80px;
+  height: 230px;
+}
+
+.hero .circle-sm {
+  position: absolute;
+  bottom: 300px;
+  right: 50px;
+  height: 40px;
+}
+
+.hero .square-sm {
+  position: absolute;
+  top: 200px;
+  left: 170px;
+  height: 40px;
+}
+
+.hero .dots-left {
+  position: absolute;
+  left: -40px;
+  z-index: -1;
+  top: 0;
+  height: 200px;
+}
+
+.hero .dots-right {
+  position: absolute;
+  right: -20px;
+  bottom: 0;
+  height: 200px;
+}
+
+.hero .triangle-sm {
+  position: absolute;
+  top: 450px;
+  left: 30px;
+  height: 70px;
+}
+
+.hero .square-bg {
+  position: absolute;
+  bottom: -70px;
+  left: -130px;
+  height: 270px;
 }
 
 @media screen and (min-width: 600px) {
@@ -274,9 +373,92 @@ body {
   .hero .nav-wrapper .mobile-nav-bg {
     display: none;
   }
+  .hero .hero-content-wrapper {
+    grid-auto-flow: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  .hero .hero-content-wrapper .social-wrapper {
+    padding: 0 2em 0 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-top: -10em;
+  }
+  .hero .hero-content-wrapper .social-wrapper .social-icon {
+    height: 40px;
+    margin: 1em 0;
+    -webkit-transition: 0.3s ease;
+    transition: 0.3s ease;
+    cursor: pointer;
+  }
+  .hero .hero-content-wrapper .logo-bg {
+    height: 700px;
+    left: 200px;
+  }
+  .hero .hero-content-wrapper .name-wrapper {
+    margin-top: -10em;
+    margin-left: 10em;
+    text-align: left;
+  }
+  .hero .hero-content-wrapper .name-wrapper .name {
+    font-size: 5em;
+    margin-bottom: 0.5em;
+  }
+  .hero .hero-content-wrapper .name-wrapper .title {
+    color: #ffffff;
+    font-weight: 300;
+  }
+  .hero .square-bg {
+    bottom: -240px;
+    left: -30px;
+    height: 400px;
+  }
+  .hero .circle-bg {
+    top: -150px;
+    right: -150px;
+    height: 400px;
+  }
+  .hero .dots-left {
+    left: -10px;
+    z-index: -1;
+    top: -30px;
+    height: 300px;
+  }
+  .hero .dots-right {
+    right: -10px;
+    bottom: 0;
+    height: 300px;
+  }
+  .hero .triangle-sm {
+    top: 650px;
+    left: 500px;
+    height: 70px;
+  }
+  .hero .circle-sm {
+    bottom: 400px;
+    right: 250px;
+    height: 40px;
+  }
+  .hero .square-sm {
+    left: 570px;
+  }
 }
 
-.hero img {
-  height: 30px;
+@media screen and (min-width: 1400px) {
+  .hero .nav-wrapper {
+    padding: 1em 7em 1em 10em;
+  }
+  .hero .hero-content-wrapper .name-wrapper {
+    margin-left: 20em;
+  }
+  .hero .hero-content-wrapper .logo-bg {
+    left: 800px;
+  }
 }
 /*# sourceMappingURL=main.css.map */
