@@ -1,0 +1,272 @@
+//font import
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;700&display=swap");
+
+//reset css styles
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  font-family: "Poppins", sans-serif;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+
+li {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+//all the colors used
+$backgroundColor: #2d2d31;
+$backgroundColorFaded: linear-gradient(
+  255.29deg,
+  rgba(64, 64, 68, 0.8) 3.51%,
+  rgba(64, 64, 68, 0.76) 104.9%
+);
+$purple: #bb86fc;
+$blue: #00d8ff;
+$green: #84fab0;
+$textFaded: rgba(255, 255, 255, 0.2);
+$textPrimary: #ffffff;
+
+body {
+  background-color: $backgroundColor;
+}
+
+//hero section
+.hero {
+  position: relative;
+  overflow-x: hidden;
+  height: 100vh;
+
+  .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
+
+    //mobile nav burger
+    .burger {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 2;
+
+      .bar {
+        width: 100%;
+        border-radius: 30px;
+        display: block;
+        height: 5px;
+        background-color: $textPrimary;
+        transition: 0.3s ease;
+      }
+
+      #bar1 {
+        transform: translateY(-5px);
+      }
+      #bar3 {
+        transform: translateY(5px);
+      }
+
+      //changes get made when burger is toggled
+      &.open {
+        .bar {
+          background-color: $backgroundColor;
+        }
+
+        #bar1 {
+          transform: translateY(5px) rotate(-45deg);
+        }
+
+        #bar3 {
+          transform: translateY(-5px) rotate(45deg);
+        }
+
+        #bar2 {
+          opacity: 0;
+        }
+      }
+    }
+
+    //mobile nav background
+    .mobile-nav-bg {
+      width: 0;
+      height: 0;
+      background: #00d8ff;
+      transition: 0.3s ease;
+      position: absolute;
+      border-radius: 50%;
+      right: 45px;
+
+      z-index: 1;
+
+      &.open {
+        width: 350px;
+        height: 350px;
+        transform: translate(48%, 34%);
+      }
+    }
+
+    .nav {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 50px;
+      top: 70px;
+      z-index: 2;
+      transition: 0.3s ease;
+
+      .nav-item {
+        margin: 1em 0;
+        color: $textPrimary;
+      }
+
+      &.open {
+        display: flex;
+      }
+    }
+
+    //once the screen gets bigger
+    @media screen and (min-width: 600px) {
+      padding: 1em 7em;
+
+      .burger {
+        display: none;
+      }
+
+      .nav {
+        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        gap: 50px;
+        top: 0;
+        right: 0;
+      }
+
+      .mobile-nav-bg {
+        display: none;
+      }
+    }
+  }
+
+  img {
+    height: 30px;
+  }
+}
