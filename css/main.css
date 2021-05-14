@@ -426,15 +426,15 @@ body {
     height: 400px;
   }
   .hero .dots-left {
-    left: -10px;
+    left: -50px;
     z-index: -1;
     top: -30px;
-    height: 300px;
+    height: 350px;
   }
   .hero .dots-right {
-    right: -10px;
+    right: -50px;
     bottom: 0;
-    height: 300px;
+    height: 350px;
     -webkit-filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
             filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
   }
@@ -559,7 +559,7 @@ body {
 
 @media screen and (min-width: 600px) {
   .about .circle {
-    height: 300px !important;
+    height: 270px !important;
   }
 }
 
@@ -655,7 +655,7 @@ body {
 }
 
 .skills .skill-card .skill-card-icon-container img {
-  width: 80%;
+  width: 76%;
 }
 
 .skills .skill-card .skill-card-icon-container .figma-img {

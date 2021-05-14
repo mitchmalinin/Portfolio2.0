@@ -421,16 +421,16 @@ body {
     }
 
     .dots-left {
-      left: -10px;
+      left: -50px;
       z-index: -1;
       top: -30px;
-      height: 300px;
+      height: 350px;
     }
 
     .dots-right {
-      right: -10px;
+      right: -50px;
       bottom: 0;
-      height: 300px;
+      height: 350px;
       filter: $greenFilter;
     }
 
@@ -555,7 +555,7 @@ body {
 
   @media screen and (min-width: 600px) {
     .circle {
-      height: 300px !important;
+      height: 270px !important;
     }
   }
   @media screen and (min-width: 1080px) {
@@ -635,7 +635,7 @@ body {
         rgba(255, 255, 255, 0.07) 110.81%
       );
       img {
-        width: 80%;
+        width: 76%;
       }
 
       .figma-img {
