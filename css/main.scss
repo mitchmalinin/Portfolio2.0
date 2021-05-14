@@ -229,14 +229,15 @@ body {
       transition: 0.3s ease;
       position: absolute;
       border-radius: 50%;
-      right: 45px;
+      right: 0px;
+      top: 0px;
 
       z-index: 4;
 
       &.open {
         width: 350px;
         height: 350px;
-        transform: translate(42%, 12%);
+        transform: translate(32%, -29%);
       }
     }
 
