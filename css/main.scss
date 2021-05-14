@@ -779,6 +779,15 @@ body {
     justify-items: center;
     color: $textPrimary;
 
+    .mobile-links {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      a {
+        color: $textFaded;
+      }
+    }
+
     .project-card-img-section {
       border-radius: 5px;
       position: relative;
@@ -842,6 +851,8 @@ body {
       gap: 20px;
       font-weight: 300;
       font-size: 0.9em;
+      color: $textFaded;
+
       .title {
         font-weight: 500;
         display: flex;
@@ -861,26 +872,31 @@ body {
 
       .roles {
         font-weight: 500;
-        color: $textFaded;
+        color: $textPrimary;
         line-height: 20px;
         span {
-          color: white;
+          color: $textFaded;
           font-weight: 300;
         }
       }
 
       .desc {
         line-height: 25px;
+
+        .overview {
+          font-weight: 500;
+          color: $textPrimary;
+        }
       }
 
       .tech-stack {
-        color: $textFaded;
+        color: $textPrimary;
         display: grid;
         gap: 10px;
         p {
           font-weight: 500;
           span {
-            color: white;
+            color: $textFaded;
             font-weight: 300;
             line-height: 20px;
           }
@@ -916,6 +932,10 @@ body {
     .project-item-wrapper {
       grid-template-columns: 1fr 1fr;
       align-items: center;
+
+      .mobile-links {
+        display: none;
+      }
 
       padding: 20px 50px;
       img {
