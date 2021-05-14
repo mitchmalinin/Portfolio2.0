@@ -274,8 +274,8 @@ body {
       text-align: center;
       letter-spacing: 2px;
       .name {
-        font-size: 2.8em;
-        margin-bottom: 0.5em;
+        font-size: 4.5em;
+        margin-bottom: 0.2em;
         background-color: #f3ec78;
         background-image: linear-gradient(45deg, $green, $blue);
         background-size: 100%;
@@ -603,9 +603,9 @@ body {
   .skills-content {
     width: 90%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     justify-items: center;
-    gap: 11px;
+    gap: 20px;
   }
 
   .skill-card {
@@ -650,7 +650,7 @@ body {
 
   @media screen and (min-width: 1080px) {
     .skills-content {
-      grid-template-columns: repeat(auto-fit, minmax(137px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
 
     .skills-dots {
@@ -681,6 +681,208 @@ body {
       &:nth-child(2) {
         bottom: -200px;
         left: 280px;
+      }
+    }
+  }
+}
+
+//project section
+
+.project-content {
+  display: grid;
+  gap: 50px;
+
+  .project-item-wrapper {
+    position: relative;
+    display: grid;
+    gap: 30px;
+    padding: 20px;
+    justify-items: center;
+    color: $textPrimary;
+
+    .project-card-img-section {
+      border-radius: 5px;
+      position: relative;
+    }
+    .project-card-img-section:hover .project-hidden-links {
+      position: absolute;
+      color: white;
+      opacity: 1;
+    }
+    .project-hidden-links {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      opacity: 0;
+      transition: 0.3s ease;
+      background-color: #66c7d479;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .project-hidden-links a {
+      width: 50%;
+    }
+
+    .project-card-img-section img {
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+      transition: all 0.2s ease-in-out;
+    }
+    .project-card-img-section:hover img {
+      filter: blur(2px);
+    }
+
+    .project-card-img-section a {
+      text-decoration: none;
+      color: $backgroundColor;
+      padding: 10px 20px;
+      border: 3px solid $backgroundColor;
+      border-radius: 50px;
+      font-size: 25px;
+      margin: 30px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .project-card-img-section a:hover {
+      background-color: $backgroundColor;
+      color: $green;
+      cursor: pointer;
+    }
+
+    .project-desc-wrapper {
+      display: grid;
+      gap: 20px;
+      font-weight: 300;
+      font-size: 0.9em;
+      .title {
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .highlight {
+          font-size: 1.1em;
+          line-height: 20px;
+          &:nth-child(1) {
+            color: $blue;
+          }
+
+          &:nth-child(2) {
+            color: $green;
+          }
+        }
+        .status {
+          font-weight: 300;
+          color: $textFaded;
+          line-height: 20px;
+        }
+      }
+
+      .roles {
+        font-weight: 500;
+        color: $textFaded;
+        line-height: 20px;
+        span {
+          color: white;
+          font-weight: 300;
+        }
+      }
+
+      .desc {
+        line-height: 25px;
+      }
+
+      .tech-stack {
+        color: $textFaded;
+        display: grid;
+        gap: 10px;
+        p {
+          font-weight: 500;
+          span {
+            color: white;
+            font-weight: 300;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 600px) {
+    .project-item-wrapper {
+      padding: 20px 70px;
+      img {
+        height: 300px;
+      }
+
+      .project-desc-wrapper {
+        font-size: 18px;
+        .highlight {
+          font-size: 1.5em;
+        }
+
+        .desc {
+          line-height: 30px;
+          font-size: 0.9em;
+        }
+
+        .tech-stack {
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 1080px) {
+    .project-item-wrapper {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+
+      padding: 20px 50px;
+      img {
+        height: 270px;
+      }
+
+      .project-desc-wrapper {
+        font-size: 18px;
+        .desc {
+          line-height: 30px;
+          font-size: 0.9em;
+        }
+
+        .tech-stack {
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 1440px) {
+    .project-item-wrapper {
+      padding: 20px 80px;
+      img {
+        height: 350px;
+      }
+
+      .project-desc-wrapper {
+        gap: 25px;
+        .title {
+          font-size: 1.5em;
+        }
+        .desc {
+          line-height: 40px;
+          font-size: 1em;
+        }
+
+        .tech-stack {
+          font-size: 1em;
+        }
       }
     }
   }
