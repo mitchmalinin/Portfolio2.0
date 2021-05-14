@@ -237,7 +237,6 @@ body {
       &.open {
         width: 350px;
         height: 350px;
-        transform: translate(32%, -29%);
       }
     }
 
@@ -245,8 +244,8 @@ body {
       display: none;
       flex-direction: column;
       position: absolute;
-      right: 85px;
-      top: 25px;
+      right: -100px;
+      top: -100px;
       z-index: 5;
       transition: 0.3s ease;
 

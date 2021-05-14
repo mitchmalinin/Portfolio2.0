@@ -238,8 +238,6 @@ body {
 .hero .nav-wrapper .mobile-nav-bg.open {
   width: 350px;
   height: 350px;
-  -webkit-transform: translate(32%, -29%);
-          transform: translate(32%, -29%);
 }
 
 .hero .nav-wrapper .nav {
@@ -249,8 +247,8 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   position: absolute;
-  right: 85px;
-  top: 25px;
+  right: -100px;
+  top: -100px;
   z-index: 5;
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
