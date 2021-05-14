@@ -229,8 +229,8 @@ body {
       transition: 0.3s ease;
       position: absolute;
       border-radius: 50%;
-      right: 0px;
-      top: 0px;
+      right: -100px;
+      top: -100px;
 
       z-index: 4;
 
@@ -244,8 +244,8 @@ body {
       display: none;
       flex-direction: column;
       position: absolute;
-      right: -100px;
-      top: -100px;
+      right: 85px;
+      top: 25px;
       z-index: 5;
       transition: 0.3s ease;
 
@@ -600,6 +600,8 @@ body {
 
     .circle {
       height: 230px;
+      -webkit-filter: drop-shadow(0px 7px 6px rgba(24, 24, 24, 0.4));
+      filter: drop-shadow(0px 7px 6px rgba(24, 24, 24, 0.4));
     }
   }
 
