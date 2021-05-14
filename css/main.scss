@@ -140,8 +140,14 @@ $backgroundColorFaded: linear-gradient(
 $purple: #bb86fc;
 $blue: #00d8ff;
 $green: #84fab0;
+$orange: #f79724;
 $textFaded: rgba(255, 255, 255, 0.2);
 $textPrimary: #ffffff;
+
+$blueFilter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg)
+  brightness(100%) contrast(96%);
+$greenFilter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg)
+  brightness(100%) contrast(96%);
 
 body {
   background-color: $backgroundColor;
@@ -296,7 +302,6 @@ body {
     top: -83px;
     right: -96px;
     height: 230px;
-    opacity: 0.8;
   }
 
   .circle-sm {
@@ -316,7 +321,6 @@ body {
   .dots-left {
     position: absolute;
     left: -40px;
-    opacity: 0.8;
     z-index: -1;
     top: 0;
     height: 200px;
@@ -325,7 +329,6 @@ body {
   .dots-right {
     position: absolute;
     right: -20px;
-    opacity: 0.8;
     bottom: 0;
     height: 200px;
   }
@@ -342,7 +345,6 @@ body {
     bottom: -100px;
     left: -130px;
     height: 270px;
-    opacity: 0.8;
   }
 
   //once the screen gets bigger
@@ -429,6 +431,7 @@ body {
       right: -10px;
       bottom: 0;
       height: 300px;
+      filter: $greenFilter;
     }
 
     .triangle-sm {
@@ -466,51 +469,72 @@ body {
   }
 }
 
-//about section
-.about {
-  min-height: 500px;
-  margin: 275px 0px;
-  font-size: 16px;
+//general section styles
+.section-heading {
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 0;
+  margin-bottom: 10em;
 
-  display: grid;
-  place-items: center;
-
-  .about-heading {
-    text-align: center;
-    text-transform: uppercase;
-    line-height: 0;
-    margin-bottom: 10em;
-
-    h1 {
-      font-size: 6em;
-      opacity: 0.3;
-      color: $textFaded;
-    }
-
-    h6 {
-      font-size: 2em;
-      font-weight: 300;
-      color: $green;
-    }
+  h1 {
+    font-size: 6em;
+    opacity: 0.3;
+    color: $textFaded;
   }
 
+  h6 {
+    font-size: 2em;
+    font-weight: 300;
+    color: $green;
+  }
+}
+
+.section-spacing {
+  min-height: 500px;
+  margin: 300px 0px;
+  font-size: 16px;
+  display: grid;
+  justify-items: center;
+
+  @media screen and (min-width: 600px) {
+    font-size: 20px;
+  }
+
+  @media screen and (min-width: 1080px) {
+    margin: 375px 0px;
+  }
+}
+
+.section-content {
+  padding: 30px;
+  background: linear-gradient(
+    255.29deg,
+    rgba(64, 64, 68, 0.8) 3.51%,
+    rgba(64, 64, 68, 0.8) 3.52%,
+    rgba(64, 64, 68, 0.76) 104.9%
+  );
+  border: 2px solid #404044;
+  box-sizing: border-box;
+  border-radius: 10px;
+
+  @media screen and (min-width: 1080px) {
+    width: 73% !important;
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 60% !important;
+  }
+}
+
+//about section
+.about {
   .about-content {
     display: grid;
     grid-template-rows: min-content min-content;
     justify-items: center;
     grid-auto-flow: dense;
     gap: 50px;
-    width: 80%;
-    padding: 30px;
-    background: linear-gradient(
-      255.29deg,
-      rgba(64, 64, 68, 0.8) 3.51%,
-      rgba(64, 64, 68, 0.8) 3.52%,
-      rgba(64, 64, 68, 0.76) 104.9%
-    );
-    border: 2px solid #404044;
-    box-sizing: border-box;
-    border-radius: 10px;
+    width: 90%;
     align-items: center;
 
     :first-child {
@@ -521,6 +545,7 @@ body {
       line-height: 40px;
       color: $textPrimary;
       font-weight: 300;
+      text-align: center;
     }
 
     .circle {
@@ -529,7 +554,6 @@ body {
   }
 
   @media screen and (min-width: 600px) {
-    font-size: 20px;
     .circle {
       height: 300px !important;
     }
@@ -539,9 +563,124 @@ body {
       grid-template-columns: 2fr 1fr;
       grid-template-rows: 0px;
       grid-row-gap: 0px;
-      width: 60%;
       .circle {
         grid-row: 2;
+      }
+
+      .text {
+        text-align: left;
+      }
+    }
+  }
+}
+
+//skills section
+.skills {
+  position: relative;
+  z-index: 20;
+
+  .skills-dots {
+    position: absolute;
+    z-index: -4;
+    height: 350px;
+
+    &:nth-child(1) {
+      top: -20px;
+      right: -102px;
+      filter: $greenFilter;
+    }
+
+    &:nth-child(2) {
+      bottom: -200px;
+      left: -102px;
+      filter: $blueFilter;
+    }
+  }
+
+  .skills-title {
+    color: $purple;
+  }
+  .skills-content {
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    justify-items: center;
+    gap: 11px;
+  }
+
+  .skill-card {
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    margin: 0 20px;
+    color: #fff;
+    margin-bottom: 40px;
+
+    .skill-card-icon-container {
+      text-align: center;
+      width: 100px;
+      height: 100px;
+      border: 2px solid white;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 15px 10px 3px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #2d2d31;
+      background: linear-gradient(
+        230.32deg,
+        rgba(255, 255, 255, 0.245) 7.47%,
+        rgba(255, 255, 255, 0.07) 110.81%
+      );
+      img {
+        width: 80%;
+      }
+
+      .figma-img {
+        width: 55%;
+      }
+
+      .smaller-img {
+        width: 70%;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1080px) {
+    .skills-content {
+      grid-template-columns: repeat(auto-fit, minmax(137px, 1fr));
+    }
+
+    .skills-dots {
+      &:nth-child(1) {
+        top: -20px;
+        right: 30px;
+      }
+
+      &:nth-child(2) {
+        bottom: -200px;
+        left: 30px;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1440px) {
+    .skills-content {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .skills-dots {
+      height: 400px;
+      &:nth-child(1) {
+        top: -20px;
+        right: 280px;
+      }
+
+      &:nth-child(2) {
+        bottom: -200px;
+        left: 280px;
       }
     }
   }
