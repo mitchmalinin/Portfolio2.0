@@ -752,7 +752,39 @@ body {
   color: #00d8ff;
 }
 
+.project-content .project-item-wrapper:nth-child(1) .roles {
+  color: #00d8ff;
+}
+
+.project-content .project-item-wrapper:nth-child(1) .over {
+  color: #00d8ff;
+}
+
+.project-content .project-item-wrapper:nth-child(1) .tech-stack {
+  color: #00d8ff;
+}
+
+.project-content .project-item-wrapper:nth-child(1) .overview {
+  color: #00d8ff;
+}
+
 .project-content .project-item-wrapper:nth-child(2) .highlight {
+  color: #84fab0;
+}
+
+.project-content .project-item-wrapper:nth-child(2) .roles {
+  color: #84fab0;
+}
+
+.project-content .project-item-wrapper:nth-child(2) .over {
+  color: #84fab0;
+}
+
+.project-content .project-item-wrapper:nth-child(2) .tech-stack {
+  color: #84fab0;
+}
+
+.project-content .project-item-wrapper:nth-child(2) .overview {
   color: #84fab0;
 }
 
@@ -760,11 +792,59 @@ body {
   color: #bb86fc;
 }
 
+.project-content .project-item-wrapper:nth-child(3) .roles {
+  color: #bb86fc;
+}
+
+.project-content .project-item-wrapper:nth-child(3) .over {
+  color: #bb86fc;
+}
+
+.project-content .project-item-wrapper:nth-child(3) .tech-stack {
+  color: #bb86fc;
+}
+
+.project-content .project-item-wrapper:nth-child(3) .overview {
+  color: #bb86fc;
+}
+
 .project-content .project-item-wrapper:nth-child(4) .highlight {
   color: #f7fc01;
 }
 
+.project-content .project-item-wrapper:nth-child(4) .roles {
+  color: #f7fc01;
+}
+
+.project-content .project-item-wrapper:nth-child(4) .over {
+  color: #f7fc01;
+}
+
+.project-content .project-item-wrapper:nth-child(4) .tech-stack {
+  color: #f7fc01;
+}
+
+.project-content .project-item-wrapper:nth-child(4) .overview {
+  color: #f7fc01;
+}
+
 .project-content .project-item-wrapper:nth-child(5) .highlight {
+  color: #f79724;
+}
+
+.project-content .project-item-wrapper:nth-child(5) .roles {
+  color: #f79724;
+}
+
+.project-content .project-item-wrapper:nth-child(5) .over {
+  color: #f79724;
+}
+
+.project-content .project-item-wrapper:nth-child(5) .tech-stack {
+  color: #f79724;
+}
+
+.project-content .project-item-wrapper:nth-child(5) .overview {
   color: #f79724;
 }
 
@@ -872,7 +952,7 @@ body {
   gap: 20px;
   font-weight: 300;
   font-size: 0.9em;
-  color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .title {
@@ -901,26 +981,24 @@ body {
 
 .project-content .project-item-wrapper .project-desc-wrapper .roles {
   font-weight: 500;
-  color: #ffffff;
   line-height: 20px;
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .roles span {
-  color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   font-weight: 300;
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .desc {
   line-height: 25px;
+  color: #ffffff;
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .desc .overview {
   font-weight: 500;
-  color: #ffffff;
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .tech-stack {
-  color: #ffffff;
   display: -ms-grid;
   display: grid;
   gap: 10px;
@@ -931,7 +1009,7 @@ body {
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper .tech-stack p span {
-  color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   font-weight: 300;
   line-height: 20px;
 }

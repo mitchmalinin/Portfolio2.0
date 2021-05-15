@@ -757,9 +757,41 @@ body {
     .highlight {
       color: $blue;
     }
+
+    .roles {
+      color: $blue;
+    }
+
+    .over {
+      color: $blue;
+    }
+
+    .tech-stack {
+      color: $blue;
+    }
+
+    .overview {
+      color: $blue;
+    }
   }
   .project-item-wrapper:nth-child(2) {
     .highlight {
+      color: $green;
+    }
+
+    .roles {
+      color: $green;
+    }
+
+    .over {
+      color: $green;
+    }
+
+    .tech-stack {
+      color: $green;
+    }
+
+    .overview {
       color: $green;
     }
   }
@@ -767,14 +799,62 @@ body {
     .highlight {
       color: $purple;
     }
+
+    .roles {
+      color: $purple;
+    }
+
+    .over {
+      color: $purple;
+    }
+
+    .tech-stack {
+      color: $purple;
+    }
+
+    .overview {
+      color: $purple;
+    }
   }
   .project-item-wrapper:nth-child(4) {
     .highlight {
       color: $yellow;
     }
+
+    .roles {
+      color: $yellow;
+    }
+
+    .over {
+      color: $yellow;
+    }
+
+    .tech-stack {
+      color: $yellow;
+    }
+
+    .overview {
+      color: $yellow;
+    }
   }
   .project-item-wrapper:nth-child(5) {
     .highlight {
+      color: $orange;
+    }
+
+    .roles {
+      color: $orange;
+    }
+
+    .over {
+      color: $orange;
+    }
+
+    .tech-stack {
+      color: $orange;
+    }
+
+    .overview {
       color: $orange;
     }
   }
@@ -859,7 +939,7 @@ body {
       gap: 20px;
       font-weight: 300;
       font-size: 0.9em;
-      color: $textFaded;
+      color: $textPrimary;
 
       .title {
         font-weight: 500;
@@ -880,31 +960,30 @@ body {
 
       .roles {
         font-weight: 500;
-        color: $textPrimary;
+
         line-height: 20px;
         span {
-          color: $textFaded;
+          color: $textPrimary;
           font-weight: 300;
         }
       }
 
       .desc {
         line-height: 25px;
+        color: $textPrimary;
 
         .overview {
           font-weight: 500;
-          color: $textPrimary;
         }
       }
 
       .tech-stack {
-        color: $textPrimary;
         display: grid;
         gap: 10px;
         p {
           font-weight: 500;
           span {
-            color: $textFaded;
+            color: $textPrimary;
             font-weight: 300;
             line-height: 20px;
           }
