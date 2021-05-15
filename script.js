@@ -79,18 +79,6 @@ gsap.from(".transition5", {
   stagger: 0.3,
 })
 
-gsap.from(".transition6", {
-  scrollTrigger: {
-    trigger: ".transition6",
-    start: "top center",
-  },
-  x: 50,
-  opacity: 0,
-  duration: 2,
-  stagger: 0.75,
-  ease: Power4.easeOut,
-})
-
 gsap.from(".transition7", {
   scrollTrigger: {
     trigger: ".transition7",
@@ -129,22 +117,6 @@ gsap.from(".left", {
   ease: Sine.easeOut,
 })
 
-// gsap.from(
-//   ".transition8",
-//   {
-//     scrollTrigger: {
-//       trigger: ".transition8",
-//       start: "top bottom",
-//     },
-//     y: 50,
-//     opacity: 0,
-//     duration: 1,
-//     stagger: 0.4,
-//     ease: Power4.easeOut,
-//   },
-//   "-=3"
-// )
-
 tl.from(".transition8", {
   opacity: 0,
   y: -50,
@@ -153,11 +125,14 @@ tl.from(".transition8", {
   duration: 2,
 })
 
-// gsap.to(".move", {
-//   scrollTrigger: {
-//     trigger: ".move",
-//     start: "top top",
-//   },
-//   x: 400,
-//   ease: Power4.easeOut,
-// })
+gsap.from(".showProject", {
+  scrollTrigger: {
+    trigger: ".showProject",
+    start: "top center",
+  },
+  x: 50,
+  opacity: 0,
+  duration: 3,
+  stagger: 1,
+  ease: Power4.easeOut,
+})
