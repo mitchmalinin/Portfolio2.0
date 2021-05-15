@@ -125,14 +125,53 @@ tl.from(".transition8", {
   duration: 2,
 })
 
-gsap.from(".showProject", {
+gsap.from(".showProject1", {
   scrollTrigger: {
-    trigger: ".showProject",
+    trigger: ".showProject1",
     start: "top center",
   },
-  x: 50,
+  x: 80,
   opacity: 0,
   duration: 3,
-  stagger: 1,
+  ease: Power4.easeOut,
+})
+gsap.from(".showProject2", {
+  scrollTrigger: {
+    trigger: ".showProject2",
+    start: "top center",
+  },
+  x: 80,
+  opacity: 0,
+  duration: 3,
+  ease: Power4.easeOut,
+})
+gsap.from(".showProject3", {
+  scrollTrigger: {
+    trigger: ".showProject3",
+    start: "top center",
+  },
+  x: 80,
+  opacity: 0,
+  duration: 3,
+  ease: Power4.easeOut,
+})
+gsap.from(".showProject4", {
+  scrollTrigger: {
+    trigger: ".showProject4",
+    start: "top center",
+  },
+  x: 80,
+  opacity: 0,
+  duration: 3,
+  ease: Power4.easeOut,
+})
+gsap.from(".showProject5", {
+  scrollTrigger: {
+    trigger: ".showProject5",
+    start: "top center",
+  },
+  x: 80,
+  opacity: 0,
+  duration: 3,
   ease: Power4.easeOut,
 })
