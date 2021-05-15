@@ -163,7 +163,7 @@ body {
 }
 
 .wrapper {
-  overflow-x: hidden;
+  overflow: hidden;
 }
 //hero section
 .hero {
@@ -329,17 +329,17 @@ body {
 
   .dots-left {
     position: absolute;
-    left: -40px;
+    left: -45px;
     z-index: -1;
-    top: 0;
-    height: 200px;
+    top: 4px;
+    height: 250px;
   }
 
   .dots-right {
     position: absolute;
     right: -20px;
     bottom: 0;
-    height: 200px;
+    height: 250px;
   }
 
   .triangle-sm {
@@ -635,17 +635,17 @@ body {
   .skills-dots {
     position: absolute;
     z-index: -4;
-    height: 350px;
+    height: 250px;
 
     &:nth-child(1) {
       top: -20px;
-      right: -102px;
+      right: -50px;
       filter: $greenFilter;
     }
 
     &:nth-child(2) {
-      bottom: -200px;
-      left: -102px;
+      bottom: -100px;
+      left: -52px;
       filter: $blueFilter;
     }
   }
@@ -672,8 +672,8 @@ body {
 
     .skill-card-icon-container {
       text-align: center;
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border: 2px solid white;
       border-radius: 50%;
       padding: 10px;
@@ -706,7 +706,15 @@ body {
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
+    .skill-card {
+      .skill-card-icon-container {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
     .skills-dots {
+      height: 350px;
       &:nth-child(1) {
         top: -20px;
         right: 30px;
@@ -984,12 +992,79 @@ body {
 
 footer {
   font-size: 10px;
+  position: relative;
+  .dots,
+  .circle,
+  .tri {
+    position: absolute;
+    z-index: -1;
+    height: 250px;
+  }
+  .dots {
+    left: -47px;
+    top: 51px;
+
+    filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(-49deg)
+      brightness(128%) contrast(96%);
+  }
+
+  .circle {
+    left: 50%;
+    -ms-transform: translate(-50%, -25%);
+    transform: translate(-50%, -25%);
+  }
+
+  .tri {
+    right: -163px;
+    top: 38px;
+
+    filter: $greenFilter;
+    transform: rotate(13deg);
+  }
 
   @media screen and (min-width: 1080px) {
     font-size: 13px;
+    .dots,
+    .circle,
+    .tri {
+      height: 350px;
+    }
+
+    .dots {
+      left: 40px;
+      top: -92px;
+    }
+
+    .tri {
+      right: -140px;
+      top: -84px;
+      height: 400px;
+      transform: rotate(27deg);
+    }
+  }
+  @media screen and (min-width: 1440px) {
+    font-size: 13px;
+    .dots,
+    .circle,
+    .tri {
+      height: 350px;
+    }
+
+    .dots {
+      left: 100px;
+      top: -92px;
+    }
+
+    .tri {
+      right: -11px;
+      top: -84px;
+      height: 400px;
+      transform: rotate(68deg);
+    }
   }
 }
 .footer-content {
+  z-index: 100;
   padding-top: 50px;
   background: $backgroundColorFaded;
   padding: 50px 20px 20px 20px;
