@@ -530,7 +530,7 @@ body {
   margin-bottom: 10em;
 }
 
-.section-heading h1 {
+.section-heading h2 {
   font-size: 6em;
   opacity: 0.3;
   color: rgba(255, 255, 255, 0.2);
@@ -667,15 +667,15 @@ body {
 .skills .skills-dots:nth-child(1) {
   top: -20px;
   right: -50px;
-  -webkit-filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
-          filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
+  -webkit-filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
+          filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
 }
 
 .skills .skills-dots:nth-child(2) {
   bottom: -100px;
   left: -52px;
-  -webkit-filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
-          filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
+  -webkit-filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
+          filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
 }
 
 .skills .skills-title {
@@ -1149,8 +1149,8 @@ footer .circle {
 footer .tri {
   right: -163px;
   top: 38px;
-  -webkit-filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
-          filter: invert(92%) sepia(9%) saturate(1373%) hue-rotate(48deg) brightness(100%) contrast(96%);
+  -webkit-filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
+          filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
   -webkit-transform: rotate(13deg);
           transform: rotate(13deg);
 }

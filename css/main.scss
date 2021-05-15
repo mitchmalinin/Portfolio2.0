@@ -547,7 +547,7 @@ body {
   line-height: 0;
   margin-bottom: 10em;
 
-  h1 {
+  h2 {
     font-size: 6em;
     opacity: 0.3;
     color: $textFaded;
@@ -683,13 +683,13 @@ body {
     &:nth-child(1) {
       top: -20px;
       right: -50px;
-      filter: $greenFilter;
+      filter: $blueFilter;
     }
 
     &:nth-child(2) {
       bottom: -100px;
       left: -52px;
-      filter: $blueFilter;
+      filter: $greenFilter;
     }
   }
 
@@ -1138,7 +1138,7 @@ footer {
     right: -163px;
     top: 38px;
 
-    filter: $greenFilter;
+    filter: $blueFilter;
     transform: rotate(13deg);
   }
 
