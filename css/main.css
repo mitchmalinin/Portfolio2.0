@@ -147,6 +147,7 @@ body {
 
 .wrapper {
   overflow: hidden;
+  overflow-y: auto;
 }
 
 .hero {
@@ -258,6 +259,8 @@ body {
   margin: 0.9em 0;
   color: #ffffff;
   cursor: pointer;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 
 .hero .nav-wrapper .nav.open {
@@ -377,8 +380,42 @@ body {
     top: 0;
     right: 0;
   }
+  .hero .nav-wrapper .nav a:nth-child(1) .nav-item:before {
+    background-color: #bb86fc;
+  }
+  .hero .nav-wrapper .nav a:nth-child(2) .nav-item:before {
+    background-color: #00d8ff;
+  }
+  .hero .nav-wrapper .nav a:nth-child(3) .nav-item:before {
+    background-color: #84fab0;
+  }
+  .hero .nav-wrapper .nav a:nth-child(4) .nav-item:before {
+    background-color: #00d8ff;
+  }
   .hero .nav-wrapper .mobile-nav-bg {
     display: none;
+  }
+  .hero .nav-wrapper .nav-item {
+    position: relative;
+  }
+  .hero .nav-wrapper .nav-item::before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: -5px;
+    -webkit-transform: scale(0, 1);
+            transform: scale(0, 1);
+    -webkit-transition: -webkit-transform 0.3s ease;
+    transition: -webkit-transform 0.3s ease;
+    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+  }
+  .hero .nav-wrapper .nav-item:hover::before {
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
   }
   .hero .hero-content-wrapper {
     grid-auto-flow: column;
@@ -1107,8 +1144,6 @@ footer .dots {
 
 footer .circle {
   left: 50%;
-  -webkit-transform: translate(-50%, -25%);
-          transform: translate(-50%, -25%);
 }
 
 footer .tri {
