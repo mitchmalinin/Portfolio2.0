@@ -1,7 +1,18 @@
 const toggleBurger = () => {
-  document.querySelector(".burger").classList.toggle("open")
-  document.querySelector(".nav").classList.toggle("open")
-  document.querySelector(".mobile-nav-bg").classList.toggle("open")
+  let burger = document.querySelector(".burger")
+  burger.classList.toggle("open")
+  let nav = document.querySelector(".nav")
+  nav.classList.toggle("open")
+  let mobileNav = document.querySelector(".mobile-nav-bg")
+  mobileNav.classList.toggle("open")
+  let navItems = document.querySelectorAll(".click")
+  Array.from(navItems).forEach((item) => {
+    item.addEventListener("click", () => {
+      nav.classList.remove("open")
+      mobileNav.classList.remove("open")
+      burger.classList.remove("open")
+    })
+  })
 }
 
 gsap.registerPlugin(ScrollTrigger)
