@@ -45,11 +45,12 @@ $(document).ready(function () {
 gsap.registerPlugin(ScrollTrigger)
 let tl = gsap.timeline()
 
-tl.from(".name-wrapper", {
+tl.from(".name-stg", {
   y: "-300%",
   opacity: 0,
   duration: 2,
   ease: Power4.easeOut,
+  stagger: 0.9,
 })
 
 tl.from(
@@ -61,7 +62,7 @@ tl.from(
     ease: Power4.easeOut,
     duration: 2,
   },
-  "-=1.5"
+  "-=1.2"
 )
 tl.from(
   ".stagger2",
