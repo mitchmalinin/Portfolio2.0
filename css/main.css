@@ -279,7 +279,7 @@ body {
   z-index: -1;
   height: 500px;
   top: 20px;
-  left: 50px;
+  left: 81px;
   opacity: 0.03;
 }
 
@@ -623,11 +623,11 @@ body {
   line-height: 40px;
   color: #ffffff;
   font-weight: 300;
-  text-align: center;
+  text-align: left;
 }
 
 .about .about-content .circle {
-  height: 230px;
+  height: 235px;
   -webkit-filter: drop-shadow(0px 7px 6px rgba(24, 24, 24, 0.4));
   filter: drop-shadow(0px 7px 6px rgba(24, 24, 24, 0.4));
 }
@@ -668,7 +668,7 @@ body {
 }
 
 .skills .skills-dots:nth-child(3) {
-  top: -20px;
+  top: 60px;
   right: -52px;
   -webkit-filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
           filter: invert(92%) sepia(9%) saturate(1411%) hue-rotate(79deg) brightness(100%) contrast(96%);
