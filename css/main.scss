@@ -642,6 +642,7 @@ body {
     grid-auto-flow: dense;
     gap: 50px;
     width: 90%;
+    align-items: center;
 
     :first-child {
       grid-row: 2;
@@ -651,6 +652,7 @@ body {
       line-height: 40px;
       color: $textPrimary;
       font-weight: 300;
+      text-align: left;
     }
 
     .circle {
