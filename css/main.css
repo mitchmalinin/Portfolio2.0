@@ -923,6 +923,14 @@ body {
   opacity: 1;
 }
 
+@media (hover: hover) {
+  .project-content .project-item-wrapper .project-card-img-section:hover .project-hidden-links {
+    position: absolute;
+    color: white;
+    opacity: 1;
+  }
+}
+
 .project-content .project-item-wrapper .project-hidden-links {
   position: absolute;
   top: 0;
@@ -963,9 +971,11 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-.project-content .project-item-wrapper .project-card-img-section:hover img {
-  -webkit-filter: blur(2px);
-          filter: blur(2px);
+@media (hover: hover) {
+  .project-content .project-item-wrapper .project-card-img-section:hover img {
+    -webkit-filter: blur(2px);
+            filter: blur(2px);
+  }
 }
 
 .project-content .project-item-wrapper .project-card-img-section a {
@@ -980,10 +990,12 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-.project-content .project-item-wrapper .project-card-img-section a:hover {
-  background-color: #2d2d31;
-  color: #84fab0;
-  cursor: pointer;
+@media (hover: hover) {
+  .project-content .project-item-wrapper .project-card-img-section a:hover {
+    background-color: #2d2d31;
+    color: #84fab0;
+    cursor: pointer;
+  }
 }
 
 .project-content .project-item-wrapper .project-desc-wrapper {
