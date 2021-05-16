@@ -694,9 +694,9 @@ body {
     z-index: -4;
     height: 250px;
 
-    &:nth-child(1) {
+    &:nth-child(3) {
       top: -20px;
-      right: -50px;
+      right: -52px;
       filter: $blueFilter;
     }
 
@@ -772,7 +772,7 @@ body {
 
     .skills-dots {
       height: 350px;
-      &:nth-child(1) {
+      &:nth-child(3) {
         top: -20px;
         right: 30px;
       }
@@ -791,7 +791,7 @@ body {
 
     .skills-dots {
       height: 400px;
-      &:nth-child(1) {
+      &:nth-child(3) {
         top: -20px;
         right: 280px;
       }
