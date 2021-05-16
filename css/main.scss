@@ -937,11 +937,6 @@ body {
       border-radius: 5px;
       position: relative;
     }
-    .project-card-img-section:hover .project-hidden-links {
-      position: absolute;
-      color: white;
-      opacity: 1;
-    }
 
     @media (hover: hover) {
       .project-card-img-section:hover .project-hidden-links {
