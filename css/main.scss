@@ -627,10 +627,6 @@ body {
   @media screen and (min-width: 1080px) {
     width: 73% !important;
   }
-
-  @media screen and (min-width: 1440px) {
-    width: 60% !important;
-  }
 }
 
 //about section
@@ -785,10 +781,6 @@ body {
   }
 
   @media screen and (min-width: 1440px) {
-    .skills-content {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-
     .skills-dots {
       height: 400px;
       &:nth-child(3) {

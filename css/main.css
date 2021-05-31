@@ -593,12 +593,6 @@ body {
   }
 }
 
-@media screen and (min-width: 1440px) {
-  .section-content {
-    width: 60% !important;
-  }
-}
-
 .about .about-content {
   display: -ms-grid;
   display: grid;
@@ -765,10 +759,6 @@ body {
 }
 
 @media screen and (min-width: 1440px) {
-  .skills .skills-content {
-    -ms-grid-columns: (minmax(250px, 1fr))[auto-fit];
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
   .skills .skills-dots {
     height: 400px;
   }
