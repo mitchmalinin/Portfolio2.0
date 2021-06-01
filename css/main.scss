@@ -794,6 +794,12 @@ body {
       }
     }
   }
+
+  @media screen and (min-width: 1700px) {
+    .skills-content {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
 }
 
 //project section
