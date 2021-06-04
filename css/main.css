@@ -774,8 +774,15 @@ body {
 
 @media screen and (min-width: 1700px) {
   .skills .skills-content {
-    -ms-grid-columns: (minmax(250px, 1fr))[auto-fit];
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    -ms-grid-columns: (minmax(260px, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media screen and (min-width: 2020px) {
+  .skills .skills-content {
+    -ms-grid-columns: (minmax(300px, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
