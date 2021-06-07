@@ -781,6 +781,10 @@ body {
   }
 
   @media screen and (min-width: 1440px) {
+    .skills-content {
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
     .skills-dots {
       height: 400px;
       &:nth-child(3) {
