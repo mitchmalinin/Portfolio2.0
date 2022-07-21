@@ -324,17 +324,38 @@ body {
 
   .circle-sm {
     position: absolute;
-    bottom: 280px;
-    right: 50px;
+    bottom: 300px;
+    right: 40px;
     height: 40px;
   }
+
+
+  .circle-sm-iframe{
+    position: absolute;
+    bottom: 280px;
+    right: 27px;
+    height: 40px;
+
+  }
+
 
   .square-sm {
     position: absolute;
     top: 169px;
-    left: 170px;
+    left: 180px;
     height: 40px;
+
   }
+
+  .square-sm-iframe{
+    position: absolute;
+    top: 137px;
+    left: 180px;
+    height: 40px;
+
+  }
+
+  
 
   .dots-left {
     position: absolute;
@@ -354,6 +375,13 @@ body {
   .triangle-sm {
     position: absolute;
     top: 483px;
+    left: 30px;
+    height: 70px;
+  }
+
+  .triangle-sm-iframe {
+    position: absolute;
+    top: 437px;
     left: 30px;
     height: 70px;
   }
@@ -746,6 +774,10 @@ body {
 
       .figma-img {
         width: 55%;
+      }
+
+      .ts-img {
+        width: 65%;
       }
 
       .smaller-img {
