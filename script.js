@@ -40,26 +40,6 @@ $(document).ready(function () {
       );
     } // End if
   });
-
-  //detect if website is inside iframe then change position of small elements
-
-  const smallSquare = document.getElementById("square-sm");
-  const smallTriangle = document.getElementById("triangle-sm");
-  const smallCircle = document.getElementById("circle-sm");
-
-  const inIframe = () => {
-    try {
-      return window.self !== window.top;
-    } catch (e) {
-      return true;
-    }
-  };
-
-  if (inIframe) {
-    smallSquare.style.display = "none";
-    smallTriangle.style.display = "none";
-    smallCircle.style.display = "none";
-  }
 });
 
 gsap.registerPlugin(ScrollTrigger);
