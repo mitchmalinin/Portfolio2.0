@@ -324,16 +324,24 @@ body {
 
   .circle-sm {
     position: absolute;
-    bottom: 300px;
-    right: 40px;
+    bottom: 280px;
+    right: 50px;
     height: 40px;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 
   .square-sm {
     position: absolute;
     top: 169px;
-    left: 180px;
+    left: 170px;
     height: 40px;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 
   .dots-left {
@@ -356,6 +364,10 @@ body {
     top: 483px;
     left: 30px;
     height: 70px;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 
   .square-bg {

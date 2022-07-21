@@ -270,15 +270,25 @@ body {
 }
 .hero .circle-sm {
   position: absolute;
-  bottom: 300px;
-  right: 40px;
+  bottom: 280px;
+  right: 50px;
   height: 40px;
+}
+@media (max-width: 480px) {
+  .hero .circle-sm {
+    display: none;
+  }
 }
 .hero .square-sm {
   position: absolute;
   top: 169px;
-  left: 180px;
+  left: 170px;
   height: 40px;
+}
+@media (max-width: 480px) {
+  .hero .square-sm {
+    display: none;
+  }
 }
 .hero .dots-left {
   position: absolute;
@@ -298,6 +308,11 @@ body {
   top: 483px;
   left: 30px;
   height: 70px;
+}
+@media (max-width: 480px) {
+  .hero .triangle-sm {
+    display: none;
+  }
 }
 .hero .square-bg {
   position: absolute;
