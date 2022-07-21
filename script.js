@@ -56,9 +56,9 @@ $(document).ready(function () {
   };
 
   if (inIframe) {
-    smallSquare.classList.add("square-sm-iframe ");
-    smallTriangle.classList.add("triangle-sm-iframe ");
-    smallCircle.classList.add("circle-sm-iframe ");
+    smallSquare.style.display = "none";
+    smallTriangle.style.display = "none";
+    smallCircle.style.display = "none";
   }
 });
 

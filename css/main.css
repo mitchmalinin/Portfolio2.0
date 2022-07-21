@@ -274,21 +274,9 @@ body {
   right: 40px;
   height: 40px;
 }
-.hero .circle-sm-iframe {
-  position: absolute;
-  bottom: 265px;
-  right: 27px;
-  height: 40px;
-}
 .hero .square-sm {
   position: absolute;
   top: 169px;
-  left: 180px;
-  height: 40px;
-}
-.hero .square-sm-iframe {
-  position: absolute;
-  top: 241px;
   left: 180px;
   height: 40px;
 }
@@ -308,12 +296,6 @@ body {
 .hero .triangle-sm {
   position: absolute;
   top: 483px;
-  left: 30px;
-  height: 70px;
-}
-.hero .triangle-sm-iframe {
-  position: absolute;
-  top: 585px;
   left: 30px;
   height: 70px;
 }
