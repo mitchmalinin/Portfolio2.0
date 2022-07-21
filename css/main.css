@@ -276,7 +276,7 @@ body {
 }
 .hero .circle-sm-iframe {
   position: absolute;
-  bottom: 280px;
+  bottom: 265px;
   right: 27px;
   height: 40px;
 }
@@ -288,7 +288,7 @@ body {
 }
 .hero .square-sm-iframe {
   position: absolute;
-  top: 137px;
+  top: 241px;
   left: 180px;
   height: 40px;
 }
@@ -313,7 +313,7 @@ body {
 }
 .hero .triangle-sm-iframe {
   position: absolute;
-  top: 437px;
+  top: 585px;
   left: 30px;
   height: 70px;
 }
