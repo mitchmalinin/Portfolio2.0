@@ -194,12 +194,13 @@ body {
 .hero .nav-wrapper .mobile-nav-bg {
   width: 0;
   height: 0;
-  background: rgba(0, 216, 255, 0.768627451);
+  background: linear-gradient(255.29deg, rgba(64, 64, 68, 0.8) 3.51%, rgba(64, 64, 68, 0.8) 3.52%, rgba(64, 64, 68, 0.76) 104.9%);
+  border: 2px solid #404044;
   transition: 0.3s ease;
   position: absolute;
-  border-radius: 50%;
-  right: -100px;
-  top: -100px;
+  border-radius: 5%;
+  right: -147px;
+  top: -120px;
   z-index: 4;
 }
 .hero .nav-wrapper .mobile-nav-bg.open {
