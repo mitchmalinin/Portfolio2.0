@@ -221,54 +221,68 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
 // Mobile project section with collapsible header
 function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
-  const headerRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null) // Invisible trigger element
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const lastStateChange = useRef(0)
-  const mobileNavHeight = 49
+  const [manualOverride, setManualOverride] = useState(false)
 
+  // Use Intersection Observer - much more reliable than scroll events
   useEffect(() => {
-    const handleScroll = () => {
-      if (!headerRef.current || !containerRef.current) return
-      if (window.innerWidth >= 768) return
+    if (window.innerWidth >= 768) return
 
-      const now = Date.now()
-      if (now - lastStateChange.current < 150) return
+    const trigger = triggerRef.current
+    if (!trigger) return
 
-      const containerRect = containerRef.current.getBoundingClientRect()
+    // Observer watches when the trigger element (at top of section) leaves/enters viewport
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (manualOverride) return // Don't auto-change if user manually toggled
 
-      if (isCollapsed) {
-        const shouldExpand = containerRect.top >= mobileNavHeight + 20
-        if (shouldExpand) {
-          setIsCollapsed(false)
-          lastStateChange.current = now
-        }
-      } else {
-        const shouldCollapse = containerRect.top < mobileNavHeight - 30
-        if (shouldCollapse) {
-          setIsCollapsed(true)
-          lastStateChange.current = now
-        }
+          // When trigger is NOT intersecting (scrolled past it) → collapse
+          // When trigger IS intersecting (visible) → expand
+          if (!entry.isIntersecting) {
+            setIsCollapsed(true)
+          } else {
+            setIsCollapsed(false)
+          }
+        })
+      },
+      {
+        // Trigger when element crosses 49px from top (mobile nav height)
+        rootMargin: '-49px 0px 0px 0px',
+        threshold: 0,
       }
-    }
+    )
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [isCollapsed])
+    observer.observe(trigger)
+    return () => observer.disconnect()
+  }, [manualOverride])
+
+  // Reset manual override after a delay
+  useEffect(() => {
+    if (!manualOverride) return
+    const timeout = setTimeout(() => setManualOverride(false), 2000)
+    return () => clearTimeout(timeout)
+  }, [manualOverride])
+
+  const handleToggle = () => {
+    setManualOverride(true)
+    setIsCollapsed(!isCollapsed)
+  }
 
   return (
-    <div ref={containerRef} className="md:hidden relative" data-project-section>
+    <div className="md:hidden relative" data-project-section>
+      {/* Invisible trigger element - when this leaves viewport, header collapses */}
+      <div ref={triggerRef} className="absolute top-0 left-0 w-full h-1" />
+
       <span className="cross cross-center cross-top">+</span>
       <div className="h-line" />
 
       <div className="relative min-h-screen">
-        <div
-          ref={headerRef}
-          className="sticky top-[49px] z-20 bg-black border-b border-dashed border-[#333333]"
-        >
+        <div className="sticky top-[49px] z-20 bg-black border-b border-dashed border-[#333333]">
           <div
             className="flex items-center justify-between p-4 cursor-pointer"
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={handleToggle}
           >
             <div className="flex items-center gap-3">
               <span className="text-[#333333] text-xs">
