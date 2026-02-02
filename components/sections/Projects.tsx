@@ -1,9 +1,16 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import { projects } from '@/lib/projects'
 import Image from 'next/image'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+// Register GSAP plugins
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 // Annotation labels for images
 const imageAnnotations: Record<string, string[][]> = {
@@ -218,50 +225,47 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
   )
 }
 
-// Mobile project section with collapsible header
+// Mobile project section with collapsible header using GSAP ScrollTrigger
 function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
-  const triggerRef = useRef<HTMLDivElement>(null) // Invisible trigger element
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [manualOverride, setManualOverride] = useState(false)
 
-  // Use Intersection Observer - much more reliable than scroll events
-  useEffect(() => {
-    if (window.innerWidth >= 768) return
+  // GSAP ScrollTrigger for reliable scroll-based collapse
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined' || window.innerWidth >= 768) return
 
-    const trigger = triggerRef.current
-    if (!trigger) return
+    const section = sectionRef.current
+    const content = contentRef.current
+    if (!section || !content) return
 
-    // Observer watches when the trigger element (at top of section) leaves/enters viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (manualOverride) return // Don't auto-change if user manually toggled
+    const ctx = gsap.context(() => {
+      // Create ScrollTrigger that watches when section enters "sticky zone"
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 49px', // When section top hits 49px from viewport top (mobile nav height)
+        end: 'bottom 49px', // Until section bottom hits that point
+        onEnter: () => {
+          if (!manualOverride) setIsCollapsed(true)
+        },
+        onLeaveBack: () => {
+          if (!manualOverride) setIsCollapsed(false)
+        },
+        onEnterBack: () => {
+          if (!manualOverride) setIsCollapsed(true)
+        },
+      })
+    }, section)
 
-          // When trigger is NOT intersecting (scrolled past it) → collapse
-          // When trigger IS intersecting (visible) → expand
-          if (!entry.isIntersecting) {
-            setIsCollapsed(true)
-          } else {
-            setIsCollapsed(false)
-          }
-        })
-      },
-      {
-        // Trigger when element crosses 49px from top (mobile nav height)
-        rootMargin: '-49px 0px 0px 0px',
-        threshold: 0,
-      }
-    )
-
-    observer.observe(trigger)
-    return () => observer.disconnect()
+    return () => ctx.revert()
   }, [manualOverride])
 
   // Reset manual override after a delay
   useEffect(() => {
     if (!manualOverride) return
-    const timeout = setTimeout(() => setManualOverride(false), 2000)
+    const timeout = setTimeout(() => setManualOverride(false), 3000)
     return () => clearTimeout(timeout)
   }, [manualOverride])
 
@@ -271,10 +275,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
   }
 
   return (
-    <div className="md:hidden relative" data-project-section>
-      {/* Invisible trigger element - when this leaves viewport, header collapses */}
-      <div ref={triggerRef} className="absolute top-0 left-0 w-full h-1" />
-
+    <div ref={sectionRef} className="md:hidden relative" data-project-section>
       <span className="cross cross-center cross-top">+</span>
       <div className="h-line" />
 
