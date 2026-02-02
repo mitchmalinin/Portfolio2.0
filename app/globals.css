@@ -1,0 +1,425 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('/fonts/DepartureMono-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --text-dim: #666666;
+  --text-muted: #444444;
+  --border: #333333;
+  --accent: #BEFE00;
+  --accent-glow: rgba(190, 254, 0, 0.6);
+  --accent-dim: rgba(190, 254, 0, 0.3);
+
+  /* shadcn compatibility - dark theme only */
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 0%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 0% 100%;
+  --radius: 0;
+
+  /* LogoLoop dark fade */
+  --logoloop-fadeColorAuto: #000000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Departure Mono', monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  letter-spacing: 0.02em;
+}
+
+/* CRT Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 1px,
+    rgba(0, 0, 0, 0.03) 1px,
+    rgba(0, 0, 0, 0.03) 2px
+  );
+}
+
+/* Subtle screen flicker */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.97; }
+  94% { opacity: 1; }
+}
+
+body {
+  animation: flicker 8s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #333333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+/* Selection */
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor::after {
+  content: '_';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+/* Strikethrough with custom style */
+.strikethrough {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.5;
+}
+
+/* Bracket link style */
+.bracket-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.bracket-link:hover {
+  color: var(--accent);
+  transform: translateX(4px);
+  text-shadow: 0 0 10px var(--accent-dim);
+}
+
+/* Dashed underline for names */
+.dashed-underline {
+  border-bottom: 1px dashed #333333;
+  padding-bottom: 4px;
+}
+
+/* Pill container for nav */
+.pill-nav {
+  border: 1px solid #333333;
+  border-radius: 100px;
+  padding: 16px 32px;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Cross intersection marker */
+.cross {
+  position: absolute;
+  color: #ffffff;
+  font-size: 32px;
+  font-family: 'Departure Mono', monospace;
+  font-weight: bold;
+  background: #000000;
+  padding: 0 10px;
+  z-index: 10;
+}
+
+.cross-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cross-top {
+  top: -18px;
+}
+
+.cross-bottom {
+  bottom: -18px;
+}
+
+/* Horizontal dashed line */
+.h-line {
+  border-top: 1px dashed #333333;
+}
+
+/* Vertical dashed line */
+.v-line {
+  border-left: 1px dashed #333333;
+}
+
+/* Corner brackets */
+.corner-tl::before,
+.corner-tr::before,
+.corner-bl::before,
+.corner-br::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: #666666;
+}
+
+.corner-tl::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-tr::before {
+  top: 0;
+  right: 0;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.corner-bl::before {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-br::before {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+/* Hover glow effect - subtle */
+.hover-glow {
+  transition: opacity 0.3s ease;
+}
+
+.hover-glow:hover {
+  opacity: 0.8;
+}
+
+/* Section spacing */
+.section-padding {
+  padding: 80px 24px;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 120px 48px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 160px 96px;
+  }
+}
+
+/* Loading screen */
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes loadingSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes loadingFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.loading-screen.loaded {
+  animation: loadingFadeOut 0.5s ease-out forwards;
+}
+
+.loading-text {
+  font-family: 'Departure Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+.loading-bar {
+  width: 200px;
+  height: 2px;
+  background: #222222;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #ffffff;
+  animation: loadingSlide 1s ease-in-out infinite;
+}
+
+.loading-dots span {
+  animation: loadingPulse 1.4s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Skill icons in LogoLoop */
+.skill-icon {
+  color: #666666;
+  transition: color 0.2s ease;
+}
+
+.skill-icon:hover {
+  color: #ffffff;
+}
+
+/* Border glow effect for cards (bento-style) - Lime Green Accent */
+.glow-card {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-opacity: 0;
+  --glow-size: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Border glow wrapper - only visible on border */
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    var(--glow-size) circle at var(--glow-x) var(--glow-y),
+    rgba(190, 254, 0, 0.8) 0%,
+    rgba(190, 254, 0, 0.3) 30%,
+    transparent 70%
+  );
+  opacity: var(--glow-opacity);
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Inner mask to hide glow except on border */
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: #000000;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Accent color utilities */
+.accent-glow {
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-dim);
+}
+
+.accent-border-glow {
+  box-shadow: 0 0 10px var(--accent-dim), inset 0 0 10px rgba(190, 254, 0, 0.05);
+}
+
+/* Hover accent for links and interactive elements */
+.hover-accent:hover {
+  color: var(--accent) !important;
+  text-shadow: 0 0 8px var(--accent-dim);
+}
+
+.hover-accent-border:hover {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 15px var(--accent-dim);
+}
