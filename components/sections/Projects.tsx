@@ -64,24 +64,32 @@ function ScrollLine() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Calculate the position of the glow at the user's scroll position (top of viewport relative to section)
+  const glowPosition = Math.min(Math.max(scrollProgress * 100, 0), 100)
+
   return (
     <div ref={lineRef} className="hidden md:block absolute top-0 bottom-0 left-1/4 w-px">
       <div className="absolute inset-0 border-l border-dashed border-[#333333]" />
+
+      {/* Glow trail - follows a bit behind the dot */}
       <div
-        className="absolute left-0 w-px bg-gradient-to-b from-transparent via-[#BEFE00] to-transparent opacity-80"
+        className="absolute left-0 w-px bg-gradient-to-b from-[#BEFE00] via-[#BEFE00] to-transparent opacity-60"
         style={{
-          top: `${Math.max(0, scrollProgress * 100 - 20)}%`,
-          height: '20%',
-          boxShadow: '0 0 20px rgba(190, 254, 0, 0.8), 0 0 40px rgba(190, 254, 0, 0.4)',
-          transition: 'top 0.1s ease-out',
+          top: '0%',
+          height: `${glowPosition}%`,
+          boxShadow: '0 0 15px rgba(190, 254, 0, 0.5)',
+          transition: 'height 0.05s ease-out',
         }}
       />
+
+      {/* Glow dot at current scroll position */}
       <div
-        className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#BEFE00]"
+        className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#BEFE00]"
         style={{
-          top: `${scrollProgress * 100}%`,
-          boxShadow: '0 0 10px rgba(190, 254, 0, 1), 0 0 20px rgba(190, 254, 0, 0.6)',
-          transition: 'top 0.1s ease-out',
+          top: `${glowPosition}%`,
+          transform: 'translate(-50%, -50%)',
+          boxShadow: '0 0 15px rgba(190, 254, 0, 1), 0 0 30px rgba(190, 254, 0, 0.6)',
+          transition: 'top 0.05s ease-out',
         }}
       />
     </div>
@@ -103,9 +111,9 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
 
       {/* Main grid: 1/4 info, 3/4 images */}
       <div className="grid grid-cols-4 min-h-screen">
-        {/* Left: Project info (sticky) */}
+        {/* Left: Project info (sticky, top-aligned) */}
         <div className="col-span-1 relative">
-          <div className="sticky top-0 h-screen flex flex-col justify-center p-8 lg:p-12 border-r border-dashed border-[#333333]">
+          <div className="sticky top-0 h-screen flex flex-col justify-start pt-16 lg:pt-24 p-8 lg:p-12 border-r border-dashed border-[#333333]">
             <p className="text-[#333333] text-xs mb-4">
               _{String(index + 1).padStart(2, '0')}
             </p>
