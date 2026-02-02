@@ -22,6 +22,12 @@ export interface Experiment {
   link?: string
 }
 
+export interface ProjectImage {
+  src: string
+  label: string
+  annotations?: string[]
+}
+
 export const projects: Project[] = [
   {
     id: 'y2k-dotcom',
@@ -57,6 +63,24 @@ export const projects: Project[] = [
       '/images/projects/y2k-2.svg',
       '/images/projects/y2k-3.svg',
       '/images/projects/y2k-4.svg',
+    ],
+  },
+  {
+    id: 'y2k-coded',
+    title: 'Y2K CODED',
+    subtitle: '_DEVELOPER TOOLS',
+    description: [
+      '_CODE SNIPPETS & TEMPLATES',
+      '_DEVELOPER RESOURCES',
+      '_OPEN SOURCE TOOLS',
+    ],
+    links: [
+      { label: 'CODED.Y2K.COM', url: 'https://coded.y2k.com' },
+    ],
+    images: [
+      '/images/projects/y2k-coded-1.svg',
+      '/images/projects/y2k-coded-2.svg',
+      '/images/projects/y2k-coded-3.svg',
     ],
   },
   {

@@ -5,6 +5,27 @@ import { projects } from '@/lib/projects'
 import Image from 'next/image'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 
+// Annotation labels for images
+const imageAnnotations: Record<string, string[][]> = {
+  'y2k-dotcom': [
+    ['HERO SECTION', 'RETRO GRADIENT BG', 'ANIMATED LOGO'],
+    ['PRODUCT GRID', 'HOVER EFFECTS', 'QUICK VIEW'],
+    ['MEME SEARCH', 'AI TAGGING', 'INFINITE SCROLL'],
+    ['CART FLOW', 'GUEST CHECKOUT', 'STRIPE INTEGRATION'],
+  ],
+  'y2k-coded': [
+    ['MONACO EDITOR', 'SYNTAX HIGHLIGHT', 'THEMES'],
+    ['SNIPPET LIBRARY', 'SEARCH & FILTER', 'COPY TO CLIPBOARD'],
+    ['TEMPLATE GALLERY', 'PREVIEW MODE', 'EXPORT OPTIONS'],
+  ],
+  'schills': [
+    ['DASHBOARD', 'REAL-TIME STATS', 'NOTIFICATIONS'],
+    ['AI MATCHING', 'SKILL ANALYSIS', 'SMART FILTERS'],
+    ['SERVICE CARDS', 'RATINGS', 'BOOKING SYSTEM'],
+    ['CHAT INTERFACE', 'FILE SHARING', 'VIDEO CALLS'],
+  ],
+}
+
 // Animated scroll line component
 function ScrollLine() {
   const lineRef = useRef<HTMLDivElement>(null)
@@ -37,7 +58,7 @@ function ScrollLine() {
   }, [])
 
   return (
-    <div ref={lineRef} className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px">
+    <div ref={lineRef} className="hidden md:block absolute top-0 bottom-0 left-1/4 w-px">
       <div className="absolute inset-0 border-l border-dashed border-[#333333]" />
       <div
         className="absolute left-0 w-px bg-gradient-to-b from-transparent via-[#BEFE00] to-transparent opacity-80"
@@ -60,42 +81,169 @@ function ScrollLine() {
   )
 }
 
-// Single project section with collapsible sticky header
-function ProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
+// Desktop project section with 1/4 - 3/4 layout
+function DesktopProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
+  const images = project.images || []
+  const annotations = imageAnnotations[project.id] || []
+
+  return (
+    <div className="hidden md:block relative">
+      {/* Cross marker at top */}
+      <div className="relative">
+        <span className="cross cross-center cross-top" style={{ left: '25%' }}>+</span>
+        <div className="h-line" />
+      </div>
+
+      {/* Main grid: 1/4 info, 3/4 images */}
+      <div className="grid grid-cols-4 min-h-screen">
+        {/* Left: Project info (sticky) */}
+        <div className="col-span-1 relative">
+          <div className="sticky top-0 h-screen flex flex-col justify-center p-8 lg:p-12 border-r border-dashed border-[#333333]">
+            <p className="text-[#333333] text-xs mb-4">
+              _{String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 className="text-2xl lg:text-3xl xl:text-4xl uppercase tracking-wide mb-3">
+              {project.title}
+            </h3>
+            <p className="text-[#666666] uppercase text-xs mb-6">
+              {project.subtitle}
+            </p>
+            <div className="space-y-1 text-[#888888] uppercase text-xs mb-8">
+              {project.description.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+
+            {/* Sub-projects */}
+            {project.subProjects && (
+              <div className="space-y-2 mb-8">
+                {project.subProjects.map((sub, subIndex) => (
+                  <div
+                    key={sub.name}
+                    className="flex items-center justify-between border border-dashed border-[#333333] p-2 hover:border-[#555555] transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[#333333] text-xs">
+                        _{String(subIndex + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-xs uppercase">{sub.name}</span>
+                    </div>
+                    {sub.link && (
+                      <a
+                        href={sub.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#444444] hover:text-[#BEFE00] transition-colors text-sm"
+                      >
+                        ↗
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Links */}
+            <div className="flex flex-wrap gap-3">
+              {project.links.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bracket-link uppercase text-xs"
+                >
+                  [{link.label}]
+                </a>
+              ))}
+            </div>
+
+            {/* Active indicator for Schills */}
+            {project.id === 'schills' && (
+              <div className="mt-8 flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
+                <span className="text-[#BEFE00] text-xs uppercase tracking-wider">
+                  ACTIVE
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right: Images with annotations (3/4) */}
+        <div className="col-span-3">
+          {images.map((img, imgIndex) => (
+            <div key={imgIndex} className="relative border-b border-dashed border-[#333333] last:border-b-0">
+              <div className="p-8 lg:p-12">
+                {/* Image number */}
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-[#333333] text-xs uppercase">
+                    _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+                  </p>
+                </div>
+
+                {/* Image with annotation lines */}
+                <div className="relative">
+                  <div className="border border-dashed border-[#333333] overflow-hidden">
+                    <Image
+                      src={img}
+                      alt={`${project.title} screenshot ${imgIndex + 1}`}
+                      width={800}
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+
+                  {/* Annotation lines coming from right side */}
+                  {annotations[imgIndex] && (
+                    <div className="absolute top-0 right-0 translate-x-full pl-4 h-full flex flex-col justify-center gap-4">
+                      {annotations[imgIndex].map((annotation, annIndex) => (
+                        <div key={annIndex} className="flex items-center gap-2">
+                          <div className="w-8 border-t border-dashed border-[#444444]" />
+                          <div className="w-2 h-2 border border-[#444444] rotate-45" />
+                          <span className="text-[#555555] text-xs uppercase whitespace-nowrap">
+                            {annotation}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Mobile project section with collapsible header
+function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const headerRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isCollapsed, setIsCollapsed] = useState(false) // Start expanded
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const lastStateChange = useRef(0)
-  const mobileNavHeight = 49 // Height of mobile nav bar
+  const mobileNavHeight = 49
 
   useEffect(() => {
     const handleScroll = () => {
       if (!headerRef.current || !containerRef.current) return
-      if (window.innerWidth >= 768) return // Only on mobile
+      if (window.innerWidth >= 768) return
 
-      // Debounce: Don't allow state changes more than once per 150ms
       const now = Date.now()
-      if (now - lastStateChange.current < 150) {
-        return
-      }
+      if (now - lastStateChange.current < 150) return
 
       const containerRect = containerRef.current.getBoundingClientRect()
 
-      // Use hysteresis: different thresholds for expand vs collapse
-      // This prevents thrashing at the boundary
-
       if (isCollapsed) {
-        // Currently collapsed - only expand if CLEARLY back to original position
-        // Need to scroll up significantly past the sticky point
         const shouldExpand = containerRect.top >= mobileNavHeight + 20
         if (shouldExpand) {
           setIsCollapsed(false)
           lastStateChange.current = now
         }
       } else {
-        // Currently expanded - collapse when we've scrolled down into the section
-        // Use a lower threshold so it collapses before hitting the exact sticky point
         const shouldCollapse = containerRect.top < mobileNavHeight - 30
         if (shouldCollapse) {
           setIsCollapsed(true)
@@ -109,223 +257,116 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
   }, [isCollapsed])
 
   return (
-    <div ref={containerRef} className="relative" data-project-section>
+    <div ref={containerRef} className="md:hidden relative" data-project-section>
       <span className="cross cross-center cross-top">+</span>
       <div className="h-line" />
 
       <div className="relative min-h-screen">
-        {/* Sticky header - collapsible on mobile */}
-        {/* top-[49px] on mobile to account for mobile nav bar */}
         <div
           ref={headerRef}
-          className="sticky top-[49px] md:top-0 z-20 bg-black border-b border-dashed border-[#333333]"
+          className="sticky top-[49px] z-20 bg-black border-b border-dashed border-[#333333]"
         >
-          {/* Mobile: Collapsible header */}
-          <div className="md:hidden">
-            {/* Always visible: Title bar */}
-            <div
-              className="flex items-center justify-between p-4 cursor-pointer"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-[#333333] text-xs">
-                  _{String(index + 1).padStart(2, '0')}
-                </span>
-                <h3 className="text-xl uppercase tracking-wide">
-                  {project.title}
-                </h3>
-                {!project.subProjects && (
-                  <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
-                )}
-              </div>
-              <button className="text-[#666666] p-1">
-                {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
-              </button>
+          <div
+            className="flex items-center justify-between p-4 cursor-pointer"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-[#333333] text-xs">
+                _{String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="text-xl uppercase tracking-wide">
+                {project.title}
+              </h3>
+              {project.id === 'schills' && (
+                <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
+              )}
             </div>
-
-            {/* Expandable content */}
-            <div
-              className={`overflow-hidden transition-all duration-200 ease-out ${
-                isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
-              }`}
-            >
-              <div className="px-4 pb-4 border-t border-dashed border-[#333333]">
-                <p className="text-[#666666] uppercase text-xs mt-3 mb-2">
-                  {project.subtitle}
-                </p>
-                <div className="space-y-1 text-[#888888] uppercase text-xs mb-4">
-                  {project.description.map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-3 mb-4">
-                  {project.links.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bracket-link uppercase text-xs"
-                    >
-                      [{link.label}]
-                    </a>
-                  ))}
-                </div>
-
-                {project.subProjects && (
-                  <div className="space-y-2 mt-4">
-                    {project.subProjects.map((sub, subIndex) => (
-                      <div
-                        key={sub.name}
-                        className="flex items-center justify-between border border-dashed border-[#333333] p-2"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-[#333333] text-xs">
-                            _{String(subIndex + 1).padStart(2, '0')}
-                          </span>
-                          <span className="text-xs uppercase">{sub.name}</span>
-                        </div>
-                        {sub.link && (
-                          <a
-                            href={sub.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#444444] hover:text-[#BEFE00] transition-colors text-sm"
-                          >
-                            ↗
-                          </a>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {!project.subProjects && (
-                  <div className="text-center py-2">
-                    <p className="text-[#BEFE00] text-xs uppercase tracking-wider">
-                      ACTIVE PROJECT
-                    </p>
-                    <p className="text-[#555555] text-xs uppercase mt-1">
-                      CURRENTLY IN DEVELOPMENT
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <button className="text-[#666666] p-1">
+              {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+            </button>
           </div>
 
-          {/* Desktop: Full header */}
-          <div className="hidden md:block">
-            <div className="grid md:grid-cols-2">
-              <div className="p-8 md:p-12 lg:p-16 border-r border-dashed border-[#333333]">
-                <p className="text-[#333333] text-xs mb-2">
-                  _{String(index + 1).padStart(2, '0')}
-                </p>
-                <h3 className="text-3xl md:text-4xl lg:text-5xl uppercase tracking-wide mb-3">
-                  {project.title}
-                </h3>
-                <p className="text-[#666666] uppercase text-sm mb-4">
-                  {project.subtitle}
-                </p>
-                <div className="space-y-1 text-[#888888] uppercase text-sm mb-6">
-                  {project.description.map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-4">
-                  {project.links.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bracket-link uppercase text-sm"
-                    >
-                      [{link.label}]
-                    </a>
-                  ))}
-                </div>
+          <div
+            className={`overflow-hidden transition-all duration-200 ease-out ${
+              isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
+            }`}
+          >
+            <div className="px-4 pb-4 border-t border-dashed border-[#333333]">
+              <p className="text-[#666666] uppercase text-xs mt-3 mb-2">
+                {project.subtitle}
+              </p>
+              <div className="space-y-1 text-[#888888] uppercase text-xs mb-4">
+                {project.description.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-3 mb-4">
+                {project.links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bracket-link uppercase text-xs"
+                  >
+                    [{link.label}]
+                  </a>
+                ))}
               </div>
 
-              <div className="p-8 md:p-12 lg:p-16 flex items-center">
-                {project.subProjects ? (
-                  <div className="w-full space-y-3">
-                    {project.subProjects.map((sub, subIndex) => (
-                      <div
-                        key={sub.name}
-                        className="flex items-center justify-between border border-dashed border-[#333333] p-3 hover:border-[#555555] transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-[#333333] text-xs">
-                            _{String(subIndex + 1).padStart(2, '0')}
-                          </span>
-                          <span className="text-sm uppercase">{sub.name}</span>
-                        </div>
-                        {sub.link && (
-                          <a
-                            href={sub.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#444444] hover:text-[#BEFE00] transition-colors"
-                          >
-                            ↗
-                          </a>
-                        )}
+              {project.subProjects && (
+                <div className="space-y-2 mt-4">
+                  {project.subProjects.map((sub, subIndex) => (
+                    <div
+                      key={sub.name}
+                      className="flex items-center justify-between border border-dashed border-[#333333] p-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#333333] text-xs">
+                          _{String(subIndex + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs uppercase">{sub.name}</span>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center w-full">
-                    <div className="inline-flex items-center gap-2 mb-4">
-                      <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
-                      <span className="text-[#BEFE00] text-xs uppercase tracking-wider">
-                        ACTIVE PROJECT
-                      </span>
+                      {sub.link && (
+                        <a
+                          href={sub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#444444] hover:text-[#BEFE00] transition-colors text-sm"
+                        >
+                          ↗
+                        </a>
+                      )}
                     </div>
-                    <p className="text-[#555555] text-sm uppercase">
-                      CURRENTLY IN DEVELOPMENT
-                    </p>
-                  </div>
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Image gallery */}
+        {/* Images */}
         <div className="relative">
-          {images.length > 0 ? (
+          {images.length > 0 && (
             <div className="space-y-px bg-[#222222]">
               {images.map((img, imgIndex) => (
-                <div
-                  key={imgIndex}
-                  className="relative bg-black p-4 md:p-16"
-                >
-                  <div className="max-w-5xl mx-auto">
-                    <div className="flex items-center justify-between mb-2 md:mb-4">
-                      <p className="text-[#333333] text-xs uppercase">
-                        _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
-                      </p>
-                      <p className="text-[#333333] text-xs uppercase hidden sm:block">
-                        {project.title}
-                      </p>
-                    </div>
-                    <div className="relative border border-dashed border-[#333333] overflow-hidden">
-                      <Image
-                        src={img}
-                        alt={`${project.title} screenshot ${imgIndex + 1}`}
-                        width={800}
-                        height={600}
-                        className="w-full h-auto"
-                      />
-                    </div>
+                <div key={imgIndex} className="relative bg-black p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[#333333] text-xs uppercase">
+                      _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+                    </p>
+                  </div>
+                  <div className="relative border border-dashed border-[#333333] overflow-hidden">
+                    <Image
+                      src={img}
+                      alt={`${project.title} screenshot ${imgIndex + 1}`}
+                      width={800}
+                      height={600}
+                      className="w-full h-auto"
+                    />
                   </div>
                 </div>
               ))}
-            </div>
-          ) : (
-            <div className="h-[50vh] flex items-center justify-center">
-              <div className="text-[#1a1a1a] text-8xl md:text-9xl">◇</div>
             </div>
           )}
         </div>
@@ -337,6 +378,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
 export default function Projects() {
   return (
     <section id="projects" className="relative">
+      {/* Section header */}
       <div className="section-padding pb-0">
         <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
           [SELECTED WORK]
@@ -346,17 +388,27 @@ export default function Projects() {
         </h2>
       </div>
 
+      {/* Cross before first project */}
       <div className="relative mt-16 md:mt-24">
+        <span className="cross cross-center cross-top">+</span>
+        <div className="h-line" />
+      </div>
+
+      {/* Projects container */}
+      <div className="relative">
+        {/* Animated scroll line for desktop (at 1/4 position) */}
         <ScrollLine />
+
+        {/* Project sections */}
         {projects.map((project, index) => (
-          <ProjectSection
-            key={project.id}
-            project={project}
-            index={index}
-          />
+          <div key={project.id}>
+            <DesktopProjectSection project={project} index={index} />
+            <MobileProjectSection project={project} index={index} />
+          </div>
         ))}
       </div>
 
+      {/* Bottom border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>
         <div className="h-line" />
