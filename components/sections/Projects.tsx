@@ -66,7 +66,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
   const headerRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isCollapsed, setIsCollapsed] = useState(false) // Start expanded
-  const lastScrollY = useRef(0)
+  const lastStateChange = useRef(0)
   const mobileNavHeight = 49 // Height of mobile nav bar
 
   useEffect(() => {
@@ -74,43 +74,34 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
       if (!headerRef.current || !containerRef.current) return
       if (window.innerWidth >= 768) return // Only on mobile
 
-      const currentScrollY = window.scrollY
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current)
-
-      // Only react to meaningful scroll movements
-      if (scrollDelta < 3) {
-        lastScrollY.current = currentScrollY
+      // Debounce: Don't allow state changes more than once per 150ms
+      const now = Date.now()
+      if (now - lastStateChange.current < 150) {
         return
       }
 
       const containerRect = containerRef.current.getBoundingClientRect()
-      const headerRect = headerRef.current.getBoundingClientRect()
 
-      // Is the header currently in its ORIGINAL position (not sticky)?
-      // Original position = container top is below or at the nav bar
-      // This means we've scrolled back up past the point where it would be sticky
-      const isInOriginalPosition = containerRect.top >= mobileNavHeight - 10
+      // Use hysteresis: different thresholds for expand vs collapse
+      // This prevents thrashing at the boundary
 
-      // Is the header sticky? (stuck at the top)
-      const isSticky = headerRect.top <= mobileNavHeight + 1 && containerRect.top < mobileNavHeight
-
-      // SIMPLE RULES:
-      // 1. If header is in original position (not sticky) -> EXPAND
-      // 2. If header is sticky -> COLLAPSE
-
-      if (isInOriginalPosition) {
-        // Back to original position - expand
-        if (isCollapsed) {
+      if (isCollapsed) {
+        // Currently collapsed - only expand if CLEARLY back to original position
+        // Need to scroll up significantly past the sticky point
+        const shouldExpand = containerRect.top >= mobileNavHeight + 20
+        if (shouldExpand) {
           setIsCollapsed(false)
+          lastStateChange.current = now
         }
-      } else if (isSticky) {
-        // Header is sticky - collapse
-        if (!isCollapsed) {
+      } else {
+        // Currently expanded - collapse when we've scrolled down into the section
+        // Use a lower threshold so it collapses before hitting the exact sticky point
+        const shouldCollapse = containerRect.top < mobileNavHeight - 30
+        if (shouldCollapse) {
           setIsCollapsed(true)
+          lastStateChange.current = now
         }
       }
-
-      lastScrollY.current = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
