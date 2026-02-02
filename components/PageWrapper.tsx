@@ -21,7 +21,7 @@ export default function PageWrapper() {
   return (
     <LoadedContext.Provider value={isLoaded}>
       <LoadingScreen onLoadComplete={() => setIsLoaded(true)} />
-      <main className="relative">
+      <main className="relative pt-[49px] md:pt-0">
         <Hero />
         <Skills />
         <About />

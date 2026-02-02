@@ -68,6 +68,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
   const [isCollapsed, setIsCollapsed] = useState(false)
   const lastScrollY = useRef(0)
   const collapsedHeaderHeight = 56 // Approximate height of collapsed header
+  const mobileNavHeight = 49 // Height of mobile nav bar
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,7 +81,7 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
 
       const headerRect = headerRef.current.getBoundingClientRect()
       const containerRect = containerRef.current.getBoundingClientRect()
-      const isSticky = headerRect.top <= 0
+      const isSticky = headerRect.top <= mobileNavHeight
 
       // Calculate how close we are to the bottom of this project section
       const distanceToBottom = containerRect.bottom - collapsedHeaderHeight
@@ -120,9 +121,10 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
 
       <div className="relative min-h-screen">
         {/* Sticky header - collapsible on mobile */}
+        {/* top-[49px] on mobile to account for mobile nav bar */}
         <div
           ref={headerRef}
-          className="sticky top-0 z-20 bg-black border-b border-dashed border-[#333333]"
+          className="sticky top-[49px] md:top-0 z-20 bg-black border-b border-dashed border-[#333333]"
         >
           {/* Mobile: Collapsible header */}
           <div className="md:hidden">
