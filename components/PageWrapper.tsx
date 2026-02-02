@@ -7,6 +7,7 @@ import Hero from '@/components/sections/Hero'
 import Skills from '@/components/sections/Skills'
 import About from '@/components/sections/About'
 import Projects from '@/components/sections/Projects'
+import Articles from '@/components/sections/Articles'
 import Experiments from '@/components/sections/Experiments'
 import Contact from '@/components/sections/Contact'
 
@@ -25,6 +26,7 @@ export default function PageWrapper() {
         <Skills />
         <About />
         <Projects />
+        <Articles />
         <Experiments />
         <Contact />
         <Navigation />

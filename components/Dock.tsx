@@ -76,7 +76,7 @@ function DockItem({
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`relative inline-flex items-center justify-center rounded-lg bg-black border border-dashed border-[#444444] hover:border-[#BEFE00] hover:shadow-[0_0_15px_rgba(190,254,0,0.3)] transition-colors ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-lg bg-black border border-dashed border-[#444444] hover:border-[#BEFE00] transition-colors ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -115,7 +115,7 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
           animate={{ opacity: 1, y: -10 }}
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.2 }}
-          className={`${className} absolute -top-10 left-1/2 w-fit whitespace-pre border border-dashed border-[#BEFE00] bg-black px-3 py-1 text-xs text-[#BEFE00] uppercase tracking-wider shadow-[0_0_10px_rgba(190,254,0,0.3)]`}
+          className={`${className} absolute -top-10 left-1/2 w-fit whitespace-pre border border-dashed border-[#BEFE00] bg-black px-3 py-1 text-xs text-[#BEFE00] uppercase tracking-wider`}
           role="tooltip"
           style={{ x: '-50%' }}
         >
