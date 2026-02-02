@@ -61,14 +61,13 @@ function ScrollLine() {
 }
 
 // Single project section with collapsible sticky header
-function ProjectSection({ project, index, totalProjects }: { project: typeof projects[0], index: number, totalProjects: number }) {
+function ProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const headerRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false) // Start expanded
   const lastScrollY = useRef(0)
   const mobileNavHeight = 49 // Height of mobile nav bar
-  const collapsedHeaderHeight = 56 // Height when collapsed
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,8 +75,6 @@ function ProjectSection({ project, index, totalProjects }: { project: typeof pro
       if (window.innerWidth >= 768) return // Only on mobile
 
       const currentScrollY = window.scrollY
-      const scrollingUp = currentScrollY < lastScrollY.current
-      const scrollingDown = currentScrollY > lastScrollY.current
       const scrollDelta = Math.abs(currentScrollY - lastScrollY.current)
 
       // Only react to meaningful scroll movements
@@ -87,49 +84,29 @@ function ProjectSection({ project, index, totalProjects }: { project: typeof pro
       }
 
       const containerRect = containerRef.current.getBoundingClientRect()
+      const headerRect = headerRef.current.getBoundingClientRect()
 
-      // Is this section currently the "active" one?
-      // Active = container top is above the nav, and container bottom is below the nav + some buffer
-      const isSectionActive = containerRect.top <= mobileNavHeight && containerRect.bottom > mobileNavHeight + 100
+      // Is the header currently in its ORIGINAL position (not sticky)?
+      // Original position = container top is below or at the nav bar
+      // This means we've scrolled back up past the point where it would be sticky
+      const isInOriginalPosition = containerRect.top >= mobileNavHeight - 10
 
-      // Is this section completely above the viewport? (scrolled past it going down)
-      const isSectionAbove = containerRect.bottom <= mobileNavHeight + collapsedHeaderHeight + 20
+      // Is the header sticky? (stuck at the top)
+      const isSticky = headerRect.top <= mobileNavHeight + 1 && containerRect.top < mobileNavHeight
 
-      // Is this section below the viewport? (haven't reached it yet)
-      const isSectionBelow = containerRect.top > mobileNavHeight + 50
+      // SIMPLE RULES:
+      // 1. If header is in original position (not sticky) -> EXPAND
+      // 2. If header is sticky -> COLLAPSE
 
-      // Check if another section's header would collide
-      // Look for sibling project sections
-      const parent = containerRef.current.parentElement
-      let hasCollision = false
-
-      if (parent) {
-        const siblings = parent.querySelectorAll('[data-project-section]')
-        siblings.forEach((sibling, sibIndex) => {
-          if (sibIndex !== index) {
-            const sibRect = sibling.getBoundingClientRect()
-            // If another section's header area is visible near the top
-            if (sibRect.top > mobileNavHeight && sibRect.top < mobileNavHeight + 200) {
-              hasCollision = true
-            }
-          }
-        })
-      }
-
-      // Collapse rules:
-      // 1. Always collapse if scrolling down and section is active
-      // 2. Always collapse if there's a collision with another section
-      // 3. Always collapse if section is above viewport
-      // 4. Always collapse if section is below viewport
-
-      if (hasCollision || isSectionAbove || isSectionBelow) {
-        if (!isCollapsed) setIsCollapsed(true)
-      } else if (isSectionActive) {
-        if (scrollingDown && !isCollapsed) {
-          setIsCollapsed(true)
-        } else if (scrollingUp && isCollapsed) {
-          // Only expand if no collision and we're scrolling up within this section
+      if (isInOriginalPosition) {
+        // Back to original position - expand
+        if (isCollapsed) {
           setIsCollapsed(false)
+        }
+      } else if (isSticky) {
+        // Header is sticky - collapse
+        if (!isCollapsed) {
+          setIsCollapsed(true)
         }
       }
 
@@ -137,9 +114,8 @@ function ProjectSection({ project, index, totalProjects }: { project: typeof pro
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Check initial state
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isCollapsed, index])
+  }, [isCollapsed])
 
   return (
     <div ref={containerRef} className="relative" data-project-section>
@@ -386,7 +362,6 @@ export default function Projects() {
             key={project.id}
             project={project}
             index={index}
-            totalProjects={projects.length}
           />
         ))}
       </div>
