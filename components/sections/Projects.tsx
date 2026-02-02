@@ -64,34 +64,57 @@ function ScrollLine() {
 function ProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const headerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isSticky, setIsSticky] = useState(false)
+  const lastScrollY = useRef(0)
+  const collapsedHeaderHeight = 56 // Approximate height of collapsed header
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!headerRef.current) return
+      if (!headerRef.current || !containerRef.current) return
+      if (window.innerWidth >= 768) return // Only on mobile
 
-      const rect = headerRef.current.getBoundingClientRect()
-      const wasSticky = isSticky
-      const nowSticky = rect.top <= 0
+      const currentScrollY = window.scrollY
+      const scrollingUp = currentScrollY < lastScrollY.current
+      const scrollingDown = currentScrollY > lastScrollY.current
 
-      setIsSticky(nowSticky)
+      const headerRect = headerRef.current.getBoundingClientRect()
+      const containerRect = containerRef.current.getBoundingClientRect()
+      const isSticky = headerRect.top <= 0
 
-      // Auto-collapse on mobile when sticky and scrolled a bit
-      if (window.innerWidth < 768) {
-        if (nowSticky && !wasSticky) {
-          // Just became sticky, start collapsed after a small delay
-          setTimeout(() => setIsCollapsed(true), 300)
+      // Calculate how close we are to the bottom of this project section
+      const distanceToBottom = containerRect.bottom - collapsedHeaderHeight
+      const nearBottom = distanceToBottom < 100
+
+      if (isSticky) {
+        if (scrollingDown && !isCollapsed) {
+          // Scrolling down while sticky - collapse
+          setIsCollapsed(true)
+        } else if (scrollingUp && isCollapsed && !nearBottom) {
+          // Scrolling up while sticky and not near bottom - expand
+          setIsCollapsed(false)
+        }
+
+        // If near the bottom of section, force collapse for smooth transition
+        if (nearBottom && !isCollapsed) {
+          setIsCollapsed(true)
+        }
+      } else {
+        // Not sticky anymore (scrolled back up past the section) - expand
+        if (isCollapsed) {
+          setIsCollapsed(false)
         }
       }
+
+      lastScrollY.current = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isSticky])
+  }, [isCollapsed])
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <span className="cross cross-center cross-top">+</span>
       <div className="h-line" />
 
@@ -126,8 +149,8 @@ function ProjectSection({ project, index }: { project: typeof projects[0], index
 
             {/* Expandable content */}
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isCollapsed ? 'max-h-0' : 'max-h-[500px]'
+              className={`overflow-hidden transition-all duration-200 ease-out ${
+                isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
               }`}
             >
               <div className="px-4 pb-4 border-t border-dashed border-[#333333]">
