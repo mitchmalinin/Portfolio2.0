@@ -62,7 +62,7 @@ export default function Navigation() {
   ]
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-2 md:pb-4">
       <Dock
         items={dockItems}
         baseItemSize={48}
