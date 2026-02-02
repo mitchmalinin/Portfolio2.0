@@ -11,6 +11,7 @@ export interface Project {
   description: string[]
   links: { label: string; url: string }[]
   subProjects?: SubProject[]
+  images?: string[] // Array of image URLs for the gallery
 }
 
 export interface Experiment {
@@ -51,10 +52,16 @@ export const projects: Project[] = [
         link: 'https://portfolio.y2k.com',
       },
     ],
+    images: [
+      '/images/projects/y2k-1.svg',
+      '/images/projects/y2k-2.svg',
+      '/images/projects/y2k-3.svg',
+      '/images/projects/y2k-4.svg',
+    ],
   },
   {
-    id: 'shillz',
-    title: 'SHILLZ.APP',
+    id: 'schills',
+    title: 'SCHILLS.APP',
     subtitle: '_AI SERVICES PLATFORM',
     description: [
       '_NEXT.JS, TYPESCRIPT, AI',
@@ -62,7 +69,13 @@ export const projects: Project[] = [
       '_INTELLIGENT MATCHING',
     ],
     links: [
-      { label: 'SHILLZ.APP', url: 'https://shillz.app' },
+      { label: 'SCHILLS.APP', url: 'https://schills.app' },
+    ],
+    images: [
+      '/images/projects/schills-1.svg',
+      '/images/projects/schills-2.svg',
+      '/images/projects/schills-3.svg',
+      '/images/projects/schills-4.svg',
     ],
   },
 ]

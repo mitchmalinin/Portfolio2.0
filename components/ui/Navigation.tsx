@@ -1,7 +1,7 @@
 'use client'
 
 import Dock from '@/components/Dock'
-import { Home, User, FolderOpen, FlaskConical, Mail } from 'lucide-react'
+import { Home, User, FolderOpen, FileText, FlaskConical, Mail } from 'lucide-react'
 
 // Icon wrapper with hover effect
 const IconWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -39,6 +39,12 @@ export default function Navigation() {
       icon: <IconWrapper><FolderOpen size={22} strokeWidth={1.5} /></IconWrapper>,
       label: 'PROJECTS',
       onClick: () => scrollTo('projects'),
+      className: 'group',
+    },
+    {
+      icon: <IconWrapper><FileText size={22} strokeWidth={1.5} /></IconWrapper>,
+      label: 'ARTICLES',
+      onClick: () => scrollTo('articles'),
       className: 'group',
     },
     {
