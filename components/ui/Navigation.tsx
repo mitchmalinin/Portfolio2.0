@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Dock from '@/components/Dock'
 import { Home, User, FolderOpen, FileText, FlaskConical, Mail, Menu, X } from 'lucide-react'
 
@@ -99,8 +99,36 @@ function MobileNav() {
   )
 }
 
-// Desktop dock navigation
+// Desktop dock navigation with scroll-based expansion
 function DesktopNav() {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const manuallyExpanded = useRef(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+
+      if (scrollY > 150 && !isExpanded) {
+        setIsExpanded(true)
+      } else if (scrollY <= 50 && isExpanded && !manuallyExpanded.current) {
+        setIsExpanded(false)
+      }
+
+      if (scrollY > 200) {
+        manuallyExpanded.current = false
+      }
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isExpanded])
+
+  const handleManualExpand = () => {
+    manuallyExpanded.current = true
+    setIsExpanded(true)
+  }
+
   const scrollTo = (id: string) => {
     if (id === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -152,7 +180,7 @@ function DesktopNav() {
   ]
 
   return (
-    <div className="hidden md:flex fixed bottom-4 left-0 right-0 z-50 justify-center">
+    <div className="hidden md:flex fixed bottom-8 left-0 right-0 z-50 justify-center">
       <Dock
         items={dockItems}
         baseItemSize={48}
@@ -160,8 +188,9 @@ function DesktopNav() {
         distance={120}
         panelHeight={68}
         dockHeight={90}
-        className=""
         spring={{ mass: 0.1, stiffness: 170, damping: 14 }}
+        isExpanded={isExpanded}
+        onExpandClick={handleManualExpand}
       />
     </div>
   )

@@ -10,6 +10,7 @@ import {
   AnimatePresence
 } from 'motion/react';
 import React, { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
+import { MoreHorizontal } from 'lucide-react';
 
 export type DockItemData = {
   icon: React.ReactNode;
@@ -27,6 +28,8 @@ export type DockProps = {
   dockHeight?: number;
   magnification?: number;
   spring?: SpringOptions;
+  isExpanded?: boolean;
+  onExpandClick?: () => void;
 };
 
 type DockItemProps = {
@@ -144,7 +147,9 @@ export default function Dock({
   distance = 200,
   panelHeight = 64,
   dockHeight = 256,
-  baseItemSize = 50
+  baseItemSize = 50,
+  isExpanded = true,
+  onExpandClick
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
@@ -153,20 +158,42 @@ export default function Dock({
   const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
   const height = useSpring(heightRow, spring);
 
+  // Calculate fixed widths to avoid 'auto' glitch
+  const gap = 10;
+  const padding = 12;
+  const expandedWidth = (items.length * baseItemSize) + ((items.length - 1) * gap) + (padding * 2);
+  const collapsedWidth = 64;
+
   return (
-    <motion.div style={{ height, scrollbarWidth: 'none' }} className="mx-2 flex max-w-full items-center">
+    <motion.div
+      style={{ height: isExpanded ? height : collapsedWidth, scrollbarWidth: 'none' }}
+      className="mx-2 flex max-w-full items-center justify-center"
+    >
       <motion.div
         onMouseMove={({ pageX }) => {
-          isHovered.set(1);
-          mouseX.set(pageX);
+          if (isExpanded) {
+            isHovered.set(1);
+            mouseX.set(pageX);
+          }
         }}
         onMouseLeave={() => {
           isHovered.set(0);
           mouseX.set(Infinity);
         }}
-        className={`${className} absolute bottom-2 left-1/2 transform -translate-x-1/2 flex items-end w-fit gap-4 rounded-2xl pb-2 px-4`}
+        className={`${className} relative flex items-end justify-center rounded-2xl overflow-visible`}
+        initial={false}
+        animate={{
+          width: isExpanded ? expandedWidth : collapsedWidth,
+          height: isExpanded ? panelHeight : collapsedWidth,
+          paddingBottom: isExpanded ? 8 : 0,
+          paddingLeft: isExpanded ? padding : 0,
+          paddingRight: isExpanded ? padding : 0,
+        }}
+        transition={{
+          duration: 0.25,
+          ease: [0.4, 0, 0.2, 1],
+        }}
         style={{
-          height: panelHeight,
           background: 'rgba(30, 30, 30, 0.6)',
           backdropFilter: 'blur(20px) saturate(180%)',
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
@@ -176,20 +203,52 @@ export default function Dock({
         role="toolbar"
         aria-label="Application dock"
       >
+        {/* Collapsed state icon */}
+        <motion.button
+          onClick={onExpandClick}
+          className="absolute inset-0 flex items-center justify-center cursor-pointer"
+          initial={false}
+          animate={{
+            opacity: isExpanded ? 0 : 1,
+          }}
+          transition={{ duration: 0.15 }}
+          whileHover={{ scale: isExpanded ? 1 : 1.05 }}
+          whileTap={{ scale: isExpanded ? 1 : 0.95 }}
+          style={{ pointerEvents: isExpanded ? 'none' : 'auto' }}
+        >
+          <MoreHorizontal size={24} className="text-white" />
+        </motion.button>
+
+        {/* Dock items */}
         {items.map((item, index) => (
-          <DockItem
+          <motion.div
             key={index}
-            onClick={item.onClick}
-            className={item.className}
-            mouseX={mouseX}
-            spring={spring}
-            distance={distance}
-            magnification={magnification}
-            baseItemSize={baseItemSize}
+            initial={false}
+            animate={{
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.2,
+              delay: isExpanded ? index * 0.02 : 0,
+            }}
+            style={{
+              pointerEvents: isExpanded ? 'auto' : 'none',
+              marginLeft: isExpanded && index > 0 ? gap : 0,
+            }}
           >
-            <DockIcon>{item.icon}</DockIcon>
-            <DockLabel>{item.label}</DockLabel>
-          </DockItem>
+            <DockItem
+              onClick={item.onClick}
+              className={item.className}
+              mouseX={mouseX}
+              spring={spring}
+              distance={distance}
+              magnification={magnification}
+              baseItemSize={baseItemSize}
+            >
+              <DockIcon>{item.icon}</DockIcon>
+              <DockLabel>{item.label}</DockLabel>
+            </DockItem>
+          </motion.div>
         ))}
       </motion.div>
     </motion.div>
