@@ -76,7 +76,7 @@ function DockItem({
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`relative inline-flex items-center justify-center rounded-lg bg-black border border-dashed border-[#444444] hover:border-[#BEFE00] transition-colors ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-lg bg-black border border-dashed border-[#333333] hover:border-[#BEFE00] transition-colors ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -115,9 +115,9 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
           animate={{ opacity: 1, y: -10 }}
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.2 }}
-          className={`${className} absolute -top-10 left-1/2 w-fit whitespace-pre border border-dashed border-[#BEFE00] bg-black px-3 py-1 text-xs text-[#BEFE00] uppercase tracking-wider`}
-          role="tooltip"
+          className={`${className} absolute -top-10 left-1/2 w-fit whitespace-pre px-3 py-1 text-xs text-[#BEFE00] uppercase tracking-wider bg-black border border-dashed border-[#BEFE00]`}
           style={{ x: '-50%' }}
+          role="tooltip"
         >
           {children}
         </motion.div>
@@ -164,8 +164,15 @@ export default function Dock({
           isHovered.set(0);
           mouseX.set(Infinity);
         }}
-        className={`${className} absolute bottom-2 left-1/2 transform -translate-x-1/2 flex items-end w-fit gap-4 border border-dashed border-[#333333] rounded-xl pb-2 px-4`}
-        style={{ height: panelHeight }}
+        className={`${className} absolute bottom-2 left-1/2 transform -translate-x-1/2 flex items-end w-fit gap-4 rounded-2xl pb-2 px-4`}
+        style={{
+          height: panelHeight,
+          background: 'rgba(30, 30, 30, 0.6)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        }}
         role="toolbar"
         aria-label="Application dock"
       >

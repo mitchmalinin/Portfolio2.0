@@ -55,7 +55,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="max-w-[1600px] mx-auto">
+          {children}
+        </div>
+      </body>
     </html>
   )
 }

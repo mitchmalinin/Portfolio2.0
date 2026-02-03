@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { projects } from '@/lib/projects'
 import Image from 'next/image'
+import PixelatedImage from '@/components/ui/PixelatedImage'
 import { ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -124,7 +125,7 @@ function ScrollLine() {
       {/* Base dashed line */}
       <div className="absolute inset-0 border-l border-dashed border-[#333333]" />
 
-      {/* Glowing solid line trail - matches scroll position */}
+      {/* Solid yellow line trail - matches scroll position */}
       <div
         ref={glowRef}
         className="absolute left-0 w-px -ml-[0.5px]"
@@ -132,7 +133,6 @@ function ScrollLine() {
           top: '0%',
           height: '0%',
           background: '#BEFE00',
-          boxShadow: '0 0 6px rgba(190, 254, 0, 0.9), 0 0 12px rgba(190, 254, 0, 0.6)',
         }}
       />
     </div>
@@ -259,26 +259,30 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
                 {/* Image with annotation lines */}
                 <div className="relative">
                   <div className="border border-dashed border-[#333333] overflow-hidden">
-                    <Image
+                    <PixelatedImage
                       src={img}
                       alt={`${project.title} screenshot ${imgIndex + 1}`}
                       width={800}
                       height={600}
-                      className="w-full h-auto"
+                      className="w-full"
                     />
                   </div>
 
-                  {/* Single annotation line from right side */}
-                  {annotations[imgIndex] && annotations[imgIndex][0] && (
-                    <div className="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 pl-4 flex items-center gap-2">
-                      <div className="w-8 border-t border-dashed border-[#444444]" />
-                      <div className="w-2 h-2 border border-[#444444] rotate-45" />
-                      <span className="text-[#555555] text-xs uppercase whitespace-nowrap">
-                        {annotations[imgIndex][0]}
-                      </span>
-                    </div>
-                  )}
+                  {/* Decorative line on right side */}
+                  <div className="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 pl-4 flex items-center gap-2">
+                    <div className="w-8 border-t border-dashed border-[#444444]" />
+                    <div className="w-2 h-2 border border-[#444444] rotate-45" />
+                  </div>
                 </div>
+
+                {/* Annotation label below image */}
+                {annotations[imgIndex] && annotations[imgIndex][0] && (
+                  <div className="flex justify-end mt-4">
+                    <span className="text-[#555555] text-xs uppercase">
+                      {annotations[imgIndex][0]}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -498,12 +502,12 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
                     </p>
                   </div>
                   <div className="relative border border-dashed border-[#333333] overflow-hidden">
-                    <Image
+                    <PixelatedImage
                       src={img}
                       alt={`${project.title} screenshot ${imgIndex + 1}`}
                       width={800}
                       height={600}
-                      className="w-full h-auto"
+                      className="w-full"
                     />
                   </div>
                 </div>

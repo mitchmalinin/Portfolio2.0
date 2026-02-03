@@ -6,7 +6,7 @@ import { Home, User, FolderOpen, FileText, FlaskConical, Mail, Menu, X } from 'l
 
 // Icon wrapper with hover effect for dock
 const IconWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="text-[#666666] group-hover:text-[#BEFE00] transition-colors duration-200">
+  <div className="text-white group-hover:text-[#BEFE00] transition-colors duration-200">
     {children}
   </div>
 )
@@ -160,7 +160,7 @@ function DesktopNav() {
         distance={120}
         panelHeight={68}
         dockHeight={90}
-        className="bg-black/95 backdrop-blur-sm"
+        className=""
         spring={{ mass: 0.1, stiffness: 170, damping: 14 }}
       />
     </div>

@@ -42,10 +42,10 @@ export const projects: Project[] = [
       { label: 'SCHILLS.APP', url: 'https://schills.app' },
     ],
     images: [
-      '/images/projects/schills-1.svg',
-      '/images/projects/schills-2.svg',
-      '/images/projects/schills-3.svg',
-      '/images/projects/schills-4.svg',
+      '/images/projects/schills-1.jpg',
+      '/images/projects/schills-1.jpg',
+      '/images/projects/schills-1.jpg',
+      '/images/projects/schills-1.jpg',
     ],
   },
   {
