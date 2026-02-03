@@ -26,7 +26,7 @@ export default function About() {
   const isInView = useInView(sectionRef)
 
   return (
-    <section id="about" className="relative" ref={sectionRef}>
+    <section id="about" className="relative scroll-mt-[55px] md:scroll-mt-0" ref={sectionRef}>
       {/* Top border provided by Skills connector */}
 
       {/* Mobile layout */}

@@ -16,7 +16,7 @@ export default function Contact() {
   const isInView = useInView(sectionRef)
 
   return (
-    <footer id="contact" className="relative" ref={sectionRef}>
+    <footer id="contact" className="relative scroll-mt-[55px] md:scroll-mt-0" ref={sectionRef}>
       {/* Top border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>

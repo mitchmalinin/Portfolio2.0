@@ -21,41 +21,165 @@ const navItems = [
   { icon: Mail, label: 'CONNECT', id: 'contact' },
 ]
 
+let activeScrollCancel: (() => void) | null = null
+let clearNavHold: (() => void) | null = null
+
+const startNavHold = () => {
+  if (clearNavHold) clearNavHold()
+  document.documentElement.dataset.navScrolling = '1'
+
+  const clear = () => {
+    delete document.documentElement.dataset.navScrolling
+    if (clearNavHold) {
+      clearNavHold()
+      clearNavHold = null
+    }
+  }
+
+  const onInput = () => {
+    clear()
+  }
+
+  window.addEventListener('touchstart', onInput, { passive: true, once: true })
+  window.addEventListener('wheel', onInput, { passive: true, once: true })
+  window.addEventListener('keydown', onInput, { passive: true, once: true })
+
+  clearNavHold = () => {
+    window.removeEventListener('touchstart', onInput)
+    window.removeEventListener('wheel', onInput)
+    window.removeEventListener('keydown', onInput)
+  }
+}
+
+const smartScrollTo = (id: string, navOffset = 0) => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (activeScrollCancel) activeScrollCancel()
+  if (clearNavHold) {
+    clearNavHold()
+    clearNavHold = null
+  }
+
+  const getTargetTop = () => {
+    if (id === 'top') return 0
+    const element = document.getElementById(id)
+    if (!element) return window.scrollY
+    const rect = element.getBoundingClientRect()
+    return rect.top + window.scrollY - navOffset
+  }
+
+  if (prefersReduced) {
+    window.scrollTo({ top: getTargetTop(), behavior: 'auto' })
+    return
+  }
+
+  document.documentElement.classList.add('no-smooth-scroll')
+  startNavHold()
+
+  const easeInOutCubic = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  const computeDuration = (from: number, to: number, minMs: number, maxMs: number, divisor: number) => {
+    const distance = Math.abs(to - from)
+    const duration = (distance / divisor) * 1000
+    return Math.min(maxMs, Math.max(minMs, duration))
+  }
+
+  let rafId: number | null = null
+  let cancelled = false
+  let startY = window.scrollY
+  let targetY = getTargetTop()
+  let lastTargetY = targetY
+  let startTime = performance.now()
+  let duration = computeDuration(startY, targetY, 320, 1100, 2800)
+
+  const cleanup = () => {
+    if (rafId) cancelAnimationFrame(rafId)
+    document.documentElement.classList.remove('no-smooth-scroll')
+    activeScrollCancel = null
+  }
+
+  const step = (now: number) => {
+    if (cancelled) return
+    const currentY = window.scrollY
+    targetY = getTargetTop()
+
+    if (Math.abs(targetY - lastTargetY) > 24) {
+      startY = currentY
+      startTime = now
+      duration = computeDuration(startY, targetY, 320, 1100, 2800)
+      lastTargetY = targetY
+    }
+
+    const t = Math.min(1, (now - startTime) / duration)
+    const eased = easeInOutCubic(t)
+    const nextY = startY + (targetY - startY) * eased
+    window.scrollTo({ top: nextY, behavior: 'auto' })
+
+    if (Math.abs(targetY - nextY) <= 1 || t >= 1) {
+      window.scrollTo({ top: targetY, behavior: 'auto' })
+      cleanup()
+      return
+    }
+
+    rafId = requestAnimationFrame(step)
+  }
+
+  activeScrollCancel = () => {
+    cancelled = true
+    cleanup()
+  }
+
+  const cancelOnUserInput = () => {
+    if (activeScrollCancel) activeScrollCancel()
+  }
+
+  window.addEventListener('touchstart', cancelOnUserInput, { passive: true, once: true })
+  window.addEventListener('wheel', cancelOnUserInput, { passive: true, once: true })
+
+  rafId = requestAnimationFrame(step)
+}
+
 // Mobile floating navigation
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+
+    const updateNavHeight = () => {
+      const height = bar.getBoundingClientRect().height
+      if (height > 0) {
+        document.documentElement.style.setProperty('--mobile-nav-height', `${height}px`)
+      }
+    }
+
+    updateNavHeight()
+    const resizeObserver = new ResizeObserver(updateNavHeight)
+    resizeObserver.observe(bar)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   const scrollTo = (id: string) => {
     setIsOpen(false)
     // Delay scroll to let nav close animation complete
     setTimeout(() => {
-      // Temporarily disable CSS smooth scroll
-      document.documentElement.style.scrollBehavior = 'auto'
-
-      if (id === 'top') {
-        window.scrollTo({ top: 0, behavior: 'instant' })
-      } else {
-        const element = document.getElementById(id)
-        if (element) {
-          const navHeight = 55 // Mobile nav height
-          const elementRect = element.getBoundingClientRect()
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-          const targetPosition = elementRect.top + scrollTop - navHeight
-          window.scrollTo({ top: targetPosition, behavior: 'instant' })
-        }
-      }
-
-      // Re-enable CSS smooth scroll after a tick
-      setTimeout(() => {
-        document.documentElement.style.scrollBehavior = ''
-      }, 50)
+      const navOffset = barRef.current?.getBoundingClientRect().height ?? 55
+      smartScrollTo(id, navOffset)
     }, 350)
   }
 
   return (
     <div className="md:hidden fixed top-0 left-0 right-0 z-50">
       {/* Collapsed bar */}
-      <div className="flex items-center justify-between p-3 bg-black/95 backdrop-blur-sm border-b border-dashed border-[#333333]">
+      <div
+        ref={barRef}
+        className="flex items-center justify-between p-3 bg-black/95 backdrop-blur-sm border-b border-dashed border-[#333333]"
+      >
         <span className="text-xs uppercase tracking-wider text-white font-mono leading-none">
           [M<span className="inline-block ml-[1px]" style={{ transform: 'rotate(180deg)', position: 'relative', top: '-1px' }}>M</span>]
         </span>
@@ -137,14 +261,7 @@ function DesktopNav() {
   }
 
   const scrollTo = (id: string) => {
-    if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      const element = document.getElementById(id)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
-      }
-    }
+    smartScrollTo(id, 0) // No nav offset on desktop
   }
 
   const dockItems = [

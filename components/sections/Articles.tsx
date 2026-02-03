@@ -37,7 +37,7 @@ export default function Articles() {
   const isInView = useInView(sectionRef)
 
   return (
-    <section id="articles" className="relative" ref={sectionRef}>
+    <section id="articles" className="relative scroll-mt-[55px] md:scroll-mt-0" ref={sectionRef}>
       <div className="section-padding">
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [WRITING]

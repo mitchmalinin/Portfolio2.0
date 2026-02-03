@@ -36,7 +36,7 @@ export default function Experiments() {
   }, [])
 
   return (
-    <section id="experiments" className="relative" ref={sectionRef}>
+    <section id="experiments" className="relative scroll-mt-[55px] md:scroll-mt-0" ref={sectionRef}>
       {/* Top border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>

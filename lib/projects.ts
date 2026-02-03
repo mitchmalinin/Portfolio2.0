@@ -11,7 +11,7 @@ export interface Project {
   description: string[]
   links: { label: string; url: string }[]
   subProjects?: SubProject[]
-  images?: string[] // Array of image URLs for the gallery
+  images?: ProjectImage[] // Array of image data for the gallery
 }
 
 export interface Experiment {
@@ -24,8 +24,8 @@ export interface Experiment {
 
 export interface ProjectImage {
   src: string
-  label: string
-  annotations?: string[]
+  width: number
+  height: number
 }
 
 export const projects: Project[] = [
@@ -42,11 +42,11 @@ export const projects: Project[] = [
       { label: 'SHILLZ.APP', url: 'https://www.shillz.app' },
     ],
     images: [
-      '/images/projects/shillz-landing.png',
-      '/images/projects/shillz-dashboard.png',
-      '/images/projects/shillz-project.png',
-      '/images/projects/shillz-analytics.png',
-      '/images/projects/shillz-profile.png',
+      { src: '/images/projects/shillz-landing.png', width: 1706, height: 1401 },
+      { src: '/images/projects/shillz-dashboard.png', width: 1700, height: 1398 },
+      { src: '/images/projects/shillz-project.png', width: 1712, height: 1394 },
+      { src: '/images/projects/shillz-analytics.png', width: 1694, height: 1388 },
+      { src: '/images/projects/shillz-profile.png', width: 1704, height: 1399 },
     ],
   },
   {
@@ -79,10 +79,10 @@ export const projects: Project[] = [
       },
     ],
     images: [
-      '/images/projects/y2k-main.png',
-      '/images/projects/y2k-meme-machine.png',
-      '/images/projects/y2k-portfolio.png',
-      '/images/projects/y2k-database.png',
+      { src: '/images/projects/y2k-main.png', width: 1709, height: 1403 },
+      { src: '/images/projects/y2k-meme-machine.png', width: 1701, height: 1397 },
+      { src: '/images/projects/y2k-portfolio.png', width: 1697, height: 1395 },
+      { src: '/images/projects/y2k-database.png', width: 1702, height: 1395 },
     ],
   },
   {
@@ -98,8 +98,8 @@ export const projects: Project[] = [
       { label: 'Y2KCODED.COM', url: 'https://y2kcoded.com' },
     ],
     images: [
-      '/images/projects/y2k-coded-main.png',
-      '/images/projects/y2k-coded-archive.png',
+      { src: '/images/projects/y2k-coded-main.png', width: 1693, height: 1389 },
+      { src: '/images/projects/y2k-coded-archive.png', width: 1707, height: 1394 },
     ],
   },
 ]

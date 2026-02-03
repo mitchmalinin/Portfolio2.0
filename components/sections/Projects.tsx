@@ -256,7 +256,7 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
         {/* Right: Images with annotations (2/3) */}
         <div className="col-span-2 pt-16 lg:pt-24">
           {images.map((img, imgIndex) => (
-            <div key={imgIndex} className="relative border-b border-dashed border-[#333333] last:border-b-0">
+            <div key={img.src} className="relative border-b border-dashed border-[#333333] last:border-b-0">
               <div className="p-8 lg:p-12">
                 {/* Image number */}
                 <div className="flex items-center justify-between mb-4">
@@ -269,10 +269,10 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
                 <div className="relative">
                   <div className="border border-dashed border-[#333333] overflow-hidden">
                     <PixelatedImage
-                      src={img}
+                      src={img.src}
                       alt={`${project.title} screenshot ${imgIndex + 1}`}
-                      width={1920}
-                      height={1080}
+                      width={img.width}
+                      height={img.height}
                       className="w-full"
                     />
                   </div>
@@ -301,23 +301,27 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
   )
 }
 
-// Mobile nav height for sticky positioning (p-3 = 12px * 2 + ~25px content = ~49px)
-const MOBILE_NAV_HEIGHT = 49
+// Mobile nav height fallback for sticky positioning
+const DEFAULT_MOBILE_NAV_HEIGHT = 55
 
 // Mobile project section - each header sticks to same position, next project covers previous
 function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const sectionRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLButtonElement>(null)
+  const nextHeaderRef = useRef<HTMLButtonElement | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const wasStickyRef = useRef(false)
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(true)
   const [isSticky, setIsSticky] = useState(false)
+  const [canToggle, setCanToggle] = useState(false)
+  const [handoffActive, setHandoffActive] = useState(false)
+  const [headerHeight, setHeaderHeight] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)
   const [manualOverride, setManualOverride] = useState(false)
+  const [navHeight, setNavHeight] = useState(DEFAULT_MOBILE_NAV_HEIGHT)
 
   // All projects sticky at the same position - right below mobile nav
-  // Using -1 so the header's top border visually merges with nav's bottom border
-  const stickyTop = MOBILE_NAV_HEIGHT - 1
+  const stickyTop = navHeight
   const zIndex = 40 + index
 
   // Measure content height for smooth animation
@@ -339,85 +343,281 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
       resizeObserver.disconnect()
       clearTimeout(timer)
     }
+  }, [isSticky])
+
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    const measureHeight = () => {
+      const height = header.getBoundingClientRect().height
+      if (height > 0) setHeaderHeight(height)
+    }
+
+    measureHeight()
+    const resizeObserver = new ResizeObserver(measureHeight)
+    resizeObserver.observe(header)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
   }, [])
 
   useEffect(() => {
+    const setNextHeader = () => {
+      nextHeaderRef.current = document.querySelector<HTMLButtonElement>(`[data-project-header="${index + 1}"]`)
+    }
+    setNextHeader()
+    const timer = window.setTimeout(setNextHeader, 0)
+    return () => window.clearTimeout(timer)
+  }, [index])
+
+  useEffect(() => {
+    const readNavHeight = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--mobile-nav-height')
+        .trim()
+      const parsed = Number.parseFloat(raw)
+      if (!Number.isNaN(parsed) && parsed > 0 && parsed !== navHeight) {
+        setNavHeight(parsed)
+      }
+    }
+
+    readNavHeight()
+    const timer = window.setTimeout(readNavHeight, 0)
+    window.addEventListener('resize', readNavHeight, { passive: true })
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener('resize', readNavHeight)
+    }
+  }, [navHeight])
+
+  useEffect(() => {
     const section = sectionRef.current
-    if (!section) return
+    const header = headerRef.current
+    const content = contentRef.current
+    if (!section || !header) return
+    if (!content && !isSticky) return
 
     let rafId: number | null = null
 
     const handleScroll = () => {
       if (rafId) return
       rafId = requestAnimationFrame(() => {
-        const rect = section.getBoundingClientRect()
-        const nowSticky = rect.top <= stickyTop + 1
-        const sectionScrolledPast = rect.bottom <= stickyTop + 60
-        const sectionBeforeSticky = rect.top > stickyTop + 1
+        const navScrolling = document.documentElement.dataset.navScrolling === '1'
+        if (navScrolling) {
+          rafId = null
+          return
+        }
 
-        setIsSticky(nowSticky)
+        const sectionRect = section.getBoundingClientRect()
+        const sectionBeforeSticky = sectionRect.top > stickyTop + 1
+        const sectionBottomPassed = sectionRect.bottom <= stickyTop + (headerHeight || 0) + 1
+        const headerRect = header.getBoundingClientRect()
+        const headerTop = headerRect.top
+        const enterThreshold = stickyTop + 1
+        const exitThreshold = stickyTop + 6
+        const nextHeader = nextHeaderRef.current
+        const nextHeaderTop = nextHeader ? nextHeader.getBoundingClientRect().top : Infinity
+        const nextHeaderHits = nextHeaderTop <= stickyTop + 1
+        const nextHeaderVisible = nextHeaderTop <= window.innerHeight - 4
+        const boundaryBottom = Math.min(sectionRect.bottom, nextHeaderTop - 1)
 
-        // Auto-manage collapse unless user manually toggled
+        let nowSticky = isSticky
+        if (!isSticky) {
+          nowSticky = headerTop <= enterThreshold && !sectionBeforeSticky && !nextHeaderHits && !sectionBottomPassed
+        } else if (sectionBeforeSticky || headerTop > exitThreshold || nextHeaderHits || sectionBottomPassed) {
+          nowSticky = false
+        }
+
+        let contentOutOfView = false
+        let canFitOverlay = false
+        if (content) {
+          const contentRect = content.getBoundingClientRect()
+          const headerH = headerHeight || headerRect.height
+          const threshold = stickyTop + headerH
+          contentOutOfView = contentRect.bottom <= threshold
+        }
+        const headerH = headerHeight || headerRect.height
+        const availableSpace = boundaryBottom - (stickyTop + headerH - 1)
+        if (contentHeight > 0) {
+          canFitOverlay = availableSpace >= contentHeight + 1
+        }
+        const nextCanToggle = nowSticky && contentOutOfView && canFitOverlay
+
+        if (isSticky !== nowSticky) {
+          setIsSticky(nowSticky)
+        }
+        if (canToggle !== nextCanToggle) {
+          setCanToggle(nextCanToggle)
+        }
+        if (handoffActive !== nextHeaderVisible) {
+          setHandoffActive(nextHeaderVisible)
+        }
+
+        // Only allow overlay toggle once content is fully out of view
         if (!manualOverride) {
-          if (nowSticky && !wasStickyRef.current) {
-            setIsCollapsed(true)
-          } else if (sectionBeforeSticky && wasStickyRef.current) {
-            setIsCollapsed(false)
-          } else if (sectionScrolledPast) {
-            setIsCollapsed(true)
-          }
+          if (!nextCanToggle && !isCollapsed) setIsCollapsed(true)
         }
 
-        // Reset manual override when section leaves sticky state
-        if (sectionBeforeSticky || sectionScrolledPast) {
+        // Reset manual override when section leaves sticky state or content is visible
+        if (
+          sectionBeforeSticky ||
+          sectionBottomPassed ||
+          !canFitOverlay ||
+          !nowSticky ||
+          !nextCanToggle ||
+          nextHeaderHits
+        ) {
           setManualOverride(false)
+          if (!isCollapsed) setIsCollapsed(true)
         }
 
-        wasStickyRef.current = nowSticky
         rafId = null
       })
     }
 
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [stickyTop, manualOverride])
+  }, [stickyTop, manualOverride, isCollapsed, isSticky, canToggle, handoffActive, headerHeight])
 
   // Handle manual toggle
   const handleToggle = () => {
+    if (!isSticky || !canToggle) return
+    const headerRect = headerRef.current?.getBoundingClientRect()
+    const contentRect = contentRef.current?.getBoundingClientRect()
+    const sectionRect = sectionRef.current?.getBoundingClientRect()
+    const nextHeaderTop = nextHeaderRef.current?.getBoundingClientRect().top ?? Infinity
+    const headerH = headerRect?.height ?? headerHeight
+    const contentOutOfView = contentRect ? contentRect.bottom <= stickyTop + headerH : false
+    const availableSpace = sectionRect
+      ? Math.min(sectionRect.bottom, nextHeaderTop - 1) - (stickyTop + headerH - 1)
+      : 0
+    const canFitOverlay = contentHeight > 0 ? availableSpace >= contentHeight + 1 : false
+    if (!contentOutOfView || !canFitOverlay) return
+
     setManualOverride(true)
     setIsCollapsed(!isCollapsed)
   }
 
+  const renderContent = (
+    stickyContent: boolean,
+    forceCollapsed?: boolean,
+    withId = true,
+    attachRef = true,
+    zIndex?: number
+  ) => (
+    <div
+      id={withId ? `project-content-${project.id}` : undefined}
+      className={`${stickyContent ? 'absolute left-0 right-0 top-full z-20' : 'relative'} bg-black overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        (forceCollapsed ?? isCollapsed) ? 'max-h-0 opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+      style={{
+        ...(zIndex !== undefined ? { zIndex } : {}),
+        ...(!(forceCollapsed ?? isCollapsed) && contentHeight ? { maxHeight: `${contentHeight}px` } : {}),
+      }}
+    >
+      <div
+        ref={attachRef ? contentRef : undefined}
+        className={`px-3 pb-3 pt-4 border-t border-dashed border-[#333333] transition-opacity duration-200 ${
+          (forceCollapsed ?? isCollapsed) ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        <p className="text-[#666666] uppercase text-xs mb-2">
+          {project.subtitle}
+        </p>
+        <div className="space-y-1 text-[#888888] uppercase text-xs mb-3">
+          {project.description.map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {project.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bracket-link uppercase text-xs"
+              onClick={(e) => e.stopPropagation()}
+            >
+              [{link.label}]
+            </a>
+          ))}
+        </div>
+
+        {project.subProjects && (
+          <div className="space-y-2">
+            {project.subProjects.map((sub, subIndex) => (
+              sub.link ? (
+                <a
+                  key={sub.name}
+                  href={sub.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between border border-dashed border-[#333333] p-2 active:bg-[#BEFE00]/10 group"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#333333] text-xs">
+                      _{String(subIndex + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs uppercase">{sub.name}</span>
+                  </div>
+                  <span className="text-[#444444] text-sm">
+                    ↗
+                  </span>
+                </a>
+              ) : (
+                <div
+                  key={sub.name}
+                  className="flex items-center justify-between border border-dashed border-[#333333] p-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#333333] text-xs">
+                      _{String(subIndex + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs uppercase">{sub.name}</span>
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <div ref={sectionRef} className="md:hidden relative" data-project-section>
-      {/* Top border - mobile: just border, desktop: line with cross */}
-      <div className="md:hidden border-t border-dashed border-[#333333]" />
+      {/* Top border - desktop: line with cross */}
       <div className="hidden md:block relative">
         {index > 0 && <span className="cross cross-center cross-top">+</span>}
         <div className="h-line" />
       </div>
 
-      {/* Sticky header - all at same position, later projects cover earlier */}
-      <div
-        className={`sticky bg-black ${isSticky && index === 0 ? 'border-t border-dashed border-[#333333]' : ''}`}
-        style={{ top: `${stickyTop}px`, zIndex }}
-      >
-        {/* Title bar - more top padding when sticky for breathing room from nav */}
+      {/* Header + content wrapper */}
+      <div className="relative">
+        {/* Header (sticky when it reaches the nav) */}
         <button
-          className={`w-full flex items-center justify-between px-3 pb-3 border-b border-dashed border-[#333333] ${
-            isSticky ? 'pt-6' : 'pt-3'
-          }`}
+          ref={headerRef}
+          data-project-header={index}
+          className="sticky w-full flex items-center justify-between px-3 py-3 border-b border-t border-dashed border-[#333333] bg-black"
+          style={{ top: `${stickyTop}px`, zIndex }}
           onClick={handleToggle}
           aria-expanded={!isCollapsed}
           aria-controls={`project-content-${project.id}`}
+          aria-disabled={!canToggle}
         >
           <div className="flex items-center gap-3">
             <span className={`text-xs transition-colors duration-200 ${
-              isSticky && isCollapsed ? 'text-[#BEFE00]' : 'text-[#333333]'
+              isCollapsed ? 'text-[#BEFE00]' : 'text-[#333333]'
             }`}>
               _{String(index + 1).padStart(2, '0')}
             </span>
@@ -430,114 +630,53 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           </div>
           <ChevronDown
             size={18}
-            className={`transition-all duration-200 shrink-0 ${
+            className={`transition-all duration-200 shrink-0 ${!canToggle ? 'opacity-40' : ''} ${
               !isCollapsed ? 'rotate-180 text-[#BEFE00]' : 'text-[#666666]'
             }`}
           />
         </button>
 
-        {/* Collapsible content */}
-        <div
-          id={`project-content-${project.id}`}
-          className={`bg-black overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-            isCollapsed ? 'max-h-0 opacity-0 pointer-events-none' : 'max-h-[500px] opacity-100'
-          }`}
-        >
+        {/* In-flow content (scrolls under the sticky header) */}
+        {renderContent(false, false, true, true, handoffActive ? zIndex - 1 : undefined)}
+
+        {/* Overlay content (only when sticky + content fully out of view + expanded) */}
+        {isSticky && canToggle && manualOverride && !isCollapsed && (
           <div
-            ref={contentRef}
-            className={`px-3 pb-3 pt-4 border-t border-dashed border-[#333333] transition-opacity duration-200 ${
-              isCollapsed ? 'opacity-0' : 'opacity-100'
-            }`}
+            className="fixed left-0 right-0"
+            style={{
+              top: `${stickyTop + (headerHeight || 0) - 1}px`,
+              zIndex: zIndex - 1,
+            }}
           >
-            <p className="text-[#666666] uppercase text-xs mb-2">
-              {project.subtitle}
-            </p>
-            <div className="space-y-1 text-[#888888] uppercase text-xs mb-3">
-              {project.description.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {project.links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bracket-link uppercase text-xs"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  [{link.label}]
-                </a>
-              ))}
-            </div>
-
-            {project.subProjects && (
-              <div className="space-y-2">
-                {project.subProjects.map((sub, subIndex) => (
-                  sub.link ? (
-                    <a
-                      key={sub.name}
-                      href={sub.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between border border-dashed border-[#333333] p-2 active:bg-[#BEFE00]/10 group"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-[#333333] text-xs">
-                          _{String(subIndex + 1).padStart(2, '0')}
-                        </span>
-                        <span className="text-xs uppercase">{sub.name}</span>
-                      </div>
-                      <span className="text-[#444444] text-sm">
-                        ↗
-                      </span>
-                    </a>
-                  ) : (
-                    <div
-                      key={sub.name}
-                      className="flex items-center justify-between border border-dashed border-[#333333] p-2"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-[#333333] text-xs">
-                          _{String(subIndex + 1).padStart(2, '0')}
-                        </span>
-                        <span className="text-xs uppercase">{sub.name}</span>
-                      </div>
-                    </div>
-                  )
-                ))}
-              </div>
-            )}
+            {renderContent(false, false, false, false)}
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Images */}
-      {images.length > 0 && (
-        <div className="relative mt-4 space-y-4 px-4">
-          {images.map((img, imgIndex) => (
-            <div key={imgIndex}>
-              <p className="text-[#333333] text-xs uppercase mb-2">
-                _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
-              </p>
-              <div className="border border-dashed border-[#333333] overflow-hidden">
-                <PixelatedImage
-                  src={img}
-                  alt={`${project.title} screenshot ${imgIndex + 1}`}
-                  width={800}
-                  height={600}
-                  className="w-full"
-                />
+        {/* Images */}
+        {images.length > 0 && (
+          <div className="relative mt-4 space-y-4 px-4">
+            {images.map((img, imgIndex) => (
+              <div key={img.src}>
+                <p className="text-[#333333] text-xs uppercase mb-2">
+                  _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+                </p>
+                <div className="border border-dashed border-[#333333] overflow-hidden">
+                  <PixelatedImage
+                    src={img.src}
+                    alt={`${project.title} screenshot ${imgIndex + 1}`}
+                    width={img.width}
+                    height={img.height}
+                    className="w-full"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {/* Bottom spacing */}
-      <div className="h-8" />
+        {/* Bottom spacing */}
+        <div className="h-8" />
+      </div>
     </div>
   )
 }
@@ -547,7 +686,7 @@ export default function Projects() {
   const isHeaderInView = useInView(headerRef)
 
   return (
-    <section id="projects" className="relative">
+    <section id="projects" className="relative scroll-mt-[55px] md:scroll-mt-0">
       {/* Section header */}
       <div className="section-padding pb-0" ref={headerRef}>
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>

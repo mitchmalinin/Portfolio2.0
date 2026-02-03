@@ -44,6 +44,7 @@ export default function PixelatedImage({
     <div
       ref={containerRef}
       className={`relative ${className}`}
+      style={{ aspectRatio: `${width} / ${height}` }}
     >
       <div
         className={`transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-[0.98]'}`}
