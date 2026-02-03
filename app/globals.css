@@ -179,24 +179,28 @@ body {
   background: #000000;
   padding: 0 10px;
   z-index: 10;
-  transition: color 0.3s ease;
-}
-
-.cross.active {
-  color: #BEFE00;
 }
 
 .cross-center {
   left: 50%;
-  transform: translateX(-50%);
 }
 
 .cross-top {
-  top: -18px;
+  top: 0;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.cross-center.cross-top {
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .cross-bottom {
-  bottom: -18px;
+  bottom: 0;
+  transform: translateX(-50%) translateY(50%);
+}
+
+.cross-center.cross-bottom {
+  transform: translateX(-50%) translateY(50%);
 }
 
 /* Horizontal dashed line */
