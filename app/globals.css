@@ -54,11 +54,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow: hidden;
-}
-
-html.loaded {
-  overflow: auto;
 }
 
 body {
@@ -67,8 +62,13 @@ body {
   font-family: 'Departure Mono', monospace;
   font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
   letter-spacing: 0.02em;
+  overflow: hidden;
+}
+
+body.loaded {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 
