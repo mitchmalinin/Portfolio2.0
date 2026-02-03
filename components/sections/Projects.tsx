@@ -436,14 +436,16 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           />
         </button>
 
-        {/* Collapsible content */}
+        {/* Collapsible content - overlays when sticky, takes space when not */}
         <div
           id={`project-content-${project.id}`}
-          className="overflow-hidden bg-black transition-[height,max-height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
-          style={{
-            height: isCollapsed ? 0 : contentHeight || 'auto',
-            maxHeight: isCollapsed ? 0 : 500,
-          }}
+          className={`bg-black overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            isSticky ? 'absolute left-0 right-0' : ''
+          } ${
+            isCollapsed ? 'max-h-0 opacity-0 pointer-events-none' : 'max-h-[500px] opacity-100'
+          } ${
+            !isCollapsed && isSticky ? 'border-b border-dashed border-[#333333]' : ''
+          }`}
         >
           <div
             ref={contentRef}
