@@ -1,5 +1,9 @@
 'use client'
 
+import { useRef } from 'react'
+import DecryptedText from '@/components/DecryptedText'
+import { useInView } from '@/hooks/useInView'
+
 // Placeholder articles - can be connected to Twitter/X API later
 const articles = [
   {
@@ -29,23 +33,40 @@ const articles = [
 ]
 
 export default function Articles() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef)
+
   return (
-    <section id="articles" className="relative">
+    <section id="articles" className="relative" ref={sectionRef}>
       {/* Top border provided by Projects section */}
 
       <div className="section-padding">
-        <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
+        <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [WRITING]
         </p>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4">
-          ARTICLES
+        <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {isInView ? (
+            <DecryptedText
+              text="ARTICLES"
+              speed={60}
+              maxIterations={20}
+              sequential={true}
+              revealDirection="start"
+              animateOn="view"
+              characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+              className="text-white"
+              encryptedClassName="text-[#333333]"
+            />
+          ) : (
+            'ARTICLES'
+          )}
         </h2>
-        <p className="text-[#666666] text-base uppercase mb-16 max-w-xl">
+        <p className={`text-[#666666] text-base uppercase mb-16 max-w-xl transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           _THOUGHTS ON DEVELOPMENT, AI, AND BUILDING THINGS
         </p>
 
         {/* Articles list */}
-        <div className="space-y-px bg-[#222222]">
+        <div className={`space-y-px bg-[#222222] transition-all duration-700 delay-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {articles.map((article, index) => (
             <a
               key={article.id}
@@ -83,7 +104,7 @@ export default function Articles() {
         </div>
 
         {/* View all link */}
-        <div className="mt-8 text-center">
+        <div className={`mt-8 text-center transition-all duration-700 delay-[400ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <a
             href="https://x.com/mitchmalinin"
             target="_blank"

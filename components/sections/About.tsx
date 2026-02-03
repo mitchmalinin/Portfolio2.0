@@ -1,6 +1,9 @@
 'use client'
 
+import { useRef } from 'react'
 import RabbitHole from '@/components/ui/RabbitHole'
+import DecryptedText from '@/components/DecryptedText'
+import { useInView } from '@/hooks/useInView'
 
 // Current rabbit holes - things I'm exploring/learning
 const rabbitHoles = [
@@ -19,8 +22,11 @@ const rabbitHoles = [
 ]
 
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef)
+
   return (
-    <section id="about" className="relative">
+    <section id="about" className="relative" ref={sectionRef}>
       {/* Top border provided by Skills connector */}
       <div className="grid md:grid-cols-2">
         {/* Left side - Title & Stats */}
@@ -28,11 +34,25 @@ export default function About() {
           {/* Vertical divider */}
           <div className="hidden md:block absolute top-0 bottom-0 right-0 v-line" />
 
-          <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
+          <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             [ABOUT]
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-8">
-            WHO I AM
+          <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-8 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            {isInView ? (
+              <DecryptedText
+                text="WHO I AM"
+                speed={50}
+                maxIterations={15}
+                sequential={true}
+                revealDirection="start"
+                animateOn="view"
+                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                className="text-white"
+                encryptedClassName="text-[#333333]"
+              />
+            ) : (
+              'WHO I AM'
+            )}
           </h2>
 
           <div className="space-y-2 text-[#666666] uppercase text-base mb-12">

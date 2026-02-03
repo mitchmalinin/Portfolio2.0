@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import DecryptedText from '@/components/DecryptedText'
+import { useInView } from '@/hooks/useInView'
 
 // Register GSAP plugins - must happen before any component renders
 gsap.registerPlugin(ScrollTrigger)
@@ -141,9 +143,11 @@ function ScrollLine() {
 function DesktopProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const annotations = imageAnnotations[project.id] || []
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(sectionRef)
 
   return (
-    <div className="hidden md:block relative">
+    <div className="hidden md:block relative" ref={sectionRef}>
       {/* Cross marker at top */}
       <div className="relative">
         <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%)' }}>+</span>
@@ -155,16 +159,30 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
         {/* Left: Project info (sticky, top-aligned) */}
         <div className="col-span-1 relative">
           <div className="sticky top-0 h-screen flex flex-col justify-start pt-16 lg:pt-24 p-8 lg:p-12 border-r border-dashed border-[#333333]">
-            <p className="text-[#333333] text-xs mb-4">
+            <p className={`text-[#333333] text-xs mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               _{String(index + 1).padStart(2, '0')}
             </p>
-            <h3 className="text-2xl lg:text-3xl xl:text-4xl uppercase tracking-wide mb-3">
-              {project.title}
+            <h3 className={`text-2xl lg:text-3xl xl:text-4xl uppercase tracking-wide mb-3 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              {isInView ? (
+                <DecryptedText
+                  text={project.title}
+                  speed={70}
+                  maxIterations={25}
+                  sequential={true}
+                  revealDirection="start"
+                  animateOn="view"
+                  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789."
+                  className="text-white"
+                  encryptedClassName="text-[#333333]"
+                />
+              ) : (
+                project.title
+              )}
             </h3>
-            <p className="text-[#666666] uppercase text-xs mb-6">
+            <p className={`text-[#666666] uppercase text-xs mb-6 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               {project.subtitle}
             </p>
-            <div className="space-y-1 text-[#888888] uppercase text-xs mb-8">
+            <div className={`space-y-1 text-[#888888] uppercase text-xs mb-8 transition-all duration-700 delay-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               {project.description.map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
@@ -172,7 +190,7 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
 
             {/* Sub-projects */}
             {project.subProjects && (
-              <div className="space-y-2 mb-8">
+              <div className={`space-y-2 mb-8 transition-all duration-700 delay-[400ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 {project.subProjects.map((sub, subIndex) => (
                   <div
                     key={sub.name}
@@ -200,7 +218,7 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
             )}
 
             {/* Links */}
-            <div className="flex flex-wrap gap-3">
+            <div className={`flex flex-wrap gap-3 transition-all duration-700 delay-[500ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               {project.links.map((link) => (
                 <a
                   key={link.label}
@@ -216,7 +234,7 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
 
             {/* Active indicator for Schills */}
             {project.id === 'schills' && (
-              <div className="mt-8 flex items-center gap-2">
+              <div className={`mt-8 flex items-center gap-2 transition-all duration-700 delay-[600ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
                 <span className="text-[#BEFE00] text-xs uppercase tracking-wider">
                   ACTIVE
@@ -499,18 +517,35 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
 }
 
 export default function Projects() {
+  const headerRef = useRef<HTMLDivElement>(null)
+  const isHeaderInView = useInView(headerRef)
+
   return (
     <section id="projects" className="relative">
       {/* Section header */}
-      <div className="section-padding pb-0">
-        <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
+      <div className="section-padding pb-0" ref={headerRef}>
+        <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [SELECTED WORK]
         </p>
         <div className="flex items-baseline justify-between">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide">
-            PROJECTS
+          <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide transition-all duration-700 delay-100 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            {isHeaderInView ? (
+              <DecryptedText
+                text="PROJECTS"
+                speed={50}
+                maxIterations={15}
+                sequential={true}
+                revealDirection="start"
+                animateOn="view"
+                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                className="text-white"
+                encryptedClassName="text-[#333333]"
+              />
+            ) : (
+              'PROJECTS'
+            )}
           </h2>
-          <span className="hidden md:inline text-[#333333] text-sm uppercase tracking-wider">
+          <span className={`hidden md:inline text-[#333333] text-sm uppercase tracking-wider transition-all duration-700 delay-200 ${isHeaderInView ? 'opacity-100' : 'opacity-0'}`}>
             _{projects.length.toString().padStart(2, '0')}_FEATURED
           </span>
         </div>

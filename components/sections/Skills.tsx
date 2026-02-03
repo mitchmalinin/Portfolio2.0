@@ -1,6 +1,8 @@
 'use client'
 
+import { useRef } from 'react'
 import LogoLoop from '@/components/LogoLoop'
+import { useInView } from '@/hooks/useInView'
 import {
   SiReact,
   SiNextdotjs,
@@ -24,15 +26,18 @@ const skills = [
 ]
 
 export default function Skills() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef)
+
   return (
-    <section id="skills" className="relative py-16">
+    <section id="skills" className="relative py-16" ref={sectionRef}>
       {/* Top border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>
         <div className="h-line" />
       </div>
 
-      <div className="py-12">
+      <div className={`py-12 transition-all duration-700 ${isInView ? 'opacity-100' : 'opacity-0'}`}>
         <LogoLoop
           logos={skills}
           speed={60}

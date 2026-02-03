@@ -1,10 +1,40 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useIsLoaded } from '@/components/PageWrapper'
 import DecryptedText from '@/components/DecryptedText'
 
 export default function Hero() {
   const isLoaded = useIsLoaded()
+  const [frontendDecrypted, setFrontendDecrypted] = useState(false)
+  const [showStrikethrough, setShowStrikethrough] = useState(false)
+  const [showVibeDev, setShowVibeDev] = useState(false)
+
+  // Sequence: Frontend decrypts -> strikethrough -> Vibe Dev decrypts
+  useEffect(() => {
+    if (!isLoaded) return
+
+    // Frontend DEV finishes decrypting quickly
+    const frontendTimer = setTimeout(() => {
+      setFrontendDecrypted(true)
+    }, 600)
+
+    // Strikethrough animates right after
+    const strikeTimer = setTimeout(() => {
+      setShowStrikethrough(true)
+    }, 800)
+
+    // Vibe Dev starts decrypting immediately after strikethrough
+    const vibeTimer = setTimeout(() => {
+      setShowVibeDev(true)
+    }, 1100)
+
+    return () => {
+      clearTimeout(frontendTimer)
+      clearTimeout(strikeTimer)
+      clearTimeout(vibeTimer)
+    }
+  }, [isLoaded])
 
   return (
     <section className="min-h-screen flex flex-col justify-center section-padding">
@@ -41,7 +71,7 @@ export default function Hero() {
           >
             {isLoaded ? (
               <DecryptedText
-                text="AI ARCHITECT,"
+                text="AI ALCHEMIST"
                 speed={50}
                 maxIterations={15}
                 sequential={true}
@@ -52,7 +82,7 @@ export default function Hero() {
                 encryptedClassName="text-[#333333]"
               />
             ) : (
-              'AI ARCHITECT,'
+              'AI ALCHEMIST'
             )}
           </p>
           <p
@@ -60,11 +90,37 @@ export default function Hero() {
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <span className="strikethrough">FRONTEND DEV</span>{' '}
-            <span className="text-white">
+            {/* FRONTEND DEV with animated strikethrough */}
+            <span className="relative inline-block">
               {isLoaded ? (
                 <DecryptedText
-                  text="VIBE DEV,"
+                  text="FRONTEND DEV"
+                  speed={50}
+                  maxIterations={15}
+                  sequential={true}
+                  revealDirection="start"
+                  animateOn="view"
+                  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+                  className={showStrikethrough ? 'text-[#555555]' : 'text-[#888888]'}
+                  encryptedClassName="text-[#333333]"
+                />
+              ) : (
+                'FRONTEND DEV'
+              )}
+              {/* Animated strikethrough line */}
+              <span
+                className="absolute left-0 top-1/2 h-[2px] bg-[#BEFE00] transition-all duration-500 ease-out"
+                style={{
+                  width: showStrikethrough ? '100%' : '0%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
+            </span>{' '}
+            {/* VIBE DEV - appears after strikethrough */}
+            <span className="text-white">
+              {showVibeDev ? (
+                <DecryptedText
+                  text="VIBE DEV"
                   speed={50}
                   maxIterations={15}
                   sequential={true}
@@ -75,7 +131,7 @@ export default function Hero() {
                   encryptedClassName="text-[#444444]"
                 />
               ) : (
-                'VIBE DEV,'
+                <span className="opacity-0">VIBE DEV</span>
               )}
             </span>
           </p>
@@ -100,7 +156,7 @@ export default function Hero() {
               ) : (
                 'MR.WZRD'
               )}
-            </span>.
+            </span>
           </p>
         </div>
 

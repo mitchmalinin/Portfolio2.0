@@ -2,9 +2,13 @@
 
 import { useCallback, useRef } from 'react'
 import { experiments } from '@/lib/projects'
+import DecryptedText from '@/components/DecryptedText'
+import { useInView } from '@/hooks/useInView'
 
 export default function Experiments() {
   const gridRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef)
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!gridRef.current) return
@@ -32,7 +36,7 @@ export default function Experiments() {
   }, [])
 
   return (
-    <section id="experiments" className="relative">
+    <section id="experiments" className="relative" ref={sectionRef}>
       {/* Top border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>
@@ -40,13 +44,27 @@ export default function Experiments() {
       </div>
 
       <div className="section-padding">
-        <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
+        <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [LAB]
         </p>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow">
-          EXPERIMENTS
+        <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {isInView ? (
+            <DecryptedText
+              text="EXPERIMENTS"
+              speed={60}
+              maxIterations={20}
+              sequential={true}
+              revealDirection="start"
+              animateOn="view"
+              characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+              className="text-white"
+              encryptedClassName="text-[#333333]"
+            />
+          ) : (
+            'EXPERIMENTS'
+          )}
         </h2>
-        <p className="text-[#666666] text-base uppercase mb-16 max-w-xl">
+        <p className={`text-[#666666] text-base uppercase mb-16 max-w-xl transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           _SIDE PROJECTS, PROTOTYPES, AND CREATIVE EXPLORATIONS
         </p>
 
@@ -55,7 +73,7 @@ export default function Experiments() {
           ref={gridRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#222222]"
+          className={`grid grid-cols-1 md:grid-cols-2 gap-px bg-[#222222] transition-all duration-700 delay-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
           {experiments.map((exp, index) => (
             <div
