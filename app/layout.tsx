@@ -39,12 +39,26 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'MITCH MALININ',
-  description: 'AI Architect, Vibe Coder, Mr. Wizard',
+  title: '[Mr.Wzrd]',
+  description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
   openGraph: {
-    title: 'MITCH MALININ',
-    description: 'AI Architect, Vibe Coder, Mr. Wizard',
+    title: '[Mr.Wzrd]',
+    description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Mr.Wzrd - AI Alchemist, Vibe Dev',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '[Mr.Wzrd]',
+    description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
+    images: ['/og-image.png'],
   },
 }
 

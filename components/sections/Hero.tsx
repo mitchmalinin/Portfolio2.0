@@ -37,11 +37,11 @@ export default function Hero() {
   }, [isLoaded])
 
   return (
-    <section className="min-h-screen flex flex-col justify-center section-padding">
+    <section className="min-h-screen flex flex-col justify-center section-padding pt-24 md:pt-0">
       <div className="max-w-4xl">
         {/* Name */}
         <h1
-          className={`text-5xl md:text-7xl lg:text-8xl uppercase tracking-wider mb-12 hover-glow transition-all duration-700 ${
+          className={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl uppercase tracking-wider mb-8 md:mb-12 hover-glow transition-all duration-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -63,7 +63,7 @@ export default function Hero() {
         </h1>
 
         {/* Titles */}
-        <div className="text-2xl md:text-3xl lg:text-4xl text-[#888888] uppercase tracking-wide space-y-2">
+        <div className="text-lg sm:text-xl md:text-3xl lg:text-4xl text-[#888888] uppercase tracking-wide space-y-1 md:space-y-2">
           <p
             className={`transition-all duration-700 delay-100 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -162,11 +162,11 @@ export default function Hero() {
 
         {/* Scroll indicator */}
         <div
-          className={`mt-24 transition-all duration-700 delay-500 ${
+          className={`mt-12 md:mt-24 transition-all duration-700 delay-500 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#444444] text-sm uppercase tracking-widest">
+          <p className="text-[#444444] text-xs md:text-sm uppercase tracking-widest">
             [SCROLL TO EXPLORE]
           </p>
         </div>

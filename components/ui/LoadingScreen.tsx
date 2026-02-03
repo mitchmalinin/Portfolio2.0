@@ -40,16 +40,22 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
       }`}
     >
       {/* MW ASCII Logo - W is M flipped upside-down with matched height */}
-      <pre className="text-[#ffffff] text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none">
-{`
-███╗   ███╗  ╔═╗     ╔═╗
-████╗ ████║  ██║ ╔═╗ ██║
-██╔████╔██║  ██║╔██╚╗██║
-██║╚██╔╝██║  ██╚████╚██║
-██║ ╚═╝ ██║  ████╝ ████║
-╚═╝     ╚═╝  ███╝   ███╝
-`}
-      </pre>
+      <div className="flex items-start gap-6 text-[#ffffff] text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none">
+        {/* M */}
+        <pre className="m-0">{`███╗   ███╗
+████╗ ████║
+██╔████╔██║
+██║╚██╔╝██║
+██║ ╚═╝ ██║
+╚═╝     ╚═╝`}</pre>
+        {/* W - raised up to align visually */}
+        <pre className="m-0" style={{ transform: 'translateY(-5px)' }}>{`╔═╗     ╔═╗
+██║ ╔═╗ ██║
+██║╔██╚╗██║
+██╚████╚██║
+████╝ ████║
+███╝   ███╝`}</pre>
+      </div>
 
       {/* Loading text */}
       <div className="text-[#666666] text-sm tracking-[0.3em] uppercase">

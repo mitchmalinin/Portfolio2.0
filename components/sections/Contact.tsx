@@ -28,7 +28,7 @@ export default function Contact() {
           <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             [CONTACT]
           </p>
-          <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             {isInView ? (
               <DecryptedText
                 text="LET'S CONNECT"
@@ -46,7 +46,7 @@ export default function Contact() {
             )}
           </h2>
           <p className={`text-[#666666] text-lg uppercase mb-16 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            _OPEN FOR COLLABORATIONS AND NEW PROJECTS
+            _DOWN TO BUILD SOMETHING COOL? LETS TALK.
           </p>
 
           {/* Contact links */}
@@ -62,7 +62,7 @@ export default function Contact() {
                 <span className="text-[#444444] text-sm uppercase tracking-widest">
                   _{link.label}
                 </span>
-                <p className="text-xl md:text-2xl uppercase mt-1 group-hover:text-[#888888] transition-colors">
+                <p className="text-lg md:text-xl lg:text-2xl uppercase mt-1 group-hover:text-[#888888] transition-colors break-all md:break-normal">
                   {link.value}
                 </p>
               </a>
@@ -88,7 +88,7 @@ export default function Contact() {
             &copy; {new Date().getFullYear()} MITCH MALININ
           </p>
           <p className="text-[#222222] text-sm uppercase tracking-widest mt-2">
-            _DESIGNED BY MR. WIZARD
+            _DESIGNED & BUILT BY YOURS TRULY
           </p>
         </div>
       </div>

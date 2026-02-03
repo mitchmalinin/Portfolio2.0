@@ -44,7 +44,7 @@ export default function Articles() {
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [WRITING]
         </p>
-        <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {isInView ? (
             <DecryptedText
               text="ARTICLES"
@@ -62,7 +62,7 @@ export default function Articles() {
           )}
         </h2>
         <p className={`text-[#666666] text-base uppercase mb-16 max-w-xl transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          _THOUGHTS ON DEVELOPMENT, AI, AND BUILDING THINGS
+          _THOUGHTS ON CRYPTO, AI, AND CULTURE
         </p>
 
         {/* Articles list */}

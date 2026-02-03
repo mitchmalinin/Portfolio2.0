@@ -9,22 +9,22 @@ import { useEffect, useRef, useState } from 'react'
 
 // Annotation labels for images
 const imageAnnotations: Record<string, string[][]> = {
+  'shillz': [
+    ['LANDING', 'GET PAID TO SHILL', 'CREATOR PLATFORM'],
+    ['DASHBOARD', 'ACTIVE SHILLZ', 'LIVE METRICS'],
+    ['PROJECT PAGE', 'CAMPAIGN DETAILS', 'REWARD POOLS'],
+    ['ANALYTICS', 'PERFORMANCE TRENDS', 'BUDGET BREAKDOWN'],
+    ['PROFILE', 'CREATOR STATS', 'EARNINGS'],
+  ],
   'y2k-dotcom': [
-    ['HERO SECTION', 'RETRO GRADIENT BG', 'ANIMATED LOGO'],
-    ['PRODUCT GRID', 'HOVER EFFECTS', 'QUICK VIEW'],
-    ['MEME SEARCH', 'AI TAGGING', 'INFINITE SCROLL'],
-    ['CART FLOW', 'GUEST CHECKOUT', 'STRIPE INTEGRATION'],
+    ['HOMEPAGE', 'NOSTALGIA OS', 'CULTURE COIN'],
+    ['MEME MACHINE', 'AI GENERATION', 'INSTANT MEMES'],
+    ['PORTFOLIO', 'HOLDER DASHBOARD', 'ON-CHAIN DATA'],
+    ['MEME DATABASE', 'SEARCHABLE ARCHIVE', 'COMMUNITY UPLOADS'],
   ],
   'y2k-coded': [
-    ['MONACO EDITOR', 'SYNTAX HIGHLIGHT', 'THEMES'],
-    ['SNIPPET LIBRARY', 'SEARCH & FILTER', 'COPY TO CLIPBOARD'],
-    ['TEMPLATE GALLERY', 'PREVIEW MODE', 'EXPORT OPTIONS'],
-  ],
-  'schills': [
-    ['DASHBOARD', 'REAL-TIME STATS', 'NOTIFICATIONS'],
-    ['AI MATCHING', 'SKILL ANALYSIS', 'SMART FILTERS'],
-    ['SERVICE CARDS', 'RATINGS', 'BOOKING SYSTEM'],
-    ['CHAT INTERFACE', 'FILE SHARING', 'VIDEO CALLS'],
+    ['DROP PAGE', 'COUNTDOWN TIMER', 'NOSTALGIA VIBES'],
+    ['ARCHIVE', 'PAST DROPS', 'SOLD OUT'],
   ],
 }
 
@@ -191,27 +191,37 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
             {project.subProjects && (
               <div className={`space-y-2 mb-8 transition-all duration-700 delay-[400ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 {project.subProjects.map((sub, subIndex) => (
-                  <div
-                    key={sub.name}
-                    className="flex items-center justify-between border border-dashed border-[#333333] p-2 hover:border-[#555555] transition-colors"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#333333] text-xs">
-                        _{String(subIndex + 1).padStart(2, '0')}
-                      </span>
-                      <span className="text-xs uppercase">{sub.name}</span>
-                    </div>
-                    {sub.link && (
-                      <a
-                        href={sub.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#444444] hover:text-[#BEFE00] transition-colors text-sm"
-                      >
+                  sub.link ? (
+                    <a
+                      key={sub.name}
+                      href={sub.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between border border-dashed border-[#333333] p-2 hover:border-[#BEFE00] hover:bg-[#BEFE00]/5 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#333333] text-xs group-hover:text-[#BEFE00] transition-colors">
+                          _{String(subIndex + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs uppercase">{sub.name}</span>
+                      </div>
+                      <span className="text-[#444444] group-hover:text-[#BEFE00] transition-colors text-sm">
                         ↗
-                      </a>
-                    )}
-                  </div>
+                      </span>
+                    </a>
+                  ) : (
+                    <div
+                      key={sub.name}
+                      className="flex items-center justify-between border border-dashed border-[#333333] p-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#333333] text-xs">
+                          _{String(subIndex + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs uppercase">{sub.name}</span>
+                      </div>
+                    </div>
+                  )
                 ))}
               </div>
             )}
@@ -232,7 +242,7 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
             </div>
 
             {/* Active indicator for Schills */}
-            {project.id === 'schills' && (
+            {project.id === 'shillz' && (
               <div className={`mt-8 flex items-center gap-2 transition-all duration-700 delay-[600ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
                 <span className="text-[#BEFE00] text-xs uppercase tracking-wider">
@@ -261,8 +271,8 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
                     <PixelatedImage
                       src={img}
                       alt={`${project.title} screenshot ${imgIndex + 1}`}
-                      width={800}
-                      height={600}
+                      width={1920}
+                      height={1080}
                       className="w-full"
                     />
                   </div>
@@ -414,7 +424,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
             <h3 className="text-base sm:text-lg uppercase tracking-wide text-left">
               {project.title}
             </h3>
-            {project.id === 'schills' && (
+            {project.id === 'shillz' && (
               <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
             )}
           </div>
@@ -467,28 +477,38 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
             {project.subProjects && (
               <div className="space-y-2">
                 {project.subProjects.map((sub, subIndex) => (
-                  <div
-                    key={sub.name}
-                    className="flex items-center justify-between border border-dashed border-[#333333] p-2"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#333333] text-xs">
-                        _{String(subIndex + 1).padStart(2, '0')}
-                      </span>
-                      <span className="text-xs uppercase">{sub.name}</span>
-                    </div>
-                    {sub.link && (
-                      <a
-                        href={sub.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#444444] hover:text-[#BEFE00] transition-colors text-sm"
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                  sub.link ? (
+                    <a
+                      key={sub.name}
+                      href={sub.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between border border-dashed border-[#333333] p-2 active:bg-[#BEFE00]/10 group"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#333333] text-xs">
+                          _{String(subIndex + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs uppercase">{sub.name}</span>
+                      </div>
+                      <span className="text-[#444444] text-sm">
                         ↗
-                      </a>
-                    )}
-                  </div>
+                      </span>
+                    </a>
+                  ) : (
+                    <div
+                      key={sub.name}
+                      className="flex items-center justify-between border border-dashed border-[#333333] p-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#333333] text-xs">
+                          _{String(subIndex + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs uppercase">{sub.name}</span>
+                      </div>
+                    </div>
+                  )
                 ))}
               </div>
             )}

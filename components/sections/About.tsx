@@ -9,15 +9,15 @@ import { useInView } from '@/hooks/useInView'
 const rabbitHoles = [
   {
     topic: 'AI AGENTS',
-    description: 'BUILDING AUTONOMOUS SYSTEMS WITH CLAUDE',
+    description: 'SHIPPING WITH CLAUDE & CURSOR',
   },
   {
-    topic: 'WEBGL SHADERS',
-    description: 'CUSTOM VISUAL EFFECTS & DITHERING',
+    topic: 'ON-CHAIN APPS',
+    description: 'BUILDING IN THE CRYPTO TRENCHES',
   },
   {
-    topic: 'EDGE COMPUTING',
-    description: 'SERVERLESS AT THE EDGE WITH CLOUDFLARE',
+    topic: 'CULTURE x CODE',
+    description: 'WHERE MEMES MEET MACHINES',
   },
 ]
 
@@ -28,16 +28,77 @@ export default function About() {
   return (
     <section id="about" className="relative" ref={sectionRef}>
       {/* Top border provided by Skills connector */}
-      <div className="grid md:grid-cols-2">
+
+      {/* Mobile layout */}
+      <div className="md:hidden section-padding">
+        <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          [ABOUT]
+        </p>
+        <h2 className={`text-3xl sm:text-4xl uppercase tracking-wide mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {isInView ? (
+            <DecryptedText
+              text="WHO I AM"
+              speed={50}
+              maxIterations={15}
+              sequential={true}
+              revealDirection="start"
+              animateOn="view"
+              characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+              className="text-white"
+              encryptedClassName="text-[#333333]"
+            />
+          ) : (
+            'WHO I AM'
+          )}
+        </h2>
+
+        {/* Stats */}
+        <div className="space-y-1 text-[#666666] uppercase text-sm mb-8">
+          <p>_7 YEARS SHIPPING CODE</p>
+          <p>_FULL STACK + ON-CHAIN</p>
+          <p>_AI-AUGMENTED BUILDER</p>
+        </div>
+
+        {/* Bio */}
+        <div className="space-y-4 text-[#888888] text-sm leading-relaxed mb-8">
+          <p>
+            I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
+            OBSESSED WITH SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
+          </p>
+          <p>
+            FROM TOKEN-BASED COMMUNITIES TO MEME MACHINES,
+            I TURN DEGEN DREAMS INTO WORKING CODE.
+          </p>
+          <p className="text-[#666666]">
+            _BASED IN <span className="dashed-underline">MIAMI</span>
+          </p>
+        </div>
+
+        {/* Contact link */}
+        <div className="mb-10">
+          <a
+            href="mailto:mitchmalinin@gmail.com"
+            className="bracket-link text-base uppercase"
+          >
+            [SAY HELLO]
+          </a>
+        </div>
+
+        {/* Rabbit Holes - centered for mobile */}
+        <RabbitHole items={rabbitHoles} />
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden md:grid md:grid-cols-2">
         {/* Left side - Title & Stats */}
         <div className="relative section-padding">
           {/* Vertical divider */}
-          <div className="hidden md:block absolute top-0 bottom-0 right-0 v-line" />
+          <div className="absolute top-0 bottom-0 right-0 v-line" />
 
           <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             [ABOUT]
           </p>
-          <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-8 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <h2 className={`text-5xl lg:text-6xl uppercase tracking-wide mb-8 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             {isInView ? (
               <DecryptedText
                 text="WHO I AM"
@@ -56,29 +117,28 @@ export default function About() {
           </h2>
 
           <div className="space-y-2 text-[#666666] uppercase text-base mb-12">
-            <p>_5+ YEARS EXPERIENCE</p>
-            <p>_50+ PROJECTS BUILT</p>
-            <p>_AI-POWERED DEVELOPMENT</p>
+            <p>_7 YEARS SHIPPING CODE</p>
+            <p>_FULL STACK + ON-CHAIN</p>
+            <p>_AI-AUGMENTED BUILDER</p>
           </div>
 
           {/* Current Rabbit Holes - moved from bottom */}
           <RabbitHole items={rabbitHoles} />
         </div>
 
-        {/* Right side - Bio & Rabbit Holes */}
+        {/* Right side - Bio */}
         <div className="section-padding">
           <div className="space-y-6 text-[#888888] text-lg leading-relaxed max-w-xl">
             <p>
-              I BUILD THINGS AT THE INTERSECTION OF AI AND WEB DEVELOPMENT.
-              SPECIALIZING IN MODERN JAVASCRIPT FRAMEWORKS, I LEVERAGE TOOLS
-              LIKE CLAUDE AND CURSOR TO ACCELERATE DEVELOPMENT.
+              I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
+              OBSESSED WITH SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
             </p>
             <p>
-              FROM PIXEL-PERFECT INTERFACES TO SCALABLE BACKEND SYSTEMS,
-              I CREATE INTELLIGENT EXPERIENCES THAT PUSH BOUNDARIES.
+              FROM TOKEN-BASED COMMUNITIES TO MEME MACHINES,
+              I TURN DEGEN DREAMS INTO WORKING CODE.
             </p>
             <p className="text-[#666666]">
-              _BASED IN <span className="dashed-underline">LOS ANGELES</span>
+              _BASED IN <span className="dashed-underline">MIAMI</span>
             </p>
           </div>
 

@@ -47,7 +47,7 @@ export default function Experiments() {
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [LAB]
         </p>
-        <h2 className={`text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {isInView ? (
             <DecryptedText
               text="EXPERIMENTS"
@@ -65,7 +65,7 @@ export default function Experiments() {
           )}
         </h2>
         <p className={`text-[#666666] text-base uppercase mb-16 max-w-xl transition-all duration-700 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          _SIDE PROJECTS, PROTOTYPES, AND CREATIVE EXPLORATIONS
+          _LATE NIGHT BUILDS, WEIRD IDEAS, RANDOM DROPS
         </p>
 
         {/* Experiments grid */}
