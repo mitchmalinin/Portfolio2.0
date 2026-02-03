@@ -154,10 +154,6 @@ export default function Dock({
   const mouseX = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
 
-  const maxHeight = useMemo(() => Math.max(dockHeight, magnification + magnification / 2 + 4), [dockHeight, magnification]);
-  const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
-  const height = useSpring(heightRow, spring);
-
   // Calculate fixed widths to avoid 'auto' glitch
   const gap = 10;
   const padding = 12;
@@ -166,7 +162,7 @@ export default function Dock({
 
   return (
     <motion.div
-      style={{ height: isExpanded ? height : collapsedWidth, scrollbarWidth: 'none' }}
+      style={{ height: isExpanded ? panelHeight : collapsedWidth, scrollbarWidth: 'none' }}
       className="mx-2 flex max-w-full items-center justify-center"
     >
       <motion.div
