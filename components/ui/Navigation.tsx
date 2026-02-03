@@ -86,14 +86,6 @@ function MobileNav() {
           })}
         </div>
 
-        {/* Bottom decoration */}
-        <div className="flex items-center justify-center gap-2 pb-4 text-[#333333] text-xs">
-          <span>+</span>
-          <span className="border-t border-dashed border-[#333333] w-16" />
-          <span className="uppercase tracking-wider">NAVIGATE</span>
-          <span className="border-t border-dashed border-[#333333] w-16" />
-          <span>+</span>
-        </div>
       </div>
     </div>
   )
