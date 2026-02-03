@@ -179,15 +179,22 @@ export default function Dock({
         className={`${className} relative flex items-end justify-center rounded-2xl overflow-visible`}
         initial={false}
         animate={{
-          width: isExpanded ? expandedWidth : collapsedWidth,
+          width: isExpanded
+            ? [collapsedWidth, expandedWidth + 8, expandedWidth]
+            : [expandedWidth, collapsedWidth - 8, collapsedWidth],
           height: isExpanded ? panelHeight : collapsedWidth,
           paddingBottom: isExpanded ? 8 : 0,
           paddingLeft: isExpanded ? padding : 0,
           paddingRight: isExpanded ? padding : 0,
         }}
         transition={{
-          duration: 0.25,
+          duration: 0.2,
           ease: [0.4, 0, 0.2, 1],
+          width: {
+            duration: 0.25,
+            times: [0, 0.7, 1],
+            ease: 'easeOut',
+          },
         }}
         style={{
           background: 'rgba(30, 30, 30, 0.6)',
