@@ -27,14 +27,29 @@ function MobileNav() {
 
   const scrollTo = (id: string) => {
     setIsOpen(false)
-    if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      const element = document.getElementById(id)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+    // Delay scroll to let nav close animation complete
+    setTimeout(() => {
+      // Temporarily disable CSS smooth scroll
+      document.documentElement.style.scrollBehavior = 'auto'
+
+      if (id === 'top') {
+        window.scrollTo({ top: 0, behavior: 'instant' })
+      } else {
+        const element = document.getElementById(id)
+        if (element) {
+          const navHeight = 55 // Mobile nav height
+          const elementRect = element.getBoundingClientRect()
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+          const targetPosition = elementRect.top + scrollTop - navHeight
+          window.scrollTo({ top: targetPosition, behavior: 'instant' })
+        }
       }
-    }
+
+      // Re-enable CSS smooth scroll after a tick
+      setTimeout(() => {
+        document.documentElement.style.scrollBehavior = ''
+      }, 50)
+    }, 350)
   }
 
   return (

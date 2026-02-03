@@ -38,8 +38,6 @@ export default function Articles() {
 
   return (
     <section id="articles" className="relative" ref={sectionRef}>
-      {/* Top border provided by Projects section */}
-
       <div className="section-padding">
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [WRITING]
