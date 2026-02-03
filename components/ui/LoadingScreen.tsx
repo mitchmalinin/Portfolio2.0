@@ -7,6 +7,13 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
   const [isComplete, setIsComplete] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
 
+  // Enable scrolling when loading is complete
+  useEffect(() => {
+    if (isComplete) {
+      document.documentElement.classList.add('loaded')
+    }
+  }, [isComplete])
+
   useEffect(() => {
     const duration = 2500 // 2.5 second loading
     const interval = 50
@@ -35,12 +42,12 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
 
   return (
     <div
-      className={`fixed inset-0 bg-black z-[10000] flex flex-col items-center justify-center gap-8 transition-opacity duration-500 ${
+      className={`fixed top-0 left-0 w-screen h-screen bg-black z-[10000] flex flex-col items-center justify-center gap-8 transition-opacity duration-500 overflow-hidden px-4 ${
         isComplete ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       {/* MW ASCII Logo - W is M flipped upside-down with matched height */}
-      <div className="flex items-start gap-6 text-[#ffffff] text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none">
+      <div className="flex items-start gap-2 md:gap-6 text-[#ffffff] text-[6px] sm:text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none scale-[0.8] sm:scale-100">
         {/* M */}
         <pre className="m-0">{`███╗   ███╗
 ████╗ ████║

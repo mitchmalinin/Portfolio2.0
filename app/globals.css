@@ -54,6 +54,11 @@
 
 html {
   scroll-behavior: smooth;
+  overflow: hidden;
+}
+
+html.loaded {
+  overflow: auto;
 }
 
 body {
@@ -65,6 +70,7 @@ body {
   overflow-x: hidden;
   letter-spacing: 0.02em;
 }
+
 
 /* CRT Scanline overlay */
 body::after {

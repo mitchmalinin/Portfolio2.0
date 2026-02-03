@@ -41,8 +41,8 @@ function MobileNav() {
     <div className="md:hidden fixed top-0 left-0 right-0 z-50">
       {/* Collapsed bar */}
       <div className="flex items-center justify-between p-3 bg-black/95 backdrop-blur-sm border-b border-dashed border-[#333333]">
-        <span className="text-xs uppercase tracking-wider text-[#666666]">
-          [MW]
+        <span className="text-xs uppercase tracking-wider text-white font-mono leading-none">
+          [M<span className="inline-block ml-[1px]" style={{ transform: 'rotate(180deg)', position: 'relative', top: '-1px' }}>M</span>]
         </span>
         <button
           onClick={() => setIsOpen(!isOpen)}
