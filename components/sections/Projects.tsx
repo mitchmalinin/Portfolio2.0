@@ -52,7 +52,7 @@ function ScrollLine() {
       // Start: when container top is 300px below viewport top (early start)
       // End: when container bottom hits viewport bottom
 
-      const earlyStartOffset = 300 // Start 300px before container reaches top
+      const earlyStartOffset = 600 // Start 600px before container reaches top
 
       // How far we've scrolled into the container
       // At start: rect.top = earlyStartOffset, scrolled = 0
@@ -71,19 +71,25 @@ function ScrollLine() {
       const glowHeight = progress * containerHeight
       const glowBottomInViewport = rect.top + glowHeight
 
-      // Find all project crosses and update their active state
-      const crosses = container.querySelectorAll('.project-cross')
-      crosses.forEach((cross) => {
-        const crossElement = cross as HTMLElement
-        const crossRect = crossElement.getBoundingClientRect()
+      // Find all project dividers (cross + h-line) and update their active state
+      const dividers = container.querySelectorAll('.project-divider')
+      dividers.forEach((divider) => {
+        const dividerElement = divider as HTMLElement
+        const cross = dividerElement.querySelector('.project-cross') as HTMLElement
+        const hLine = dividerElement.querySelector('.project-h-line') as HTMLElement
+
+        if (!cross) return
+
+        const crossRect = cross.getBoundingClientRect()
         const crossTopInViewport = crossRect.top
 
-        // Activate when the glow line reaches the top of the cross (more responsive)
-        // Add a small buffer (10px) to ensure edge cases are handled
+        // Activate when the glow line reaches the cross
         if (glowBottomInViewport >= crossTopInViewport - 10 && progress > 0) {
-          crossElement.classList.add('active')
+          cross.classList.add('active')
+          if (hLine) hLine.classList.add('active')
         } else {
-          crossElement.classList.remove('active')
+          cross.classList.remove('active')
+          if (hLine) hLine.classList.remove('active')
         }
       })
     }
@@ -142,9 +148,9 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
   return (
     <div className="hidden md:block relative" ref={sectionRef}>
       {/* Cross marker at top */}
-      <div className="relative">
-        <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%)' }}>+</span>
-        <div className="h-line" />
+      <div className="relative project-divider">
+        <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%) translateY(-50%)' }}>+</span>
+        <div className="h-line project-h-line" />
       </div>
 
       {/* Main grid: 1/3 info, 2/3 images */}
@@ -567,9 +573,9 @@ export default function Projects() {
         ))}
 
         {/* Bottom border with cross at 1/3 - inside container so ScrollLine reaches it */}
-        <div className="hidden md:block relative">
-          <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%)' }}>+</span>
-          <div className="h-line" />
+        <div className="hidden md:block relative project-divider">
+          <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%) translateY(-50%)' }}>+</span>
+          <div className="h-line project-h-line" />
         </div>
         {/* Mobile bottom border - no cross */}
         <div className="md:hidden border-t border-dashed border-[#333333]" />

@@ -179,6 +179,15 @@ body {
   background: #000000;
   padding: 0 10px;
   z-index: 10;
+  text-shadow: none;
+  filter: none;
+  box-shadow: none;
+}
+
+.cross.active {
+  color: #BEFE00;
+  text-shadow: none;
+  filter: none;
 }
 
 .cross-center {
@@ -206,6 +215,29 @@ body {
 /* Horizontal dashed line */
 .h-line {
   border-top: 1px dashed #333333;
+}
+
+/* Project horizontal line with sweep animation */
+.project-h-line {
+  position: relative;
+  overflow: visible;
+}
+
+.project-h-line::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #BEFE00;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-h-line.active::after {
+  transform: scaleX(1);
 }
 
 /* Vertical dashed line */
