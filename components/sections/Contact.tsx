@@ -69,23 +69,12 @@ export default function Contact() {
             ))}
           </div>
 
-          {/* Resume */}
-          <div className={`mt-16 pt-16 border-t border-dashed border-[#222222] transition-all duration-700 delay-[400ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <a
-              href="/Mitchell Malinin.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bracket-link text-lg uppercase"
-            >
-              [DOWNLOAD RESUME]
-            </a>
-          </div>
         </div>
 
         {/* Footer credit */}
         <div className="mt-32 pt-8 border-t border-dashed border-[#222222]">
           <p className="text-[#333333] text-sm uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} MITCH MALININ
+            &copy; 2026 MR.WZRD INC
           </p>
           <p className="text-[#222222] text-sm uppercase tracking-widest mt-2">
             _DESIGNED & BUILT BY YOURS TRULY
