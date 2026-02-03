@@ -47,7 +47,7 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
       }`}
     >
       {/* MW ASCII Logo - W is M flipped upside-down with matched height */}
-      <div className="flex items-start gap-2 md:gap-6 text-[#ffffff] text-[6px] sm:text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none scale-[0.8] sm:scale-100">
+      <div className="flex items-start gap-3 md:gap-6 text-[#ffffff] text-[8px] sm:text-[10px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none">
         {/* M */}
         <pre className="m-0">{`███╗   ███╗
 ████╗ ████║
@@ -65,7 +65,7 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
       </div>
 
       {/* Loading text */}
-      <div className="text-[#666666] text-sm tracking-[0.3em] uppercase">
+      <div className="text-[#666666] text-base md:text-sm tracking-[0.3em] uppercase">
         <span>INITIALIZING</span>
         <span className="inline-flex ml-1">
           <span className="animate-pulse" style={{ animationDelay: '0s' }}>.</span>
@@ -75,7 +75,7 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
       </div>
 
       {/* Progress bar */}
-      <div className="w-48 md:w-64">
+      <div className="w-56 md:w-64">
         <div className="h-px bg-[#222222] relative overflow-hidden">
           <div
             className="absolute top-0 left-0 h-full bg-white transition-all duration-75 ease-out"
@@ -89,7 +89,7 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
       </div>
 
       {/* Terminal-style status messages */}
-      <div className="text-xs text-[#333333] space-y-2 mt-4 tracking-wide">
+      <div className="text-sm md:text-xs text-[#333333] space-y-2 mt-4 tracking-wide">
         <p className={`transition-colors duration-300 ${progress > 30 ? 'text-[#555555]' : ''}`}>
           {progress > 30 ? '>' : '_'} LOADING_ASSETS
         </p>

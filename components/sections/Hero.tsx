@@ -161,8 +161,8 @@ export default function Hero() {
   }, [isLoaded])
 
   return (
-    <section className="min-h-screen flex flex-col justify-center section-padding relative">
-      <div className="max-w-4xl mb-[16rem] md:mb-24 lg:mb-32">
+    <section className="min-h-screen flex flex-col justify-start md:justify-center section-padding relative">
+      <div className="max-w-4xl md:mb-24 lg:mb-32">
         {/* Name - toggles between MR.WZRD and MITCH MALININ on hover */}
         <h1
           className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-wider mb-6 md:mb-12 hover-glow transition-all duration-700 ${
@@ -269,15 +269,24 @@ export default function Hero() {
             </span>
           </p>
         </div>
+
+        {/* Scroll indicator - directly under titles on mobile */}
+        <p
+          className={`text-[#444444] text-xs md:text-sm uppercase tracking-widest mt-[100px] md:hidden transition-all duration-700 delay-500 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          [SCROLL TO EXPLORE]
+        </p>
       </div>
 
-      {/* Scroll indicator - fixed at bottom */}
+      {/* Scroll indicator - absolute on desktop only */}
       <div
-        className={`absolute bottom-8 left-0 right-0 section-padding transition-all duration-700 delay-500 ${
+        className={`hidden md:block absolute bottom-8 left-0 right-0 section-padding transition-all duration-700 delay-500 ${
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <p className="text-[#444444] text-xs md:text-sm uppercase tracking-widest">
+        <p className="text-[#444444] text-sm uppercase tracking-widest">
           [SCROLL TO EXPLORE]
         </p>
       </div>
