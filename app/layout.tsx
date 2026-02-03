@@ -39,10 +39,10 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: '[Mr.Wzrd]',
+  title: '[ Mr.Wzrd ]',
   description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
   openGraph: {
-    title: '[Mr.Wzrd]',
+    title: '[ Mr.Wzrd ]',
     description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
     type: 'website',
     images: [
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '[Mr.Wzrd]',
+    title: '[ Mr.Wzrd ]',
     description: 'AI Alchemist, Vibe Dev, Mr.Wzrd',
     images: ['/og-image.png'],
   },
