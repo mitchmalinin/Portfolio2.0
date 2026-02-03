@@ -1,16 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState, useLayoutEffect } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { projects } from '@/lib/projects'
 import Image from 'next/image'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+// Register GSAP plugins - must happen before any component renders
+gsap.registerPlugin(ScrollTrigger)
+
 
 // Annotation labels for images
 const imageAnnotations: Record<string, string[][]> = {
@@ -33,70 +32,112 @@ const imageAnnotations: Record<string, string[][]> = {
   ],
 }
 
-// Animated scroll line component
+// Animated scroll line component - tracks scroll through projects section
 function ScrollLine() {
   const lineRef = useRef<HTMLDivElement>(null)
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const glowRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!lineRef.current) return
+    if (!lineRef.current || !glowRef.current) return
 
-      const parent = lineRef.current.parentElement
-      if (!parent) return
+    const line = lineRef.current
+    const glow = glowRef.current
+    const container = line.parentElement
+    if (!container) return
 
-      const rect = parent.getBoundingClientRect()
-      const windowHeight = window.innerHeight
+    // Calculate progress based on scroll position through the container
+    const updateProgress = () => {
+      const rect = container.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const containerHeight = rect.height
 
-      const sectionTop = rect.top
-      const sectionHeight = rect.height
+      // Simple linear calculation:
+      // Start: when container top is 300px below viewport top (early start)
+      // End: when container bottom hits viewport bottom
 
-      if (sectionTop < windowHeight && rect.bottom > 0) {
-        const scrolled = Math.max(0, windowHeight - sectionTop)
-        const progress = Math.min(scrolled / sectionHeight, 1)
-        setScrollProgress(progress)
-      }
+      const earlyStartOffset = 300 // Start 300px before container reaches top
+
+      // How far we've scrolled into the container
+      // At start: rect.top = earlyStartOffset, scrolled = 0
+      // At end: rect.bottom = viewportHeight, scrolled = containerHeight - viewportHeight + earlyStartOffset
+      const scrolled = earlyStartOffset - rect.top
+      const totalDistance = containerHeight - viewportHeight + earlyStartOffset
+
+      // Calculate progress (0 to 1) - pure linear
+      let progress = scrolled / totalDistance
+      progress = Math.max(0, Math.min(1, progress))
+
+      // Apply to glow element
+      glow.style.height = `${progress * 100}%`
+
+      // Calculate glow bottom position for cross activation
+      const glowHeight = progress * containerHeight
+      const glowBottomInViewport = rect.top + glowHeight
+
+      // Find all project crosses and update their active state
+      const crosses = container.querySelectorAll('.project-cross')
+      crosses.forEach((cross) => {
+        const crossElement = cross as HTMLElement
+        const crossRect = crossElement.getBoundingClientRect()
+        const crossTopInViewport = crossRect.top
+
+        // Activate when the glow line reaches the top of the cross (more responsive)
+        // Add a small buffer (10px) to ensure edge cases are handled
+        if (glowBottomInViewport >= crossTopInViewport - 10 && progress > 0) {
+          crossElement.classList.add('active')
+        } else {
+          crossElement.classList.remove('active')
+        }
+      })
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    // Throttled scroll handler using RAF
+    const handleScroll = () => {
+      if (rafRef.current) return
+      rafRef.current = requestAnimationFrame(() => {
+        updateProgress()
+        rafRef.current = null
+      })
+    }
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Initial calculation
+    updateProgress()
+
+    // Listen to scroll events
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', updateProgress, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', updateProgress)
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
   }, [])
 
-  // Calculate the position of the glow at the user's scroll position (top of viewport relative to section)
-  const glowPosition = Math.min(Math.max(scrollProgress * 100, 0), 100)
-
   return (
-    <div ref={lineRef} className="hidden md:block absolute top-0 bottom-0 left-1/4 w-px">
+    <div ref={lineRef} className="hidden md:block absolute top-0 bottom-0 left-1/3 w-px">
+      {/* Base dashed line */}
       <div className="absolute inset-0 border-l border-dashed border-[#333333]" />
 
-      {/* Glow trail - follows a bit behind the dot */}
+      {/* Glowing solid line trail - matches scroll position */}
       <div
-        className="absolute left-0 w-px bg-gradient-to-b from-[#BEFE00] via-[#BEFE00] to-transparent opacity-60"
+        ref={glowRef}
+        className="absolute left-0 w-px -ml-[0.5px]"
         style={{
           top: '0%',
-          height: `${glowPosition}%`,
-          boxShadow: '0 0 15px rgba(190, 254, 0, 0.5)',
-          transition: 'height 0.05s ease-out',
-        }}
-      />
-
-      {/* Glow dot at current scroll position */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#BEFE00]"
-        style={{
-          top: `${glowPosition}%`,
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0 0 15px rgba(190, 254, 0, 1), 0 0 30px rgba(190, 254, 0, 0.6)',
-          transition: 'top 0.05s ease-out',
+          height: '0%',
+          background: '#BEFE00',
+          boxShadow: '0 0 6px rgba(190, 254, 0, 0.9), 0 0 12px rgba(190, 254, 0, 0.6)',
         }}
       />
     </div>
   )
 }
 
-// Desktop project section with 1/4 - 3/4 layout
+// Desktop project section with 1/3 - 2/3 layout
 function DesktopProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const annotations = imageAnnotations[project.id] || []
@@ -105,12 +146,12 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
     <div className="hidden md:block relative">
       {/* Cross marker at top */}
       <div className="relative">
-        <span className="cross cross-center cross-top" style={{ left: '25%' }}>+</span>
+        <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%)' }}>+</span>
         <div className="h-line" />
       </div>
 
-      {/* Main grid: 1/4 info, 3/4 images */}
-      <div className="grid grid-cols-4 min-h-screen">
+      {/* Main grid: 1/3 info, 2/3 images */}
+      <div className="grid grid-cols-3 min-h-screen">
         {/* Left: Project info (sticky, top-aligned) */}
         <div className="col-span-1 relative">
           <div className="sticky top-0 h-screen flex flex-col justify-start pt-16 lg:pt-24 p-8 lg:p-12 border-r border-dashed border-[#333333]">
@@ -185,8 +226,8 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
           </div>
         </div>
 
-        {/* Right: Images with annotations (3/4) */}
-        <div className="col-span-3">
+        {/* Right: Images with annotations (2/3) */}
+        <div className="col-span-2">
           {images.map((img, imgIndex) => (
             <div key={imgIndex} className="relative border-b border-dashed border-[#333333] last:border-b-0">
               <div className="p-8 lg:p-12">
@@ -209,18 +250,14 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
                     />
                   </div>
 
-                  {/* Annotation lines coming from right side */}
-                  {annotations[imgIndex] && (
-                    <div className="absolute top-0 right-0 translate-x-full pl-4 h-full flex flex-col justify-center gap-4">
-                      {annotations[imgIndex].map((annotation, annIndex) => (
-                        <div key={annIndex} className="flex items-center gap-2">
-                          <div className="w-8 border-t border-dashed border-[#444444]" />
-                          <div className="w-2 h-2 border border-[#444444] rotate-45" />
-                          <span className="text-[#555555] text-xs uppercase whitespace-nowrap">
-                            {annotation}
-                          </span>
-                        </div>
-                      ))}
+                  {/* Single annotation line from right side */}
+                  {annotations[imgIndex] && annotations[imgIndex][0] && (
+                    <div className="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 pl-4 flex items-center gap-2">
+                      <div className="w-8 border-t border-dashed border-[#444444]" />
+                      <div className="w-2 h-2 border border-[#444444] rotate-45" />
+                      <span className="text-[#555555] text-xs uppercase whitespace-nowrap">
+                        {annotations[imgIndex][0]}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -233,42 +270,81 @@ function DesktopProjectSection({ project, index }: { project: typeof projects[0]
   )
 }
 
+// Mobile nav height constant (matches Navigation.tsx: p-3 = 12px*2 + content ~25px = 49px)
+const MOBILE_NAV_HEIGHT = 49
+
 // Mobile project section with collapsible header using GSAP ScrollTrigger
 function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
   const sectionRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [manualOverride, setManualOverride] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null)
+
+  // Check if mobile on mount (client-side only)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Memoized callbacks for ScrollTrigger
+  const handleEnter = useCallback(() => {
+    if (!manualOverride) setIsCollapsed(true)
+  }, [manualOverride])
+
+  const handleLeaveBack = useCallback(() => {
+    if (!manualOverride) setIsCollapsed(false)
+  }, [manualOverride])
 
   // GSAP ScrollTrigger for reliable scroll-based collapse
-  useLayoutEffect(() => {
-    if (typeof window === 'undefined' || window.innerWidth >= 768) return
+  useEffect(() => {
+    if (!isMobile) return
 
     const section = sectionRef.current
-    const content = contentRef.current
-    if (!section || !content) return
+    if (!section) return
 
-    const ctx = gsap.context(() => {
-      // Create ScrollTrigger that watches when section enters "sticky zone"
-      ScrollTrigger.create({
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      // Kill any existing ScrollTrigger for this element
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill()
+      }
+
+      scrollTriggerRef.current = ScrollTrigger.create({
         trigger: section,
-        start: 'top 49px', // When section top hits 49px from viewport top (mobile nav height)
-        end: 'bottom 49px', // Until section bottom hits that point
-        onEnter: () => {
-          if (!manualOverride) setIsCollapsed(true)
-        },
-        onLeaveBack: () => {
-          if (!manualOverride) setIsCollapsed(false)
-        },
-        onEnterBack: () => {
-          if (!manualOverride) setIsCollapsed(true)
-        },
+        start: `top ${MOBILE_NAV_HEIGHT}px`,
+        end: `bottom ${MOBILE_NAV_HEIGHT}px`,
+        onEnter: handleEnter,
+        onLeaveBack: handleLeaveBack,
+        onEnterBack: handleEnter,
+        // markers: process.env.NODE_ENV === 'development', // Uncomment for debugging
       })
-    }, section)
+    }, 100)
 
-    return () => ctx.revert()
-  }, [manualOverride])
+    return () => {
+      clearTimeout(timer)
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill()
+        scrollTriggerRef.current = null
+      }
+    }
+  }, [isMobile, handleEnter, handleLeaveBack])
+
+  // Refresh ScrollTrigger when collapse state changes (content height changes)
+  useEffect(() => {
+    if (!isMobile) return
+    // Debounce the refresh to allow CSS transitions to complete
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 250)
+    return () => clearTimeout(timer)
+  }, [isCollapsed, isMobile])
 
   // Reset manual override after a delay
   useEffect(() => {
@@ -277,10 +353,10 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
     return () => clearTimeout(timeout)
   }, [manualOverride])
 
-  const handleToggle = () => {
+  const handleToggle = useCallback(() => {
     setManualOverride(true)
-    setIsCollapsed(!isCollapsed)
-  }
+    setIsCollapsed(prev => !prev)
+  }, [])
 
   return (
     <div ref={sectionRef} className="md:hidden relative" data-project-section>
@@ -288,10 +364,25 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
       <div className="h-line" />
 
       <div className="relative min-h-screen">
-        <div className="sticky top-[49px] z-20 bg-black border-b border-dashed border-[#333333]">
+        {/* Sticky header with dynamic top position */}
+        <div
+          ref={headerRef}
+          className="sticky z-20 bg-black border-b border-dashed border-[#333333]"
+          style={{ top: `${MOBILE_NAV_HEIGHT}px` }}
+        >
           <div
-            className="flex items-center justify-between p-4 cursor-pointer"
+            className="flex items-center justify-between p-4 cursor-pointer active:bg-[#111111] transition-colors"
             onClick={handleToggle}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleToggle()
+              }
+            }}
+            aria-expanded={!isCollapsed}
+            aria-controls={`project-content-${project.id}`}
           >
             <div className="flex items-center gap-3">
               <span className="text-[#333333] text-xs">
@@ -304,15 +395,24 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
                 <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
               )}
             </div>
-            <button className="text-[#666666] p-1">
-              {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+            <button
+              className="text-[#666666] p-1 transition-transform duration-200"
+              style={{ transform: isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)' }}
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              <ChevronDown size={20} />
             </button>
           </div>
 
+          {/* Collapsible content */}
           <div
-            className={`overflow-hidden transition-all duration-200 ease-out ${
-              isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
-            }`}
+            id={`project-content-${project.id}`}
+            className="overflow-hidden transition-all duration-200 ease-out"
+            style={{
+              maxHeight: isCollapsed ? '0px' : '500px',
+              opacity: isCollapsed ? 0 : 1,
+            }}
           >
             <div className="px-4 pb-4 border-t border-dashed border-[#333333]">
               <p className="text-[#666666] uppercase text-xs mt-3 mb-2">
@@ -406,19 +506,18 @@ export default function Projects() {
         <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">
           [SELECTED WORK]
         </p>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide">
-          PROJECTS
-        </h2>
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide">
+            PROJECTS
+          </h2>
+          <span className="hidden md:inline text-[#333333] text-sm uppercase tracking-wider">
+            _{projects.length.toString().padStart(2, '0')}_FEATURED
+          </span>
+        </div>
       </div>
 
-      {/* Cross before first project */}
+      {/* Projects container - includes bottom border so ScrollLine spans full height */}
       <div className="relative mt-16 md:mt-24">
-        <span className="cross cross-center cross-top">+</span>
-        <div className="h-line" />
-      </div>
-
-      {/* Projects container */}
-      <div className="relative">
         {/* Animated scroll line for desktop (at 1/4 position) */}
         <ScrollLine />
 
@@ -429,12 +528,17 @@ export default function Projects() {
             <MobileProjectSection project={project} index={index} />
           </div>
         ))}
-      </div>
 
-      {/* Bottom border with cross */}
-      <div className="relative">
-        <span className="cross cross-center cross-top">+</span>
-        <div className="h-line" />
+        {/* Bottom border with cross at 1/3 - inside container so ScrollLine reaches it */}
+        <div className="hidden md:block relative">
+          <span className="cross cross-top project-cross" style={{ left: '33.333%', transform: 'translateX(-50%)' }}>+</span>
+          <div className="h-line" />
+        </div>
+        {/* Mobile bottom border */}
+        <div className="md:hidden relative">
+          <span className="cross cross-center cross-top">+</span>
+          <div className="h-line" />
+        </div>
       </div>
     </section>
   )

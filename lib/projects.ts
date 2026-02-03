@@ -30,6 +30,25 @@ export interface ProjectImage {
 
 export const projects: Project[] = [
   {
+    id: 'schills',
+    title: 'SCHILLS.APP',
+    subtitle: '_AI SERVICES PLATFORM',
+    description: [
+      '_NEXT.JS, TYPESCRIPT, AI',
+      '_REAL-TIME COLLABORATION',
+      '_INTELLIGENT MATCHING',
+    ],
+    links: [
+      { label: 'SCHILLS.APP', url: 'https://schills.app' },
+    ],
+    images: [
+      '/images/projects/schills-1.svg',
+      '/images/projects/schills-2.svg',
+      '/images/projects/schills-3.svg',
+      '/images/projects/schills-4.svg',
+    ],
+  },
+  {
     id: 'y2k-dotcom',
     title: 'Y2K DOTCOM',
     subtitle: '_DIGITAL ECOSYSTEM',
@@ -81,25 +100,6 @@ export const projects: Project[] = [
       '/images/projects/y2k-coded-1.svg',
       '/images/projects/y2k-coded-2.svg',
       '/images/projects/y2k-coded-3.svg',
-    ],
-  },
-  {
-    id: 'schills',
-    title: 'SCHILLS.APP',
-    subtitle: '_AI SERVICES PLATFORM',
-    description: [
-      '_NEXT.JS, TYPESCRIPT, AI',
-      '_REAL-TIME COLLABORATION',
-      '_INTELLIGENT MATCHING',
-    ],
-    links: [
-      { label: 'SCHILLS.APP', url: 'https://schills.app' },
-    ],
-    images: [
-      '/images/projects/schills-1.svg',
-      '/images/projects/schills-2.svg',
-      '/images/projects/schills-3.svg',
-      '/images/projects/schills-4.svg',
     ],
   },
 ]

@@ -179,6 +179,11 @@ body {
   background: #000000;
   padding: 0 10px;
   z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.cross.active {
+  color: #BEFE00;
 }
 
 .cross-center {

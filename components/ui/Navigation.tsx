@@ -152,7 +152,7 @@ function DesktopNav() {
   ]
 
   return (
-    <div className="hidden md:flex fixed bottom-0 left-0 right-0 z-50 justify-center pb-4">
+    <div className="hidden md:flex fixed bottom-4 left-0 right-0 z-50 justify-center">
       <Dock
         items={dockItems}
         baseItemSize={48}

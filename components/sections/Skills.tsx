@@ -51,6 +51,17 @@ export default function Skills() {
         <span className="cross cross-center cross-top">+</span>
         <div className="h-line" />
       </div>
+
+      {/* Connector section to About - vertical line with crosses at both ends */}
+      <div className="relative flex flex-col items-center">
+        {/* Vertical connector line */}
+        <div className="w-px h-32 md:h-48 border-l border-dashed border-[#333333]" />
+        {/* Bottom cross of connector */}
+        <div className="relative w-full">
+          <span className="cross cross-center cross-top">+</span>
+          <div className="h-line" />
+        </div>
+      </div>
     </section>
   )
 }

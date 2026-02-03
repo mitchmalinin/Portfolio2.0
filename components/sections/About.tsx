@@ -1,5 +1,7 @@
 'use client'
 
+import RabbitHole from '@/components/ui/RabbitHole'
+
 // Current rabbit holes - things I'm exploring/learning
 const rabbitHoles = [
   {
@@ -19,12 +21,7 @@ const rabbitHoles = [
 export default function About() {
   return (
     <section id="about" className="relative">
-      {/* Top border with cross */}
-      <div className="relative">
-        <span className="cross cross-center cross-top">+</span>
-        <div className="h-line" />
-      </div>
-
+      {/* Top border provided by Skills connector */}
       <div className="grid md:grid-cols-2">
         {/* Left side - Title & Stats */}
         <div className="relative section-padding">
@@ -44,27 +41,8 @@ export default function About() {
             <p>_AI-POWERED DEVELOPMENT</p>
           </div>
 
-          {/* Currently Working On */}
-          <div className="border border-dashed border-[#333333] p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-2 h-2 bg-[#BEFE00] rounded-full animate-pulse" />
-              <span className="text-[#BEFE00] text-xs uppercase tracking-wider">
-                CURRENTLY BUILDING
-              </span>
-            </div>
-            <h3 className="text-2xl uppercase mb-2">SCHILLS</h3>
-            <p className="text-[#666666] text-sm uppercase mb-4">
-              _AI SERVICES MARKETPLACE
-            </p>
-            <a
-              href="https://schills.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bracket-link text-sm uppercase"
-            >
-              [VIEW PROJECT]
-            </a>
-          </div>
+          {/* Current Rabbit Holes - moved from bottom */}
+          <RabbitHole items={rabbitHoles} />
         </div>
 
         {/* Right side - Bio & Rabbit Holes */}
@@ -85,40 +63,13 @@ export default function About() {
           </div>
 
           {/* Contact link */}
-          <div className="mt-10 mb-16">
+          <div className="mt-10">
             <a
               href="mailto:mitchmalinin@gmail.com"
               className="bracket-link text-lg uppercase"
             >
               [SAY HELLO]
             </a>
-          </div>
-
-          {/* Current Rabbit Holes */}
-          <div>
-            <p className="text-[#444444] text-xs uppercase tracking-widest mb-6">
-              [CURRENT_RABBIT_HOLES]
-            </p>
-            <div className="space-y-4">
-              {rabbitHoles.map((hole, index) => (
-                <div
-                  key={hole.topic}
-                  className="border border-dashed border-[#333333] p-4 hover:border-[#555555] transition-colors"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="text-[#333333] text-xs">
-                      _{String(index + 1).padStart(2, '0')}
-                    </span>
-                    <div>
-                      <h4 className="text-base uppercase mb-1">{hole.topic}</h4>
-                      <p className="text-[#555555] text-xs uppercase">
-                        {hole.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

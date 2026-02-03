@@ -31,11 +31,7 @@ const articles = [
 export default function Articles() {
   return (
     <section id="articles" className="relative">
-      {/* Top border with cross */}
-      <div className="relative">
-        <span className="cross cross-center cross-top">+</span>
-        <div className="h-line" />
-      </div>
+      {/* Top border provided by Projects section */}
 
       <div className="section-padding">
         <p className="text-[#444444] text-sm uppercase tracking-widest mb-4">

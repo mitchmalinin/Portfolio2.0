@@ -39,15 +39,15 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
         isComplete ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      {/* MW ASCII Logo */}
+      {/* MW ASCII Logo - W is M flipped upside-down with matched height */}
       <pre className="text-[#ffffff] text-[8px] md:text-xs lg:text-sm leading-tight tracking-tighter font-mono select-none">
 {`
-███╗   ███╗ ██╗    ██╗
-████╗ ████║ ██║    ██║
-██╔████╔██║ ██║ █╗ ██║
-██║╚██╔╝██║ ██║███╗██║
-██║ ╚═╝ ██║ ╚███╔███╔╝
-╚═╝     ╚═╝  ╚══╝╚══╝
+███╗   ███╗  ╔═╗     ╔═╗
+████╗ ████║  ██║ ╔═╗ ██║
+██╔████╔██║  ██║╔██╚╗██║
+██║╚██╔╝██║  ██╚████╚██║
+██║ ╚═╝ ██║  ████╝ ████║
+╚═╝     ╚═╝  ███╝   ███╝
 `}
       </pre>
 
