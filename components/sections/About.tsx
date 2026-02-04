@@ -34,7 +34,7 @@ export default function About() {
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [ABOUT]
         </p>
-        <h2 className={`text-3xl sm:text-4xl uppercase tracking-wide mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-4xl sm:text-5xl uppercase tracking-wide mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {isInView ? (
             <DecryptedText
               text="WHO AM I"

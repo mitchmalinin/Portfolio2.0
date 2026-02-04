@@ -54,7 +54,7 @@ export default function Experiments() {
         <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           [LAB]
         </p>
-        <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-4xl sm:text-5xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-4 hover-glow transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {isInView ? (
             <DecryptedText
               text="EXPERIMENTS"

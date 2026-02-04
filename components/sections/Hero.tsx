@@ -165,7 +165,7 @@ export default function Hero() {
       <div className="max-w-4xl md:mb-24 lg:mb-32">
         {/* Name - toggles between MR.WZRD and MITCH MALININ on hover */}
         <h1
-          className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-wider mb-6 md:mb-12 hover-glow transition-all duration-700 ${
+          className={`text-6xl sm:text-7xl md:text-7xl lg:text-8xl uppercase tracking-wider mb-6 md:mb-12 hover-glow transition-all duration-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -173,7 +173,7 @@ export default function Hero() {
         </h1>
 
         {/* Titles */}
-        <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#888888] uppercase tracking-wide space-y-2 md:space-y-2">
+        <div className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl text-[#888888] uppercase tracking-wide space-y-2 md:space-y-2">
           <p
             className={`transition-all duration-700 delay-100 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'

@@ -696,13 +696,13 @@ export default function Projects() {
   return (
     <section id="projects" className="relative scroll-mt-[55px] md:scroll-mt-0">
       {/* Section header */}
-      <div className="section-padding pb-0 md:pb-0" ref={headerRef}>
-        <div className="mx-auto md:mx-0 max-w-xs sm:max-w-sm">
+      <div className="section-padding pb-0 md:py-[120px] lg:py-[160px]" ref={headerRef}>
+        <div className="mx-auto md:mx-0 max-w-xs sm:max-w-sm md:max-w-none md:w-full">
           <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 text-left transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             [SELECTED WORK]
           </p>
-          <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 md:gap-0 text-left">
-            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide transition-all duration-700 delay-100 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-3 md:gap-0 text-left">
+            <h2 className={`text-4xl sm:text-5xl md:text-5xl lg:text-6xl uppercase tracking-wide leading-none transition-all duration-700 delay-100 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               {isHeaderInView ? (
                 <DecryptedText
                   text="PROJECTS"
@@ -719,7 +719,7 @@ export default function Projects() {
                 'PROJECTS'
               )}
             </h2>
-            <span className={`text-[#333333] text-xs md:text-sm uppercase tracking-wider transition-all duration-700 delay-200 ${isHeaderInView ? 'opacity-100' : 'opacity-0'}`}>
+            <span className={`text-[#333333] text-base md:text-sm uppercase tracking-wider leading-none mt-2 md:mt-6 transition-all duration-700 delay-200 ${isHeaderInView ? 'opacity-100' : 'opacity-0'}`}>
               _{projects.length.toString().padStart(2, '0')}_FEATURED
             </span>
           </div>
@@ -727,7 +727,7 @@ export default function Projects() {
       </div>
 
       {/* Projects container - includes bottom border so ScrollLine spans full height */}
-      <div className="relative mt-2 md:mt-24">
+      <div className="relative mt-2 md:mt-2">
         {/* Animated scroll line for desktop (at 1/4 position) */}
         <ScrollLine />
 
