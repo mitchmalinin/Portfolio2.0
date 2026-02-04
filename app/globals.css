@@ -207,6 +207,13 @@ body {
   width: 100%;
 }
 
+@media (max-width: 767px) {
+  .magic-box-bleed .magic-box {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
 .magic-layer {
   position: relative;
 }

@@ -336,7 +336,7 @@ export default function About() {
         </div>
 
         {/* Bio */}
-        <div className="py-6 border-b border-dashed border-[#222222] mb-8">
+        <div className="magic-box-bleed border-b border-dashed border-[#222222] mb-8">
           <MagicBox textClassName="space-y-6 text-[#888888] text-sm leading-[1.8]" />
         </div>
 
