@@ -117,7 +117,7 @@ export default function Skills() {
   const isInView = useInView(sectionRef)
 
   return (
-    <section id="skills" className="relative py-8" ref={sectionRef}>
+    <section id="skills" className="relative" ref={sectionRef}>
       {/* Top border with cross */}
       <div className="relative">
         <span className="cross cross-center cross-top">+</span>

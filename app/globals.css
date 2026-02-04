@@ -171,6 +171,182 @@ body {
   padding-bottom: 4px;
 }
 
+/* Magic box reveal */
+.magic-box {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 0;
+  min-height: 170px;
+  width: 100%;
+  height: 100%;
+  --fall-distance: 0px;
+  --in-delay: 1200ms;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.magic-box--fill {
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .magic-box {
+    min-height: 220px;
+  }
+}
+
+.magic-box__content {
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s ease;
+  transform: translateY(0);
+  width: 100%;
+}
+
+.magic-layer {
+  position: relative;
+}
+
+.magic-layer--in {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.magic-fall {
+  display: inline;
+  white-space: normal;
+}
+
+.magic-letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.magic-word-group {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.magic-word-space {
+  display: inline-block;
+  width: 0.6ch;
+}
+
+.magic-word {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #BEFE00;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.magic-word::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(190, 254, 0, 0) 0%, rgba(190, 254, 0, 0.8) 40%, rgba(190, 254, 0, 1) 70%, rgba(190, 254, 0, 0.2) 100%);
+  transform: scaleX(0.25);
+  transform-origin: left;
+  opacity: 0.7;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.magic-word:focus-visible {
+  outline: 1px solid rgba(190, 254, 0, 0.9);
+  outline-offset: 4px;
+}
+
+
+.magic-box.is-active .magic-word::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.magic-box--show-in .magic-layer--in {
+  opacity: 1;
+  visibility: visible;
+}
+
+.magic-box.is-active .magic-letter--out,
+.magic-box.is-active .magic-word.magic-letter--out {
+  animation-name: letter-fall-out;
+  animation-duration: var(--fall-duration, 900ms);
+  animation-delay: var(--fall-delay, 0ms);
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.55, 0.02, 0.9, 0.7);
+}
+
+.magic-box.is-active .magic-letter--in,
+.magic-box.is-active .magic-word.magic-letter--in {
+  animation-name: letter-fall-in;
+  animation-duration: var(--fall-duration, 900ms);
+  animation-delay: calc(var(--fall-delay, 0ms) + var(--in-delay));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes letter-fall-out {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(0, 20px) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--fall-x, 0px), var(--fall-distance)) rotate(var(--fall-rotate, 0deg));
+  }
+}
+
+@keyframes letter-fall-in {
+  0% {
+    opacity: 1;
+    transform: translate(var(--fall-x, 0px), var(--rise-distance, -120px)) rotate(calc(var(--fall-rotate, 0deg) * -1));
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-box__content,
+  .magic-word::after {
+    transition: none;
+  }
+
+  .magic-box.is-active .magic-letter--out,
+  .magic-box.is-active .magic-letter--in,
+  .magic-box.is-active .magic-word {
+    animation: none;
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+}
+
 /* Pill container for nav */
 .pill-nav {
   border: 1px solid #333333;
