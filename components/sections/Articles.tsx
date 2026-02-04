@@ -127,7 +127,7 @@ export default function Articles() {
         {/* View all link */}
         <div className={`mt-8 text-center transition-all duration-700 delay-[400ms] ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <a
-            href="https://x.com/mitchmalinin"
+            href="https://x.com/0xMrWzrd/articles"
             target="_blank"
             rel="noopener noreferrer"
             className="bracket-link text-base uppercase"
