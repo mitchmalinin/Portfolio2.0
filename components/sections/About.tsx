@@ -65,7 +65,7 @@ export default function About() {
             I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE, SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
           </p>
           <p>
-            THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE "IF WE LOSE THE DETAILS, WE LOSE IT ALL." — WALT DISNEY
+            THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE &ldquo;IF WE LOSE THE DETAILS, WE LOSE IT ALL.&rdquo; — WALT DISNEY
           </p>
           <p className="text-[#666666]">
             _BASED IN <span className="dashed-underline">MIAMI</span>
@@ -123,7 +123,7 @@ export default function About() {
               I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE, SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
             </p>
             <p>
-              THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE "IF WE LOSE THE DETAILS, WE LOSE IT ALL." — WALT DISNEY
+              THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE &ldquo;IF WE LOSE THE DETAILS, WE LOSE IT ALL.&rdquo; — WALT DISNEY
             </p>
             <p className="text-[#666666]">
               _BASED IN <span className="dashed-underline">MIAMI</span>
