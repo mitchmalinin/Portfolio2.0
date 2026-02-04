@@ -3,6 +3,7 @@
 import DecryptedText from '@/components/DecryptedText'
 import PixelatedImage from '@/components/ui/PixelatedImage'
 import { useInView } from '@/hooks/useInView'
+import useInAppBrowser from '@/hooks/useInAppBrowser'
 import { projects } from '@/lib/projects'
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -324,6 +325,8 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
   const [contentHeight, setContentHeight] = useState(0)
   const [manualOverride, setManualOverride] = useState(false)
   const [navHeight, setNavHeight] = useState(DEFAULT_MOBILE_NAV_HEIGHT)
+  const isInApp = useInAppBrowser()
+  const disableStacking = isInApp
 
   // All projects sticky at the same position - right below mobile nav
   const stickyTop = navHeight
@@ -398,6 +401,13 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
   }, [navHeight])
 
   useEffect(() => {
+    if (disableStacking) {
+      if (isSticky) setIsSticky(false)
+      if (canToggle) setCanToggle(false)
+      if (handoffActive) setHandoffActive(false)
+      if (manualOverride) setManualOverride(false)
+      return
+    }
     const section = sectionRef.current
     const header = headerRef.current
     const content = contentRef.current
@@ -490,10 +500,14 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
       window.removeEventListener('resize', handleScroll)
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [stickyTop, manualOverride, isCollapsed, isSticky, canToggle, handoffActive, headerHeight])
+  }, [stickyTop, manualOverride, isCollapsed, isSticky, canToggle, handoffActive, headerHeight, disableStacking])
 
   // Handle manual toggle
   const handleToggle = () => {
+    if (disableStacking) {
+      setIsCollapsed((prev) => !prev)
+      return
+    }
     if (!isSticky || !canToggle) return
     const headerRect = headerRef.current?.getBoundingClientRect()
     const contentRect = contentRef.current?.getBoundingClientRect()
@@ -613,12 +627,12 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
         <button
           ref={headerRef}
           data-project-header={index}
-          className="sticky w-full flex items-center justify-between px-3 py-3 border-b border-t border-dashed border-[#333333] bg-black"
-          style={{ top: `${stickyTop}px`, zIndex }}
+          className={`w-full flex items-center justify-between px-3 py-3 border-b border-t border-dashed border-[#333333] bg-black ${disableStacking ? '' : 'sticky'}`}
+          style={disableStacking ? { zIndex } : { top: `${stickyTop}px`, zIndex }}
           onClick={handleToggle}
           aria-expanded={!isCollapsed}
           aria-controls={`project-content-${project.id}`}
-          aria-disabled={!canToggle}
+          aria-disabled={disableStacking ? false : !canToggle}
         >
           <div className="flex items-center gap-3">
             <span className={`text-xs transition-colors duration-200 ${
@@ -635,7 +649,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           </div>
           <ChevronDown
             size={18}
-            className={`transition-all duration-200 shrink-0 ${!canToggle ? 'opacity-40' : ''} ${
+            className={`transition-all duration-200 shrink-0 ${disableStacking ? '' : (!canToggle ? 'opacity-40' : '')} ${
               !isCollapsed ? 'rotate-180 text-[#BEFE00]' : 'text-[#666666]'
             }`}
           />
@@ -645,7 +659,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
         {renderContent(false, false, true, true, handoffActive ? zIndex - 1 : undefined)}
 
         {/* Overlay content (only when sticky + content fully out of view + expanded) */}
-        {isSticky && canToggle && manualOverride && !isCollapsed && (
+        {!disableStacking && isSticky && canToggle && manualOverride && !isCollapsed && (
           <div
             className="fixed left-0 right-0"
             style={{
