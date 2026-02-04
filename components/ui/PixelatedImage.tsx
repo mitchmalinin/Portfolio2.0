@@ -55,7 +55,7 @@ export default function PixelatedImage({
           width={width}
           height={height}
           quality={100}
-          unoptimized
+          sizes="(max-width: 768px) 100vw, 1700px"
           className="w-full h-auto"
         />
       </div>
