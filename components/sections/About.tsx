@@ -62,12 +62,10 @@ export default function About() {
         {/* Bio */}
         <div className="space-y-6 text-[#888888] text-sm leading-[1.8] py-6 border-b border-dashed border-[#222222] mb-8">
           <p>
-            I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
-            OBSESSED WITH SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
+            I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE, SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
           </p>
           <p>
-            FROM TOKEN-BASED COMMUNITIES TO MEME MACHINES,
-            I TURN DEGEN DREAMS INTO WORKING CODE.
+            THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE "IF WE LOSE THE DETAILS, WE LOSE IT ALL." — WALT DISNEY
           </p>
           <p className="text-[#666666]">
             _BASED IN <span className="dashed-underline">MIAMI</span>
@@ -122,12 +120,10 @@ export default function About() {
         <div className="section-padding flex items-center">
           <div className="space-y-6 text-[#888888] text-lg leading-relaxed max-w-xl">
             <p>
-              I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
-              OBSESSED WITH SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
+              I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE, SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
             </p>
             <p>
-              FROM TOKEN-BASED COMMUNITIES TO MEME MACHINES,
-              I TURN DEGEN DREAMS INTO WORKING CODE.
+              THE KIND OF MAGIC THAT ONLY HAPPENS WHEN SOMEONE OBSESSES OVER THE DETAILS. BECAUSE "IF WE LOSE THE DETAILS, WE LOSE IT ALL." — WALT DISNEY
             </p>
             <p className="text-[#666666]">
               _BASED IN <span className="dashed-underline">MIAMI</span>
