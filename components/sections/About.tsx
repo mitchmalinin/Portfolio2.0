@@ -8,16 +8,16 @@ import { useInView } from '@/hooks/useInView'
 // Current rabbit holes - things I'm exploring/learning
 const rabbitHoles = [
   {
-    topic: 'AI AGENTS',
-    description: 'SHIPPING WITH CLAUDE & CURSOR',
+    topic: 'AGENTIC WORKFLOW',
+    description: 'OPENCLAW + CLAUDE/CODEX SKILLS',
   },
   {
-    topic: 'ON-CHAIN APPS',
-    description: 'BUILDING IN THE CRYPTO TRENCHES',
+    topic: 'VIBE DESIGNING',
+    description: 'USING AI TO BUILD DESIGN',
   },
   {
-    topic: 'CULTURE x CODE',
-    description: 'WHERE MEMES MEET MACHINES',
+    topic: 'FOUNDER MODE',
+    description: 'BUILDING A SAAS COMPANY (SHILLZ)',
   },
 ]
 
@@ -37,7 +37,7 @@ export default function About() {
         <h2 className={`text-3xl sm:text-4xl uppercase tracking-wide mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {isInView ? (
             <DecryptedText
-              text="WHO I AM"
+              text="WHO AM I"
               speed={50}
               maxIterations={15}
               sequential={true}
@@ -48,19 +48,19 @@ export default function About() {
               encryptedClassName="text-[#333333]"
             />
           ) : (
-            'WHO I AM'
+            'WHO AM I'
           )}
         </h2>
 
         {/* Stats */}
-        <div className="space-y-1 text-[#666666] uppercase text-sm mb-8">
+        <div className="space-y-2 text-[#666666] uppercase text-sm py-6 border-b border-dashed border-[#222222]">
           <p>_7 YEARS SHIPPING CODE</p>
-          <p>_FULL STACK + ON-CHAIN</p>
-          <p>_AI-AUGMENTED BUILDER</p>
+          <p>_FRONT END + ON-CHAIN</p>
+          <p>_AI-ENHANCED BUILDER</p>
         </div>
 
         {/* Bio */}
-        <div className="space-y-4 text-[#888888] text-sm leading-relaxed mb-8">
+        <div className="space-y-6 text-[#888888] text-sm leading-[1.8] py-6 border-b border-dashed border-[#222222] mb-8">
           <p>
             I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
             OBSESSED WITH SHIPPING PRODUCTS THAT FEEL LIKE MAGIC.
@@ -74,24 +74,16 @@ export default function About() {
           </p>
         </div>
 
-        {/* Contact link */}
-        <div className="mb-10">
-          <a
-            href="mailto:mitchmalinin@gmail.com"
-            className="bracket-link text-base uppercase"
-          >
-            [SAY HELLO]
-          </a>
-        </div>
-
         {/* Rabbit Holes - centered for mobile */}
-        <RabbitHole items={rabbitHoles} />
+        <div className="mt-3">
+          <RabbitHole items={rabbitHoles} />
+        </div>
       </div>
 
       {/* Desktop layout */}
       <div className="hidden md:grid md:grid-cols-2">
         {/* Left side - Title & Stats */}
-        <div className="relative section-padding">
+        <div className="relative section-padding flex flex-col gap-12">
           {/* Vertical divider */}
           <div className="absolute top-0 bottom-0 right-0 v-line" />
 
@@ -101,7 +93,7 @@ export default function About() {
           <h2 className={`text-5xl lg:text-6xl uppercase tracking-wide mb-8 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             {isInView ? (
               <DecryptedText
-                text="WHO I AM"
+                text="WHO AM I"
                 speed={50}
                 maxIterations={15}
                 sequential={true}
@@ -112,22 +104,22 @@ export default function About() {
                 encryptedClassName="text-[#333333]"
               />
             ) : (
-              'WHO I AM'
+              'WHO AM I'
             )}
           </h2>
 
           <div className="space-y-2 text-[#666666] uppercase text-base mb-12">
             <p>_7 YEARS SHIPPING CODE</p>
-            <p>_FULL STACK + ON-CHAIN</p>
-            <p>_AI-AUGMENTED BUILDER</p>
+            <p>_FRONT END + ON-CHAIN</p>
+            <p>_AI-ENHANCED BUILDER</p>
           </div>
 
-          {/* Current Rabbit Holes - moved from bottom */}
+          {/* Current Rabbit Holes */}
           <RabbitHole items={rabbitHoles} />
         </div>
 
         {/* Right side - Bio */}
-        <div className="section-padding">
+        <div className="section-padding flex items-center">
           <div className="space-y-6 text-[#888888] text-lg leading-relaxed max-w-xl">
             <p>
               I BUILD AT THE INTERSECTION OF CRYPTO, AI, AND CULTURE.
@@ -140,16 +132,6 @@ export default function About() {
             <p className="text-[#666666]">
               _BASED IN <span className="dashed-underline">MIAMI</span>
             </p>
-          </div>
-
-          {/* Contact link */}
-          <div className="mt-10">
-            <a
-              href="mailto:mitchmalinin@gmail.com"
-              className="bracket-link text-lg uppercase"
-            >
-              [SAY HELLO]
-            </a>
           </div>
         </div>
       </div>

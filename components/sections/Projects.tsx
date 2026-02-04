@@ -307,6 +307,7 @@ const DEFAULT_MOBILE_NAV_HEIGHT = 55
 // Mobile project section - each header sticks to same position, next project covers previous
 function MobileProjectSection({ project, index }: { project: typeof projects[0], index: number }) {
   const images = project.images || []
+  const annotations = imageAnnotations[project.id] || []
   const sectionRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLButtonElement>(null)
   const nextHeaderRef = useRef<HTMLButtonElement | null>(null)
@@ -660,7 +661,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
                 <p className="text-[#333333] text-xs uppercase mb-2">
                   _{String(imgIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
                 </p>
-                <div className="border border-dashed border-[#333333] overflow-hidden">
+                <div className="border border-dashed border-[#333333] overflow-hidden relative">
                   <PixelatedImage
                     src={img.src}
                     alt={`${project.title} screenshot ${imgIndex + 1}`}
@@ -668,6 +669,13 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
                     height={img.height}
                     className="w-full"
                   />
+                  {annotations[imgIndex] && annotations[imgIndex][0] && (
+                    <div className="absolute bottom-2 right-2 bg-black/90 border border-dashed border-[#333333] px-2 py-1 backdrop-blur-sm shadow-[0_0_8px_rgba(0,0,0,0.6)]">
+                      <span className="text-white text-[10px] uppercase">
+                        {annotations[imgIndex][0]}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -688,36 +696,38 @@ export default function Projects() {
   return (
     <section id="projects" className="relative scroll-mt-[55px] md:scroll-mt-0">
       {/* Section header */}
-      <div className="section-padding pb-0" ref={headerRef}>
-        <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          [SELECTED WORK]
-        </p>
-        <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 md:gap-0">
-          <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide transition-all duration-700 delay-100 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            {isHeaderInView ? (
-              <DecryptedText
-                text="PROJECTS"
-                speed={50}
-                maxIterations={15}
-                sequential={true}
-                revealDirection="start"
-                animateOn="view"
-                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                className="text-white"
-                encryptedClassName="text-[#333333]"
-              />
-            ) : (
-              'PROJECTS'
-            )}
-          </h2>
-          <span className={`text-[#333333] text-xs md:text-sm uppercase tracking-wider transition-all duration-700 delay-200 ${isHeaderInView ? 'opacity-100' : 'opacity-0'}`}>
-            _{projects.length.toString().padStart(2, '0')}_FEATURED
-          </span>
+      <div className="section-padding pb-0 md:pb-0" ref={headerRef}>
+        <div className="mx-auto md:mx-0 max-w-xs sm:max-w-sm">
+          <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 text-left transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            [SELECTED WORK]
+          </p>
+          <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 md:gap-0 text-left">
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wide transition-all duration-700 delay-100 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              {isHeaderInView ? (
+                <DecryptedText
+                  text="PROJECTS"
+                  speed={50}
+                  maxIterations={15}
+                  sequential={true}
+                  revealDirection="start"
+                  animateOn="view"
+                  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                  className="text-white"
+                  encryptedClassName="text-[#333333]"
+                />
+              ) : (
+                'PROJECTS'
+              )}
+            </h2>
+            <span className={`text-[#333333] text-xs md:text-sm uppercase tracking-wider transition-all duration-700 delay-200 ${isHeaderInView ? 'opacity-100' : 'opacity-0'}`}>
+              _{projects.length.toString().padStart(2, '0')}_FEATURED
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Projects container - includes bottom border so ScrollLine spans full height */}
-      <div className="relative mt-16 md:mt-24">
+      <div className="relative mt-2 md:mt-24">
         {/* Animated scroll line for desktop (at 1/4 position) */}
         <ScrollLine />
 

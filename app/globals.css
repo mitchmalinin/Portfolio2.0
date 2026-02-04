@@ -409,13 +409,27 @@ body {
 .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
 /* Skill icons in LogoLoop */
-.skill-icon {
+.skill-icon,
+.pixel-skill-icon {
   color: #666666;
   transition: color 0.2s ease;
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
 }
 
-.skill-icon:hover {
+.skill-icon:hover,
+.pixel-skill-icon:hover {
   color: #ffffff;
+}
+
+.pixelated-skill-icon {
+  image-rendering: pixelated;
+  transition: filter 0.2s ease;
+  filter: brightness(1);
+}
+
+.pixelated-skill-icon:hover {
+  filter: brightness(1.6);
 }
 
 /* Border glow effect for cards (bento-style) - Lime Green Accent */

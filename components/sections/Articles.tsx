@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import DecryptedText from '@/components/DecryptedText'
 import { useInView } from '@/hooks/useInView'
 
@@ -53,35 +53,6 @@ const articles = [
 export default function Articles() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const win = window as Window & { twttr?: { widgets?: { load: (node?: HTMLElement) => void } } }
-    const loadWidgets = () => {
-      if (win.twttr?.widgets?.load) {
-        win.twttr.widgets.load(sectionRef.current ?? undefined)
-      }
-    }
-
-    if (win.twttr?.widgets?.load) {
-      loadWidgets()
-      return
-    }
-
-    const existingScript = document.querySelector<HTMLScriptElement>('script[data-x-widget]')
-    if (existingScript) {
-      existingScript.addEventListener('load', loadWidgets, { once: true })
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = 'https://platform.twitter.com/widgets.js'
-    script.async = true
-    script.defer = true
-    script.setAttribute('data-x-widget', 'true')
-    script.onload = loadWidgets
-    document.body.appendChild(script)
-  }, [])
 
   return (
     <section id="articles" className="relative scroll-mt-[55px] md:scroll-mt-0" ref={sectionRef}>
@@ -148,13 +119,6 @@ export default function Articles() {
               </div>
               <div className="absolute right-6 top-6 text-[#444444] group-hover:text-[#BEFE00] transition-colors text-lg md:text-xl">
                 ↗
-              </div>
-              <div className="mt-6 border border-dashed border-[#222222] bg-black/80 p-3">
-                <blockquote className="twitter-tweet" data-theme="dark" data-dnt="true">
-                  <a href={article.url} className="sr-only">
-                    {article.title}
-                  </a>
-                </blockquote>
               </div>
             </div>
           ))}

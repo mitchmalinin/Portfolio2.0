@@ -35,14 +35,20 @@ export default function RabbitHole({ items, className }: RabbitHoleProps) {
     }
   }
 
+  useEffect(() => {
+    if (!isActive) {
+      setHoveredIndex(null)
+    }
+  }, [isActive])
+
   // Mobile layout - vertical with large rabbit
   if (isMobile) {
     return (
       <div className={`relative ${className}`}>
         {/* Mobile: Vertical layout */}
-        <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center">
           {/* Label */}
-          <div className="text-center mb-4">
+          <div className={`text-center mb-1 transition-opacity duration-200 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <span className="text-[#444444] text-xs uppercase tracking-widest">
               [CURRENT_RABBIT_HOLES]
             </span>
@@ -51,122 +57,152 @@ export default function RabbitHole({ items, className }: RabbitHoleProps) {
             </p>
           </div>
 
-          {/* Large clickable rabbit */}
-          <button
-            onClick={handleInteraction}
-            className="relative cursor-pointer focus:outline-none"
-            style={{ width: 160, height: 130 }}
-            aria-expanded={isActive}
-            aria-label="Toggle rabbit holes"
-          >
-            <svg
-              viewBox="0 0 80 70"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-full"
-            >
-              {/* Left ear */}
-              <motion.path
-                d="M28 42 Q20 20 28 8 Q36 0 34 25 L32 42"
-                stroke="#333333"
-                strokeWidth="1.5"
-                strokeDasharray="3 3"
-                fill="none"
-                animate={{
-                  stroke: isActive ? '#BEFE00' : '#333333',
-                  d: isActive
-                    ? "M28 42 Q15 15 28 2 Q41 -8 34 25 L32 42"
-                    : "M28 42 Q20 20 28 8 Q36 0 34 25 L32 42",
-                }}
-                transition={{ duration: 0.3 }}
-              />
-              {/* Right ear */}
-              <motion.path
-                d="M52 42 Q60 20 52 8 Q44 0 46 25 L48 42"
-                stroke="#333333"
-                strokeWidth="1.5"
-                strokeDasharray="3 3"
-                fill="none"
-                animate={{
-                  stroke: isActive ? '#BEFE00' : '#333333',
-                  d: isActive
-                    ? "M52 42 Q65 15 52 2 Q39 -8 46 25 L48 42"
-                    : "M52 42 Q60 20 52 8 Q44 0 46 25 L48 42",
-                }}
-                transition={{ duration: 0.3 }}
-              />
-              {/* Inner ears */}
-              <motion.path
-                d="M30 40 Q24 25 30 14 Q34 8 33 28"
-                stroke="#444444"
-                strokeWidth="1"
-                strokeDasharray="2 2"
-                fill="none"
-                animate={{ stroke: isActive ? '#BEFE00' : '#444444', opacity: isActive ? 0.6 : 0.4 }}
-              />
-              <motion.path
-                d="M50 40 Q56 25 50 14 Q46 8 47 28"
-                stroke="#444444"
-                strokeWidth="1"
-                strokeDasharray="2 2"
-                fill="none"
-                animate={{ stroke: isActive ? '#BEFE00' : '#444444', opacity: isActive ? 0.6 : 0.4 }}
-              />
-              {/* Hole */}
-              <motion.ellipse cx="40" cy="52" rx="28" ry="10" fill="#000000" />
-              <motion.ellipse
-                cx="40" cy="50" rx="32" ry="14"
-                stroke="#333333" strokeWidth="1.5" strokeDasharray="4 3" fill="none"
-                animate={{ stroke: isActive ? '#BEFE00' : '#333333' }}
-              />
-              <motion.ellipse
-                cx="40" cy="52" rx="26" ry="10"
-                stroke="#222222" strokeWidth="1" strokeDasharray="2 2" fill="none"
-                animate={{ stroke: isActive ? 'rgba(190, 254, 0, 0.3)' : '#222222' }}
-              />
-              {/* Dots */}
-              <motion.circle cx="8" cy="48" r="1" fill="#333333" animate={{ fill: isActive ? '#BEFE00' : '#333333' }} />
-              <motion.circle cx="72" cy="48" r="1" fill="#333333" animate={{ fill: isActive ? '#BEFE00' : '#333333' }} />
-            </svg>
-          </button>
-
-          {/* Cards revealed below rabbit on tap */}
-          <AnimatePresence>
+          <div className="relative w-full overflow-visible mt-1" style={{ height: 240 }}>
+            {/* Overlay to close on outside tap */}
             {isActive && (
-              <motion.div
-                className="mt-4 space-y-2 w-full"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {displayItems.map((item, index) => (
-                  <motion.div
-                    key={item.topic}
-                    className="bg-black border border-dashed border-[#333333] p-3"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="text-[#444444] text-xs">
-                        _{String(index + 1).padStart(2, '0')}
-                      </span>
-                      <div>
-                        <h4 className="text-[#BEFE00] text-sm uppercase mb-1">
-                          {item.topic}
-                        </h4>
-                        <p className="text-[#555555] text-xs uppercase">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+              <button
+                aria-hidden="true"
+                tabIndex={-1}
+                className="fixed inset-0 z-10 cursor-default"
+                onClick={() => setIsActive(false)}
+              />
             )}
-          </AnimatePresence>
+
+            {/* Cards revealed above rabbit on tap */}
+            <AnimatePresence>
+              {isActive && (
+                <motion.div
+                  className="absolute left-1/2 -top-[200px] z-20 w-[300px] -translate-x-1/2"
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                >
+                  {displayItems.map((item, index) => (
+                    <motion.div
+                      key={item.topic}
+                      className="absolute left-0 bg-black border border-dashed border-[#333333] w-full min-h-[110px] shadow-[0_14px_26px_rgba(0,0,0,0.55)]"
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 24 }}
+                      transition={{ delay: index * 0.1, type: 'spring', stiffness: 120, damping: 18 }}
+                      style={{
+                        top: `${index * 72}px`,
+                        transformOrigin: 'center',
+                        zIndex: hoveredIndex === index ? 60 : 50 - index,
+                      }}
+                      onClick={(event) => event.stopPropagation()}
+                      onPointerDown={() => setHoveredIndex(index)}
+                    >
+                      <div className="bg-[#101010] border-b border-dashed border-[#222222] px-3 py-2 flex items-center justify-between">
+                        <span className="text-[#333333] text-[10px] uppercase tracking-widest">
+                          FILE_{String(index + 1).padStart(2, '0')}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <div className="flex items-start gap-3">
+                          <span className="text-[#444444] text-xs">
+                            _{String(index + 1).padStart(2, '0')}
+                          </span>
+                          <div>
+                            <h4 className="text-[#BEFE00] text-sm uppercase mb-1">
+                              {item.topic}
+                            </h4>
+                            <p className="text-[#555555] text-xs uppercase">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Large clickable rabbit */}
+            <button
+              onClick={handleInteraction}
+              className="absolute left-1/2 bottom-0 -translate-x-1/2 cursor-pointer focus:outline-none"
+              style={{ width: 210, height: 165 }}
+              aria-expanded={isActive}
+              aria-label="Toggle rabbit holes"
+            >
+              <svg
+                viewBox="0 0 80 70"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full"
+              >
+                {/* Left ear */}
+                <motion.path
+                  d="M28 42 Q20 20 28 8 Q36 0 34 25 L32 42"
+                  stroke="#333333"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 3"
+                  fill="none"
+                  animate={{
+                    stroke: isActive ? '#BEFE00' : '#333333',
+                    d: isActive
+                      ? "M28 42 Q15 15 28 2 Q41 -8 34 25 L32 42"
+                      : "M28 42 Q20 20 28 8 Q36 0 34 25 L32 42",
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                {/* Right ear */}
+                <motion.path
+                  d="M52 42 Q60 20 52 8 Q44 0 46 25 L48 42"
+                  stroke="#333333"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 3"
+                  fill="none"
+                  animate={{
+                    stroke: isActive ? '#BEFE00' : '#333333',
+                    d: isActive
+                      ? "M52 42 Q65 15 52 2 Q39 -8 46 25 L48 42"
+                      : "M52 42 Q60 20 52 8 Q44 0 46 25 L48 42",
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                {/* Inner ears */}
+                <motion.path
+                  d="M30 40 Q24 25 30 14 Q34 8 33 28"
+                  stroke="#444444"
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                  fill="none"
+                  animate={{ stroke: isActive ? '#BEFE00' : '#444444', opacity: isActive ? 0.6 : 0.4 }}
+                />
+                <motion.path
+                  d="M50 40 Q56 25 50 14 Q46 8 47 28"
+                  stroke="#444444"
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                  fill="none"
+                  animate={{ stroke: isActive ? '#BEFE00' : '#444444', opacity: isActive ? 0.6 : 0.4 }}
+                />
+                {/* Hole */}
+                <motion.ellipse cx="40" cy="52" rx="28" ry="10" fill="#000000" />
+                <motion.ellipse
+                  cx="40" cy="50" rx="32" ry="14"
+                  stroke="#333333" strokeWidth="1.5" strokeDasharray="4 3" fill="none"
+                  animate={{ stroke: isActive ? '#BEFE00' : '#333333' }}
+                />
+                <motion.ellipse
+                  cx="40" cy="52" rx="26" ry="10"
+                  stroke="#222222" strokeWidth="1" strokeDasharray="2 2" fill="none"
+                  animate={{ stroke: isActive ? 'rgba(190, 254, 0, 0.3)' : '#222222' }}
+                />
+                {/* Dots */}
+                <motion.circle cx="8" cy="48" r="1" fill="#333333" animate={{ fill: isActive ? '#BEFE00' : '#333333' }} />
+                <motion.circle cx="72" cy="48" r="1" fill="#333333" animate={{ fill: isActive ? '#BEFE00' : '#333333' }} />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -187,7 +223,7 @@ export default function RabbitHole({ items, className }: RabbitHoleProps) {
         {/* Left side - Rabbit Hole SVG */}
         <motion.div
           className="relative cursor-pointer shrink-0"
-          style={{ width: 120, height: 100 }}
+          style={{ width: 150, height: 125 }}
         >
           <svg
             viewBox="0 0 80 70"
@@ -376,15 +412,14 @@ export default function RabbitHole({ items, className }: RabbitHoleProps) {
                     <motion.div
                       key={item.topic}
                       className="absolute top-1/2 left-0 origin-left cursor-pointer"
-                      initial={{ opacity: 0, x: -30, y: '-50%', scale: 0.8, rotate: 0 }}
+                      initial={{ opacity: 0, x: -30, y: '-50%', rotate: 0 }}
                       animate={{
                         opacity: 1,
                         x: xOffset,
                         y: `calc(-50% + ${baseY}px)`,
-                        scale: isItemHovered ? 1.05 : 1,
                         rotate: rotation,
                       }}
-                      exit={{ opacity: 0, x: -30, scale: 0.8 }}
+                      exit={{ opacity: 0, x: -30 }}
                       transition={{
                         type: 'spring',
                         stiffness: 300,
@@ -396,28 +431,40 @@ export default function RabbitHole({ items, className }: RabbitHoleProps) {
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
                       <motion.div
-                        className="bg-black border border-dashed p-3 min-w-[220px]"
+                        className="bg-black border border-dashed min-w-[240px] shadow-[0_14px_26px_rgba(0,0,0,0.55)]"
                         animate={{
                           borderColor: isItemHovered ? '#BEFE00' : '#333333',
                         }}
                         transition={{ duration: 0.15 }}
                       >
-                        <div className="flex items-start gap-3">
-                          <span className="text-[#444444] text-xs">
-                            _{String(index + 1).padStart(2, '0')}
+                        <div className="bg-[#101010] border-b border-dashed border-[#222222] px-3 py-2 flex items-center justify-between">
+                          <span className="text-[#333333] text-[10px] uppercase tracking-widest">
+                            FILE_{String(index + 1).padStart(2, '0')}
                           </span>
-                          <div>
-                            <motion.h4
-                              className="text-sm uppercase mb-1"
-                              animate={{
-                                color: isItemHovered ? '#BEFE00' : '#888888',
-                              }}
-                            >
-                              {item.topic}
-                            </motion.h4>
-                            <p className="text-[#555555] text-xs uppercase">
-                              {item.description}
-                            </p>
+                          <div className="flex items-center gap-1">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#333333]" />
+                          </div>
+                        </div>
+                        <div className="p-3">
+                          <div className="flex items-start gap-3">
+                            <span className="text-[#444444] text-xs">
+                              _{String(index + 1).padStart(2, '0')}
+                            </span>
+                            <div>
+                              <motion.h4
+                                className="text-sm uppercase mb-1"
+                                animate={{
+                                  color: isItemHovered ? '#BEFE00' : '#888888',
+                                }}
+                              >
+                                {item.topic}
+                              </motion.h4>
+                              <p className="text-[#555555] text-xs uppercase">
+                                {item.description}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </motion.div>
