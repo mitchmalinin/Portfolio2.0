@@ -327,6 +327,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
   const [navHeight, setNavHeight] = useState(DEFAULT_MOBILE_NAV_HEIGHT)
   const isInApp = useInAppBrowser()
   const disableStacking = isInApp
+  const isExpanded = disableStacking ? true : !isCollapsed
 
   // All projects sticky at the same position - right below mobile nav
   const stickyTop = navHeight
@@ -399,6 +400,12 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
       window.removeEventListener('resize', readNavHeight)
     }
   }, [navHeight])
+
+  useEffect(() => {
+    if (disableStacking && isCollapsed) {
+      setIsCollapsed(false)
+    }
+  }, [disableStacking, isCollapsed])
 
   useEffect(() => {
     if (disableStacking) {
@@ -634,13 +641,13 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           className={`w-full flex items-center justify-between px-3 py-3 border-b border-t border-dashed border-[#333333] bg-black ${disableStacking ? '' : 'sticky'}`}
           style={disableStacking ? { zIndex } : { top: `${stickyTop}px`, zIndex }}
           onClick={handleToggle}
-          aria-expanded={disableStacking ? true : !isCollapsed}
+          aria-expanded={isExpanded}
           aria-controls={`project-content-${project.id}`}
           aria-disabled={disableStacking ? true : !canToggle}
         >
           <div className="flex items-center gap-3">
             <span className={`text-xs transition-colors duration-200 ${
-              isCollapsed ? 'text-[#BEFE00]' : 'text-[#333333]'
+              isExpanded ? 'text-[#333333]' : 'text-[#BEFE00]'
             }`}>
               _{String(index + 1).padStart(2, '0')}
             </span>
@@ -653,8 +660,8 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           </div>
           <ChevronDown
             size={18}
-            className={`transition-all duration-200 shrink-0 ${disableStacking ? 'opacity-40' : (!canToggle ? 'opacity-40' : '')} ${
-              !isCollapsed ? 'rotate-180 text-[#BEFE00]' : 'text-[#666666]'
+            className={`transition-all duration-200 shrink-0 ${disableStacking ? 'opacity-0' : (!canToggle ? 'opacity-40' : '')} ${
+              isExpanded ? 'rotate-180 text-[#BEFE00]' : 'text-[#666666]'
             }`}
           />
         </button>
