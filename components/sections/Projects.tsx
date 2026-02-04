@@ -533,12 +533,12 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
         <p className="text-[#666666] uppercase text-xs mb-2">
           {project.subtitle}
         </p>
-        <div className="space-y-1 text-[#888888] uppercase text-xs mb-3">
+        <div className="space-y-2 text-[#888888] uppercase text-xs mb-4">
           {project.description.map((line, i) => (
             <p key={i}>{line}</p>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="flex flex-wrap gap-2 mb-5">
           {project.links.map((link) => (
             <a
               key={link.label}
@@ -697,7 +697,7 @@ export default function Projects() {
     <section id="projects" className="relative scroll-mt-[55px] md:scroll-mt-0">
       {/* Section header */}
       <div className="section-padding pb-0 md:py-[120px] lg:py-[160px]" ref={headerRef}>
-        <div className="mx-auto md:mx-0 max-w-xs sm:max-w-sm md:max-w-none md:w-full">
+        <div className="mx-auto md:mx-0 w-full">
           <p className={`text-[#444444] text-sm uppercase tracking-widest mb-4 text-left transition-all duration-700 ${isHeaderInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             [SELECTED WORK]
           </p>
