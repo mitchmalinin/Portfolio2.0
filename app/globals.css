@@ -67,12 +67,13 @@ body {
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0.02em;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-body.loaded {
-  overflow-x: hidden;
-  overflow-y: auto;
+html.scroll-locked,
+body.scroll-locked {
+  overflow: hidden;
+  height: 100%;
 }
 
 

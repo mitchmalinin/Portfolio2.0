@@ -9,8 +9,20 @@ export default function LoadingScreen({ onLoadComplete }: { onLoadComplete?: () 
 
   // Enable scrolling when loading is complete
   useEffect(() => {
-    if (isComplete) {
-      document.body.classList.add('loaded')
+    const root = document.documentElement
+    const body = document.body
+
+    if (!isComplete) {
+      root.classList.add('scroll-locked')
+      body.classList.add('scroll-locked')
+    } else {
+      root.classList.remove('scroll-locked')
+      body.classList.remove('scroll-locked')
+    }
+
+    return () => {
+      root.classList.remove('scroll-locked')
+      body.classList.remove('scroll-locked')
     }
   }, [isComplete])
 
