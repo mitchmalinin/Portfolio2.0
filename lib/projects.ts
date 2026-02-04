@@ -98,8 +98,11 @@ export const projects: Project[] = [
       { label: 'Y2KCODED.COM', url: 'https://y2kcoded.com' },
     ],
     images: [
-      { src: '/images/projects/y2k-coded-main.png', width: 1693, height: 1389 },
-      { src: '/images/projects/y2k-coded-archive.png', width: 1707, height: 1394 },
+      { src: '/images/projects/y2k-coded-main.png', width: 1694, height: 1350 },
+      { src: '/images/projects/y2k-coded-poster-details.png', width: 1686, height: 1202 },
+      { src: '/images/projects/y2k-coded-drop-schedule.png', width: 1676, height: 1203 },
+      { src: '/images/projects/y2k-coded-bundle.png', width: 1666, height: 1270 },
+      { src: '/images/projects/y2k-coded-archive.png', width: 1634, height: 1250 },
     ],
   },
 ]

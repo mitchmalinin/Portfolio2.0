@@ -24,6 +24,9 @@ const imageAnnotations: Record<string, string[][]> = {
   ],
   'y2k-coded': [
     ['DROP PAGE', 'COUNTDOWN TIMER', 'NOSTALGIA VIBES'],
+    ['POSTER DETAILS', 'FULL PRINT', 'ARTWORK VIEW'],
+    ['DROP SCHEDULE', 'CALENDAR', 'UPCOMING DROPS'],
+    ['BUNDLE', 'COLLECTOR SET', 'LIMITED EDITION'],
     ['ARCHIVE', 'PAST DROPS', 'SOLD OUT'],
   ],
 }
