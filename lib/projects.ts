@@ -92,6 +92,7 @@ export const projects: Project[] = [
     description: [
       '_LIMITED EDITION POSTERS',
       '_NOSTALGIA ARTIFACTS',
+      '_SHOPIFY INTEGRATION',
       '_BRIDGING DIGITAL & PHYSICAL',
     ],
     links: [
@@ -102,6 +103,7 @@ export const projects: Project[] = [
       { src: '/images/projects/y2k-coded-poster-details.png', width: 1686, height: 1202 },
       { src: '/images/projects/y2k-coded-drop-schedule.png', width: 1676, height: 1203 },
       { src: '/images/projects/y2k-coded-bundle.png', width: 1666, height: 1270 },
+      { src: '/images/projects/y2k-coded-checkout.png', width: 1698, height: 1347 },
       { src: '/images/projects/y2k-coded-archive.png', width: 1634, height: 1250 },
     ],
   },

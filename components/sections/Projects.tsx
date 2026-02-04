@@ -27,6 +27,7 @@ const imageAnnotations: Record<string, string[][]> = {
     ['POSTER DETAILS', 'FULL PRINT', 'ARTWORK VIEW'],
     ['DROP SCHEDULE', 'CALENDAR', 'UPCOMING DROPS'],
     ['BUNDLE', 'COLLECTOR SET', 'LIMITED EDITION'],
+    ['CHECKOUT', 'ORDER FLOW', 'SECURE PAY'],
     ['ARCHIVE', 'PAST DROPS', 'SOLD OUT'],
   ],
 }
