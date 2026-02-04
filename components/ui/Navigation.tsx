@@ -174,11 +174,14 @@ function MobileNav() {
   }
 
   return (
-    <div className="md:hidden fixed top-0 left-0 right-0 z-50">
+    <div
+      className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       {/* Collapsed bar */}
       <div
         ref={barRef}
-        className="flex items-center justify-between p-3 bg-black/95 backdrop-blur-sm border-b border-dashed border-[#333333]"
+        className="flex items-center justify-between p-3 border-b border-dashed border-[#333333]"
       >
         <span className="text-xs uppercase tracking-wider text-white font-mono leading-none">
           [M<span className="inline-block ml-[1px]" style={{ transform: 'rotate(180deg)', position: 'relative', top: '-1px' }}>M</span>]
