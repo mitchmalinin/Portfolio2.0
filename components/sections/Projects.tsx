@@ -504,10 +504,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
 
   // Handle manual toggle
   const handleToggle = () => {
-    if (disableStacking) {
-      setIsCollapsed((prev) => !prev)
-      return
-    }
+    if (disableStacking) return
     if (!isSticky || !canToggle) return
     const headerRect = headerRef.current?.getBoundingClientRect()
     const contentRect = contentRef.current?.getBoundingClientRect()
@@ -531,23 +528,29 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
     withId = true,
     attachRef = true,
     zIndex?: number
-  ) => (
-    <div
-      id={withId ? `project-content-${project.id}` : undefined}
-      className={`${stickyContent ? 'absolute left-0 right-0 top-full z-20' : 'relative'} bg-black overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-        (forceCollapsed ?? isCollapsed) ? 'max-h-0 opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
-      style={{
-        ...(zIndex !== undefined ? { zIndex } : {}),
-        ...(!(forceCollapsed ?? isCollapsed) && contentHeight ? { maxHeight: `${contentHeight}px` } : {}),
-      }}
-    >
+  ) => {
+    const collapsed = disableStacking ? false : (forceCollapsed ?? isCollapsed)
+    const transitionClass = disableStacking
+      ? 'transition-none'
+      : 'transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]'
+
+    return (
       <div
-        ref={attachRef ? contentRef : undefined}
-        className={`px-3 pb-3 pt-4 border-t border-dashed border-[#333333] transition-opacity duration-200 ${
-          (forceCollapsed ?? isCollapsed) ? 'opacity-0' : 'opacity-100'
+        id={withId ? `project-content-${project.id}` : undefined}
+        className={`${stickyContent ? 'absolute left-0 right-0 top-full z-20' : 'relative'} bg-black overflow-hidden ${transitionClass} ${
+          collapsed ? 'max-h-0 opacity-0 pointer-events-none' : 'opacity-100'
         }`}
+        style={{
+          ...(zIndex !== undefined ? { zIndex } : {}),
+          ...(!disableStacking && !collapsed && contentHeight ? { maxHeight: `${contentHeight}px` } : {}),
+        }}
       >
+        <div
+          ref={attachRef ? contentRef : undefined}
+          className={`px-3 pb-3 pt-4 border-t border-dashed border-[#333333] transition-opacity duration-200 ${
+            collapsed ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
         <p className="text-[#666666] uppercase text-xs mb-2">
           {project.subtitle}
         </p>
@@ -609,9 +612,10 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
             ))}
           </div>
         )}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div ref={sectionRef} className="md:hidden relative" data-project-section>
@@ -630,9 +634,9 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           className={`w-full flex items-center justify-between px-3 py-3 border-b border-t border-dashed border-[#333333] bg-black ${disableStacking ? '' : 'sticky'}`}
           style={disableStacking ? { zIndex } : { top: `${stickyTop}px`, zIndex }}
           onClick={handleToggle}
-          aria-expanded={!isCollapsed}
+          aria-expanded={disableStacking ? true : !isCollapsed}
           aria-controls={`project-content-${project.id}`}
-          aria-disabled={disableStacking ? false : !canToggle}
+          aria-disabled={disableStacking ? true : !canToggle}
         >
           <div className="flex items-center gap-3">
             <span className={`text-xs transition-colors duration-200 ${
@@ -649,7 +653,7 @@ function MobileProjectSection({ project, index }: { project: typeof projects[0],
           </div>
           <ChevronDown
             size={18}
-            className={`transition-all duration-200 shrink-0 ${disableStacking ? '' : (!canToggle ? 'opacity-40' : '')} ${
+            className={`transition-all duration-200 shrink-0 ${disableStacking ? 'opacity-40' : (!canToggle ? 'opacity-40' : '')} ${
               !isCollapsed ? 'rotate-180 text-[#BEFE00]' : 'text-[#666666]'
             }`}
           />
